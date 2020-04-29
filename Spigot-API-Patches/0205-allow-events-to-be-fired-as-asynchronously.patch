@@ -1,0 +1,39 @@
+From a14796c2d87d0d982fc53bcc15408e6b38018943 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Wed, 29 Apr 2020 23:42:40 +0900
+Subject: [PATCH] allow events to be fired as asynchronously
+
+
+diff --git a/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendActionBarEvent.java b/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendActionBarEvent.java
+index ed1ba493..3bf85888 100644
+--- a/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendActionBarEvent.java
++++ b/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendActionBarEvent.java
+@@ -15,8 +15,8 @@ public class PluginSendActionBarEvent extends PlayerEvent implements Cancellable
+     private boolean cancelled = false;
+     protected String message;
+ 
+-    public PluginSendActionBarEvent(@NotNull Player player, @NotNull String message) {
+-        super(player);
++    public PluginSendActionBarEvent(final boolean async, @NotNull Player player, @NotNull String message) {
++        super(player, async);
+         this.message = message;
+     }
+ 
+diff --git a/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendMessageEvent.java b/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendMessageEvent.java
+index 533d8908..22ee7e94 100644
+--- a/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendMessageEvent.java
++++ b/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendMessageEvent.java
+@@ -17,8 +17,8 @@ public class PluginSendMessageEvent extends PlayerEvent implements Cancellable {
+     private boolean cancelled = false;
+     protected String message;
+ 
+-    public PluginSendMessageEvent(@NotNull Player player, @Nullable String message) {
+-        super(player);
++    public PluginSendMessageEvent(final boolean async, @NotNull Player player, @Nullable String message) {
++        super(player, async);
+         this.message = message;
+     }
+ 
+-- 
+2.21.0.windows.1
+
