@@ -1,0 +1,90 @@
+From b8409cdd834927fe63addc92375643a1473f88f0 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Thu, 30 Apr 2020 04:18:16 +0900
+Subject: [PATCH] Add BlockLootGenerateEvent
+
+
+diff --git a/src/main/java/xyz/acrylicstyle/paper/event/block/BlockLootGenerateEvent.java b/src/main/java/xyz/acrylicstyle/paper/event/block/BlockLootGenerateEvent.java
+new file mode 100644
+index 00000000..85c85fcb
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/event/block/BlockLootGenerateEvent.java
+@@ -0,0 +1,75 @@
++package xyz.acrylicstyle.paper.event.block;
++
++import org.bukkit.block.Block;
++import org.bukkit.entity.HumanEntity;
++import org.bukkit.event.Event;
++import org.bukkit.event.HandlerList;
++import org.bukkit.inventory.ItemStack;
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++
++import java.util.List;
++
++public class BlockLootGenerateEvent extends Event {
++    private static final HandlerList handlers = new HandlerList();
++    protected final HumanEntity humanEntity;
++    protected final Block block;
++    protected List<ItemStack> items;
++
++    public BlockLootGenerateEvent(@Nullable HumanEntity humanEntity, @NotNull Block block, @NotNull List<ItemStack> items) {
++        this.humanEntity = humanEntity;
++        this.block = block;
++        this.items = items;
++    }
++
++    public BlockLootGenerateEvent(boolean async, @Nullable HumanEntity humanEntity, @NotNull Block block, @NotNull List<ItemStack> items) {
++        super(async);
++        this.humanEntity = humanEntity;
++        this.block = block;
++        this.items = items;
++    }
++
++    /**
++     * Get the block where loot was generated.
++     * @return Block where loot was generated
++     */
++    public Block getBlock() {
++        return block;
++    }
++
++    /**
++     * Get HumanEntity who generated the loot.
++     * @return HumanEntity who generated the loot
++     */
++    @Nullable
++    public HumanEntity getHumanEntity() {
++        return humanEntity;
++    }
++
++    /**
++     * Get a list of generated loots.
++     * @return A list of generated loots
++     */
++    @NotNull
++    public List<ItemStack> getGeneratedLoot() {
++        return items;
++    }
++
++    /**
++     * Set a list of generated loots.
++     * @param loot A list of generated loots
++     */
++    public void setGeneratedLoot(@NotNull List<ItemStack> loot) {
++        this.items = loot;
++    }
++
++    @Override
++    public @NotNull HandlerList getHandlers() {
++        return handlers;
++    }
++
++    @NotNull
++    public static HandlerList getHandlerList() {
++        return handlers;
++    }
++}
+-- 
+2.21.0.windows.1
+
