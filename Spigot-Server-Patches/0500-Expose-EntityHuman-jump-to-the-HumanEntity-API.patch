@@ -1,0 +1,25 @@
+From eb5b1641d360f2381f27fcd117cb7722dcde1196 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Wed, 29 Apr 2020 22:07:49 +0900
+Subject: [PATCH] Expose EntityHuman#jump to the HumanEntity API
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java
+index a5e9fc90f..87bdb91f8 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java
+@@ -635,4 +635,11 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
+         getHandle().openSign(teSign);
+     }
+     // Paper end
++
++    // Paper start - Expose HumanEntity#jump()
++    @Override
++    public void jump() {
++        getHandle().jump();
++    }
++    // Paper end
+ }
+-- 
+2.21.0.windows.1
+
