@@ -1,0 +1,58 @@
+From 2ba8329898d0e761d36518b8f2c1edb4b6929a78 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Thu, 30 Apr 2020 19:24:40 +0900
+Subject: [PATCH] SPIGOT-809 Recipients for join and quit messages.
+ https://hub.spigotmc.org/jira/projects/SPIGOT/issues/SPIGOT-809
+
+
+diff --git a/src/main/java/org/bukkit/event/player/PlayerJoinEvent.java b/src/main/java/org/bukkit/event/player/PlayerJoinEvent.java
+index d06684ab..fa3ac52a 100644
+--- a/src/main/java/org/bukkit/event/player/PlayerJoinEvent.java
++++ b/src/main/java/org/bukkit/event/player/PlayerJoinEvent.java
+@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
+ public class PlayerJoinEvent extends PlayerEvent {
+     private static final HandlerList handlers = new HandlerList();
+     private String joinMessage;
++    protected java.util.List<Player> recipients = new java.util.ArrayList<>(org.bukkit.Bukkit.getOnlinePlayers()); // Paper
+ 
+     public PlayerJoinEvent(@NotNull final Player playerJoined, @Nullable final String joinMessage) {
+         super(playerJoined);
+@@ -46,4 +47,11 @@ public class PlayerJoinEvent extends PlayerEvent {
+     public static HandlerList getHandlerList() {
+         return handlers;
+     }
++
++    // Paper start - Recipients for join and quit messages. (SPIGOT-809)
++    @NotNull
++    public java.util.List<Player> getRecipients() {
++        return recipients;
++    }
++    // Paper end
+ }
+diff --git a/src/main/java/org/bukkit/event/player/PlayerQuitEvent.java b/src/main/java/org/bukkit/event/player/PlayerQuitEvent.java
+index d70c25f4..205b7893 100644
+--- a/src/main/java/org/bukkit/event/player/PlayerQuitEvent.java
++++ b/src/main/java/org/bukkit/event/player/PlayerQuitEvent.java
+@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
+ public class PlayerQuitEvent extends PlayerEvent {
+     private static final HandlerList handlers = new HandlerList();
+     private String quitMessage;
++    protected java.util.List<Player> recipients = new java.util.ArrayList<>(org.bukkit.Bukkit.getOnlinePlayers()); // Paper
+ 
+     public PlayerQuitEvent(@NotNull final Player who, @Nullable final String quitMessage) {
+         super(who);
+@@ -46,4 +47,11 @@ public class PlayerQuitEvent extends PlayerEvent {
+     public static HandlerList getHandlerList() {
+         return handlers;
+     }
++
++    // Paper start - Recipients for join and quit messages. (SPIGOT-809)
++    @NotNull
++    public java.util.List<Player> getRecipients() {
++        return recipients;
++    }
++    // Paper end
+ }
+-- 
+2.21.0.windows.1
+
