@@ -1,4 +1,4 @@
-From 2ba8329898d0e761d36518b8f2c1edb4b6929a78 Mon Sep 17 00:00:00 2001
+From 1b736c197c8c8828610dd78bd74ed1a6e05652a2 Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Thu, 30 Apr 2020 19:24:40 +0900
 Subject: [PATCH] SPIGOT-809 Recipients for join and quit messages.

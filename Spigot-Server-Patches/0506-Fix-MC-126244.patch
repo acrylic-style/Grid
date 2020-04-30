@@ -1,0 +1,51 @@
+From b6c276d0fffbde8c73805279c3759e7ed0420e30 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Thu, 30 Apr 2020 21:32:59 +0900
+Subject: [PATCH] Fix MC-126244
+
+
+diff --git a/src/main/java/net/minecraft/server/CommandLocate.java b/src/main/java/net/minecraft/server/CommandLocate.java
+index b500ef0b6..d8f592b79 100644
+--- a/src/main/java/net/minecraft/server/CommandLocate.java
++++ b/src/main/java/net/minecraft/server/CommandLocate.java
+@@ -46,20 +46,25 @@ public class CommandLocate {
+     }
+ 
+     private static int a(CommandListenerWrapper commandlistenerwrapper, String s) throws CommandSyntaxException {
+-        BlockPosition blockposition = new BlockPosition(commandlistenerwrapper.getPosition());
+-        BlockPosition blockposition1 = commandlistenerwrapper.getWorld().a(s, blockposition, 100, false);
++        // Paper start - async /locate to prevent huge lags
++        new Thread(() -> {
++            BlockPosition blockposition = new BlockPosition(commandlistenerwrapper.getPosition());
++            BlockPosition blockposition1 = commandlistenerwrapper.getWorld().a(s, blockposition, 100, false);
+ 
+-        if (blockposition1 == null) {
+-            throw CommandLocate.a.create();
+-        } else {
+-            int i = MathHelper.d(a(blockposition.getX(), blockposition.getZ(), blockposition1.getX(), blockposition1.getZ()));
+-            IChatBaseComponent ichatbasecomponent = ChatComponentUtils.a((IChatBaseComponent) (new ChatMessage("chat.coordinates", new Object[]{blockposition1.getX(), "~", blockposition1.getZ()}))).a((chatmodifier) -> {
+-                chatmodifier.setColor(EnumChatFormat.GREEN).setChatClickable(new ChatClickable(ChatClickable.EnumClickAction.SUGGEST_COMMAND, "/tp @s " + blockposition1.getX() + " ~ " + blockposition1.getZ())).setChatHoverable(new ChatHoverable(ChatHoverable.EnumHoverAction.SHOW_TEXT, new ChatMessage("chat.coordinates.tooltip", new Object[0])));
+-            });
++            if (blockposition1 == null) {
++                commandlistenerwrapper.sendFailureMessage(new ChatMessage("commands.locate.failed", new Object[0]));
++            } else {
++                int i = MathHelper.d(a(blockposition.getX(), blockposition.getZ(), blockposition1.getX(), blockposition1.getZ()));
++                IChatBaseComponent ichatbasecomponent = ChatComponentUtils.a((IChatBaseComponent) (new ChatMessage("chat.coordinates", new Object[]{blockposition1.getX(), "~", blockposition1.getZ()}))).a((chatmodifier) -> {
++                    chatmodifier.setColor(EnumChatFormat.GREEN).setChatClickable(new ChatClickable(ChatClickable.EnumClickAction.SUGGEST_COMMAND, "/tp @s " + blockposition1.getX() + " ~ " + blockposition1.getZ())).setChatHoverable(new ChatHoverable(ChatHoverable.EnumHoverAction.SHOW_TEXT, new ChatMessage("chat.coordinates.tooltip", new Object[0])));
++                });
+ 
+-            commandlistenerwrapper.sendMessage(new ChatMessage("commands.locate.success", new Object[]{s, ichatbasecomponent, i}), false);
+-            return i;
+-        }
++                commandlistenerwrapper.sendMessage(new ChatMessage("commands.locate.success", new Object[]{s, ichatbasecomponent, i}), false);
++                // return i;
++            }
++        }).start();
++        return 0;
++        // Paper end
+     }
+ 
+     private static float a(int i, int j, int k, int l) {
+-- 
+2.21.0.windows.1
+
