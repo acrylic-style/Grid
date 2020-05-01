@@ -1,11 +1,11 @@
-From 5bf972ff3a595f6822a73ceec02e48a19848ec40 Mon Sep 17 00:00:00 2001
+From 0ddc441790180adde8b21dd05aab0cf9f68b9d3c Mon Sep 17 00:00:00 2001
 From: MiniDigger <admin@minidigger.me>
 Date: Thu, 30 Apr 2020 16:17:14 +0200
 Subject: [PATCH] Fix commodore by updating asm
 
 
 diff --git a/pom.xml b/pom.xml
-index fd417a9eeb..bc8438ae1a 100644
+index fd417a9ee..bc8438ae1 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -87,7 +87,7 @@
@@ -18,7 +18,7 @@ index fd417a9eeb..bc8438ae1a 100644
          </dependency>
          <!-- deprecated API depend -->
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
-index 2c6814f131..4ae41fd255 100644
+index 2c6814f13..4ae41fd25 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 @@ -171,7 +171,7 @@ public class Commodore
@@ -31,5 +31,5 @@ index 2c6814f131..4ae41fd255 100644
              // Paper start - Rewrite plugins
              @Override
 -- 
-2.26.1
+2.21.0.windows.1
 

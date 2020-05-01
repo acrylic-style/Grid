@@ -1,4 +1,4 @@
-From 36872a8dbb877d17dd6c180f25acf52858b4d6da Mon Sep 17 00:00:00 2001
+From 8e6c79ae52bf1285d702a8dc214abe49d80aa8e9 Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Thu, 30 Apr 2020 21:32:59 +0900
 Subject: [PATCH] Fix MC-126244

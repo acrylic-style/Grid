@@ -1,4 +1,4 @@
-From 6455de1e87bacea084810ae28894f97f7f768f67 Mon Sep 17 00:00:00 2001
+From 634483918e0cea350efaec7c2d91ab4efc2df3ee Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Wed, 29 Apr 2020 23:33:37 +0900
 Subject: [PATCH] Fix MC-146524

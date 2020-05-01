@@ -1,4 +1,4 @@
-From 679ee1605d55cbd4899dfbdb9a042b12e41ec78d Mon Sep 17 00:00:00 2001
+From bfad3b5002873d94b5bc0dadc8c6bd0f2b0d036e Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Wed, 29 Apr 2020 22:44:01 +0900
 Subject: [PATCH] Fix MC-181313

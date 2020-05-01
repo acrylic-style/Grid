@@ -1,11 +1,11 @@
-From fedb195d46f499c95e290e178605a8942faacd65 Mon Sep 17 00:00:00 2001
+From 0306080f0fb922e5dc6e5d80322e5253a30728ff Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Wed, 29 Apr 2020 20:35:14 +0900
 Subject: [PATCH] add CraftEventFactory methods
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 88cdb0d8..9757391f 100644
+index 88cdb0d8a..9757391f1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -206,6 +206,8 @@ import org.bukkit.inventory.meta.BookMeta;
