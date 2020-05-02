@@ -1,0 +1,23 @@
+From c4a9331138b52df7140e91597c4ace792a07d568 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Sun, 3 May 2020 08:49:57 +0900
+Subject: [PATCH] Expose game version
+
+
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index 9ceaac0e..92ee7b27 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -1478,4 +1478,9 @@ public interface Server extends PluginMessageRecipient {
+      */
+     boolean isStopping();
+     // Paper end
++
++    // Paper start - expose game version
++    @NotNull
++    String getMinecraftVersion();
++    // Paper end
+ }
+-- 
+2.21.0.windows.1
+
