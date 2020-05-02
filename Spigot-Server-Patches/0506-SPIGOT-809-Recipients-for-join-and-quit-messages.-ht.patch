@@ -1,4 +1,4 @@
-From abd8e739b241dc0d548133602c3fcded3b03f402 Mon Sep 17 00:00:00 2001
+From 3b9258290fa96b84f1b35f12851d33d6c0968e81 Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Thu, 30 Apr 2020 19:24:40 +0900
 Subject: [PATCH] SPIGOT-809 Recipients for join and quit messages.
@@ -6,7 +6,7 @@ Subject: [PATCH] SPIGOT-809 Recipients for join and quit messages.
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 38ec22f4c..313f5699e 100644
+index 60c3af4d6..84a648f72 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -22,6 +22,8 @@ import org.apache.logging.log4j.Logger;
@@ -41,7 +41,7 @@ index 38ec22f4c..313f5699e 100644
  import org.bukkit.inventory.CraftingInventory;
  import org.bukkit.inventory.EquipmentSlot;
  import org.bukkit.inventory.InventoryView;
-@@ -1515,9 +1503,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1522,9 +1510,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
          */
  
          this.player.n();

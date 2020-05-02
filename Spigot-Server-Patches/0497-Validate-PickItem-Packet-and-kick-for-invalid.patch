@@ -1,11 +1,11 @@
-From 35b2b6df0265e4e0743a0456cfa2c3ec73bbe7da Mon Sep 17 00:00:00 2001
+From 2c9afa88371d975763c251e0b69924352ca0aba9 Mon Sep 17 00:00:00 2001
 From: Aikar <aikar@aikar.co>
 Date: Sat, 2 May 2020 03:09:46 -0400
 Subject: [PATCH] Validate PickItem Packet and kick for invalid
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 38ec22f4c0..60c3af4d64 100644
+index 38ec22f4c..60c3af4d6 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -683,7 +683,14 @@ public class PlayerConnection implements PacketListenerPlayIn {
@@ -25,5 +25,5 @@ index 38ec22f4c0..60c3af4d64 100644
          this.player.playerConnection.sendPacket(new PacketPlayOutSetSlot(-2, packetplayinpickitem.b(), this.player.inventory.getItem(packetplayinpickitem.b())));
          this.player.playerConnection.sendPacket(new PacketPlayOutHeldItemSlot(this.player.inventory.itemInHandIndex));
 -- 
-2.26.2
+2.21.0.windows.1
 
