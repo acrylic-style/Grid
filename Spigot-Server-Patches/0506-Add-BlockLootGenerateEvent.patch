@@ -1,4 +1,4 @@
-From 7baa2f490f8a0984c56f5ecb2e94172f6335e57d Mon Sep 17 00:00:00 2001
+From d38605a18663935050fe486521c4060a8d921281 Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Thu, 30 Apr 2020 04:18:15 +0900
 Subject: [PATCH] Add BlockLootGenerateEvent

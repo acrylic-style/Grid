@@ -1,4 +1,4 @@
-From c6d1d92f36b8a4031a470e690908abe589ca58d8 Mon Sep 17 00:00:00 2001
+From 96ee07896041b21de4f2b835321c57cc63c075df Mon Sep 17 00:00:00 2001
 From: Aikar <aikar@aikar.co>
 Date: Sun, 19 Apr 2020 18:15:29 -0400
 Subject: [PATCH] Implement Brigadier Mojang API
@@ -10,7 +10,7 @@ Adds CommandRegisteredEvent
   - Allows manipulating the CommandNode to add more children/metadata for the client
 
 diff --git a/src/main/java/net/minecraft/server/CommandDispatcher.java b/src/main/java/net/minecraft/server/CommandDispatcher.java
-index 2414b0a552..2d512aa4f9 100644
+index 2414b0a55..2d512aa4f 100644
 --- a/src/main/java/net/minecraft/server/CommandDispatcher.java
 +++ b/src/main/java/net/minecraft/server/CommandDispatcher.java
 @@ -267,6 +267,7 @@ public class CommandDispatcher {
@@ -30,7 +30,7 @@ index 2414b0a552..2d512aa4f9 100644
          event.getPlayer().getServer().getPluginManager().callEvent(event);
  
 diff --git a/src/main/java/net/minecraft/server/CommandListenerWrapper.java b/src/main/java/net/minecraft/server/CommandListenerWrapper.java
-index 0b23a0548d..c988c929f1 100644
+index 0b23a0548..c988c929f 100644
 --- a/src/main/java/net/minecraft/server/CommandListenerWrapper.java
 +++ b/src/main/java/net/minecraft/server/CommandListenerWrapper.java
 @@ -15,7 +15,7 @@ import java.util.function.BinaryOperator;
@@ -68,8 +68,40 @@ index 0b23a0548d..c988c929f1 100644
      @Override
      public boolean hasPermission(int i) {
          // CraftBukkit start
+diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
+index 38ec22f4c..a180df220 100644
+--- a/src/main/java/net/minecraft/server/PlayerConnection.java
++++ b/src/main/java/net/minecraft/server/PlayerConnection.java
+@@ -576,8 +576,12 @@ public class PlayerConnection implements PacketListenerPlayIn {
+             ParseResults<CommandListenerWrapper> parseresults = this.minecraftServer.getCommandDispatcher().a().parse(stringreader, this.player.getCommandListener());
+ 
+         this.minecraftServer.getCommandDispatcher().a().getCompletionSuggestions(parseresults).thenAccept((suggestions) -> {
+-            if (((Suggestions) suggestions).isEmpty()) return; // CraftBukkit - don't send through empty suggestions - prevents [<args>] from showing for plugins with nothing more to offer
+-                this.networkManager.sendPacket(new PacketPlayOutTabComplete(packetplayintabcomplete.b(), (Suggestions) suggestions)); // CraftBukkit - decompile error
++                // Paper start
++                com.destroystokyo.paper.event.brigadier.AsyncPlayerSendSuggestionsEvent suggestEvent = new com.destroystokyo.paper.event.brigadier.AsyncPlayerSendSuggestionsEvent(this.getPlayer(), suggestions, buffer);
++                suggestEvent.setCancelled(suggestions.isEmpty());
++                if (!suggestEvent.callEvent()) return;
++                this.networkManager.sendPacket(new PacketPlayOutTabComplete(packetplayintabcomplete.b(), (Suggestions) suggestEvent.getSuggestions())); // CraftBukkit - decompile error // Paper
++            // Paper end
+             });
+         }); // Paper - This needs to be on main
+             }
+@@ -587,7 +591,11 @@ public class PlayerConnection implements PacketListenerPlayIn {
+ 
+             builder = builder.createOffset(builder.getInput().lastIndexOf(' ') + 1);
+             completions.forEach(builder::suggest);
+-            player.playerConnection.sendPacket(new PacketPlayOutTabComplete(packetplayintabcomplete.b(), builder.buildFuture().join()));
++            Suggestions suggestions = builder.buildFuture().join();
++            com.destroystokyo.paper.event.brigadier.AsyncPlayerSendSuggestionsEvent suggestEvent = new com.destroystokyo.paper.event.brigadier.AsyncPlayerSendSuggestionsEvent(this.getPlayer(), suggestions, buffer);
++            suggestEvent.setCancelled(suggestions.isEmpty());
++            if (!suggestEvent.callEvent()) return;
++            this.networkManager.sendPacket(new PacketPlayOutTabComplete(packetplayintabcomplete.b(), suggestEvent.getSuggestions()));
+         }
+         // Paper end - async tab completion
+ 
 diff --git a/src/main/java/org/bukkit/craftbukkit/command/BukkitCommandWrapper.java b/src/main/java/org/bukkit/craftbukkit/command/BukkitCommandWrapper.java
-index 5f33c9e52a..e16ecdea7d 100644
+index 5f33c9e52..e16ecdea7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/command/BukkitCommandWrapper.java
 +++ b/src/main/java/org/bukkit/craftbukkit/command/BukkitCommandWrapper.java
 @@ -17,7 +17,7 @@ import net.minecraft.server.CommandListenerWrapper;
@@ -106,5 +138,5 @@ index 5f33c9e52a..e16ecdea7d 100644
  
      @Override
 -- 
-2.26.2
+2.21.0.windows.1
 
