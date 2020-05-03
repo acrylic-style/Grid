@@ -1,9 +1,29 @@
-From c4a9331138b52df7140e91597c4ace792a07d568 Mon Sep 17 00:00:00 2001
+From 2774977ac76c7a7a7032180b998a27912e8dbf89 Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Sun, 3 May 2020 08:49:57 +0900
 Subject: [PATCH] Expose game version
 
 
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index ea3e5d6f..0867be46 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -1695,4 +1695,15 @@ public final class Bukkit {
+     public static Server.Spigot spigot() {
+         return server.spigot();
+     }
++
++    // Paper start - expose game version
++    /**
++     * Get game version.
++     * @return Game version
++     */
++    @NotNull
++    public static String getMinecraftVersion() {
++        return server.getMinecraftVersion();
++    }
++    // Paper end
+ }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
 index 9ceaac0e..92ee7b27 100644
 --- a/src/main/java/org/bukkit/Server.java
