@@ -105,6 +105,8 @@ done
 #             # group    # lib          # prefix               # many files
 
 # dont forget \ at end of each line but last
+importLibrary com.mojang brigadier com/mojang/brigadier StringReader.java
+importLibrary com.mojang brigadier com/mojang/brigadier arguments/BoolArgumentType.java
 importLibrary com.mojang authlib com/mojang/authlib yggdrasil/YggdrasilGameProfileRepository.java
 importLibrary com.mojang datafixerupper com/mojang/datafixers/util Either.java
 
