@@ -1,4 +1,4 @@
-From 1e7d68cf958496b9e67872eeb5cc01364bd15339 Mon Sep 17 00:00:00 2001
+From b47ecfa61008e0dae1ca01f5935bc3995bd3f7ff Mon Sep 17 00:00:00 2001
 From: Aikar <aikar@aikar.co>
 Date: Sun, 3 May 2020 14:25:55 -0400
 Subject: [PATCH] Sync position on teleportation
@@ -13,7 +13,7 @@ it is triggering a massive movement velocity.
 This will ensure that the servers position is synchronized anytime player is teleported.
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 02bda8bee4..a188d9f3b6 100644
+index a180df220..253faa848 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -500,6 +500,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
@@ -24,7 +24,7 @@ index 02bda8bee4..a188d9f3b6 100644
              if (this.player.H()) {
                  this.player.I();
              }
-@@ -1271,6 +1272,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1264,6 +1265,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
  
          this.A = this.e;
          this.player.setLocation(d0, d1, d2, f, f1);
@@ -33,5 +33,5 @@ index 02bda8bee4..a188d9f3b6 100644
      }
  
 -- 
-2.26.2
+2.21.0.windows.1
 

@@ -1,4 +1,4 @@
-From 78fdb474a74e44a5d1070578e9dcf261e192a139 Mon Sep 17 00:00:00 2001
+From dc79f02952028394e7a001ae15de7b3c503d14ee Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Sun, 3 May 2020 11:36:51 +0900
 Subject: [PATCH] Add DamageSource and Damageable#damage API

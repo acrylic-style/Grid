@@ -1,4 +1,4 @@
-From fc80e192e73525b7ac69affa6b4c586fa039cef4 Mon Sep 17 00:00:00 2001
+From c23a80681617b4e3714415bcb8413c3718f4f734 Mon Sep 17 00:00:00 2001
 From: Aikar <aikar@aikar.co>
 Date: Sun, 3 May 2020 22:35:09 -0400
 Subject: [PATCH] Optimize Voxel Shape Merging
@@ -30,7 +30,7 @@ Additionally, this lets us avoid even allocating new objects for this too, furth
 reducing memory usage.
 
 diff --git a/src/main/java/net/minecraft/server/VoxelShapeMergerList.java b/src/main/java/net/minecraft/server/VoxelShapeMergerList.java
-index 71d2ae2a9c..232b002377 100644
+index 71d2ae2a9..232b00237 100644
 --- a/src/main/java/net/minecraft/server/VoxelShapeMergerList.java
 +++ b/src/main/java/net/minecraft/server/VoxelShapeMergerList.java
 @@ -6,10 +6,16 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
@@ -75,7 +75,7 @@ index 71d2ae2a9c..232b002377 100644
          this.b = new IntArrayList(i1);
          this.c = new IntArrayList(i1);
 diff --git a/src/main/java/net/minecraft/server/VoxelShapes.java b/src/main/java/net/minecraft/server/VoxelShapes.java
-index 08c83c62df..bb3a1a97df 100644
+index 08c83c62d..bb3a1a97d 100644
 --- a/src/main/java/net/minecraft/server/VoxelShapes.java
 +++ b/src/main/java/net/minecraft/server/VoxelShapes.java
 @@ -316,9 +316,21 @@ public final class VoxelShapes {
@@ -126,5 +126,5 @@ index 08c83c62df..bb3a1a97df 100644
  
      public interface a {
 -- 
-2.26.2
+2.21.0.windows.1
 

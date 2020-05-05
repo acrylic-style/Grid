@@ -1,4 +1,4 @@
-From 6276a6804e4091510a56415490a50f71e2b9b006 Mon Sep 17 00:00:00 2001
+From a43e8227c2609b5cb99a375df0b29e12a93aa70f Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Wed, 29 Apr 2020 21:37:37 +0900
 Subject: [PATCH] Add Server reload related events

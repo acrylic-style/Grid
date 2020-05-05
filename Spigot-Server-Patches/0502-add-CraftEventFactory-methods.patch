@@ -1,4 +1,4 @@
-From b456062bd562bc23fc996c49c5a47e05839e9c07 Mon Sep 17 00:00:00 2001
+From 85db53f4780ed292838a1a8108231790d30f1ce3 Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Wed, 29 Apr 2020 20:35:14 +0900
 Subject: [PATCH] add CraftEventFactory methods

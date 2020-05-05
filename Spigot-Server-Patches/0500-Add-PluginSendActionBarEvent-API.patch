@@ -1,4 +1,4 @@
-From d506810b16e0422b06f83a82de12a58b18a56b47 Mon Sep 17 00:00:00 2001
+From dcd1c17d51c19dd6e87a02f6662c958e1a09f19e Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Wed, 29 Apr 2020 17:56:53 +0900
 Subject: [PATCH] Add PluginSendActionBarEvent API
