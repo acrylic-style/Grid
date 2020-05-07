@@ -1,0 +1,40 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Sun, 3 May 2020 08:49:57 +0900
+Subject: [PATCH] Expose game version
+
+
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index a9c10228eeeaac89361c695a5ab90161b6358ca1..35b430ea4d833a4b9b786b4269a691f23ea2cbff 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -1717,4 +1717,15 @@ public final class Bukkit {
+     public static Server.Spigot spigot() {
+         return server.spigot();
+     }
++
++    // Paper start - expose game version
++    /**
++     * Get game version.
++     * @return Game version
++     */
++    @NotNull
++    public static String getMinecraftVersion() {
++        return server.getMinecraftVersion();
++    }
++    // Paper end
+ }
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index cc06492f46ba5776221cd2614c1dcd8f33cc8faf..2718ba182ac644ab038e8fb86ebfb5a2c87c337b 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -1496,4 +1496,9 @@ public interface Server extends PluginMessageRecipient {
+     @NotNull
+     com.destroystokyo.paper.entity.ai.MobGoals getMobGoals();
+     // Paper end
++
++    // Paper start - expose game version
++    @NotNull
++    String getMinecraftVersion();
++    // Paper end
+ }

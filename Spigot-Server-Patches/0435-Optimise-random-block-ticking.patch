@@ -1,4 +1,4 @@
-From 18fb4717649f3e45bf2e92c2498acef2b185cff2 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Spottedleaf <Spottedleaf@users.noreply.github.com>
 Date: Mon, 27 Jan 2020 21:28:00 -0800
 Subject: [PATCH] Optimise random block ticking
@@ -20,7 +20,7 @@ remains the same.
 
 diff --git a/src/main/java/com/destroystokyo/paper/util/math/ThreadUnsafeRandom.java b/src/main/java/com/destroystokyo/paper/util/math/ThreadUnsafeRandom.java
 new file mode 100644
-index 0000000000..3edc8e52e0
+index 0000000000000000000000000000000000000000..3edc8e52e06a62ce9f8cc734fd7458b37cfaad91
 --- /dev/null
 +++ b/src/main/java/com/destroystokyo/paper/util/math/ThreadUnsafeRandom.java
 @@ -0,0 +1,46 @@
@@ -71,7 +71,7 @@ index 0000000000..3edc8e52e0
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/Block.java b/src/main/java/net/minecraft/server/Block.java
-index e29ec958b3..e40375b67a 100644
+index e29ec958b3519d92cda215a50e97e6852d71c684..e40375b67a4a321048c87002a07fde5c5d2395db 100644
 --- a/src/main/java/net/minecraft/server/Block.java
 +++ b/src/main/java/net/minecraft/server/Block.java
 @@ -109,8 +109,8 @@ public class Block implements IMaterial {
@@ -86,7 +86,7 @@ index e29ec958b3..e40375b67a 100644
      }
  
 diff --git a/src/main/java/net/minecraft/server/BlockFluids.java b/src/main/java/net/minecraft/server/BlockFluids.java
-index 6d351f0979..a44f65f40d 100644
+index 6d351f0979ecfa8e500edf8dd03b4a455fd5d180..a44f65f40d2080b63069602a454266ee6fe6cff7 100644
 --- a/src/main/java/net/minecraft/server/BlockFluids.java
 +++ b/src/main/java/net/minecraft/server/BlockFluids.java
 @@ -27,7 +27,7 @@ public class BlockFluids extends Block implements IFluidSource {
@@ -99,10 +99,10 @@ index 6d351f0979..a44f65f40d 100644
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/BlockPosition.java b/src/main/java/net/minecraft/server/BlockPosition.java
-index e76528f199..e650a2e48d 100644
+index db7ba12fd4fa4f30b94471f1efbec5426b99a5db..9010359fbdc393e43ab2a0702cfc27427458b1ff 100644
 --- a/src/main/java/net/minecraft/server/BlockPosition.java
 +++ b/src/main/java/net/minecraft/server/BlockPosition.java
-@@ -450,6 +450,7 @@ public class BlockPosition extends BaseBlockPosition implements MinecraftSeriali
+@@ -451,6 +451,7 @@ public class BlockPosition extends BaseBlockPosition implements MinecraftSeriali
              return this.d(MathHelper.floor(d0), MathHelper.floor(d1), MathHelper.floor(d2));
          }
  
@@ -111,10 +111,10 @@ index e76528f199..e650a2e48d 100644
              return this.d(baseblockposition.getX(), baseblockposition.getY(), baseblockposition.getZ());
          }
 diff --git a/src/main/java/net/minecraft/server/Chunk.java b/src/main/java/net/minecraft/server/Chunk.java
-index a23dfeb63d..2e3db1a755 100644
+index a2a0ca3394c3231aad9888fecebdaf82d4d9e9f7..bb95fe20e8aee58cf20fa764000b9f9123f367d3 100644
 --- a/src/main/java/net/minecraft/server/Chunk.java
 +++ b/src/main/java/net/minecraft/server/Chunk.java
-@@ -572,8 +572,8 @@ public class Chunk implements IChunkAccess {
+@@ -586,8 +586,8 @@ public class Chunk implements IChunkAccess {
          this.entities.remove(entity); // Paper
      }
  
@@ -126,40 +126,27 @@ index a23dfeb63d..2e3db1a755 100644
      }
  
 diff --git a/src/main/java/net/minecraft/server/ChunkSection.java b/src/main/java/net/minecraft/server/ChunkSection.java
-index 4526527aca..3eaf893cdf 100644
+index eeb7eee925d31d1ed8e6bbd55888cb5ebe54afa2..64b625e988f6bb6dc7129b4cb70e266015ab0867 100644
 --- a/src/main/java/net/minecraft/server/ChunkSection.java
 +++ b/src/main/java/net/minecraft/server/ChunkSection.java
-@@ -5,12 +5,15 @@ import javax.annotation.Nullable;
+@@ -6,12 +6,14 @@ import javax.annotation.Nullable;
  public class ChunkSection {
  
      public static final DataPalette<IBlockData> GLOBAL_PALETTE = new DataPaletteGlobal<>(Block.REGISTRY_ID, Blocks.AIR.getBlockData());
 -    private final int yPos;
 +    final int yPos; // Paper - private -> package-private
-     short nonEmptyBlockCount; // Paper - private -> package-private
+     private short nonEmptyBlockCount;
 -    private short tickingBlockCount;
 +    short tickingBlockCount; // Paper - private -> package-private
      private short e;
      final DataPaletteBlock<IBlockData> blockIds;
  
-+    Chunk chunk; // Paper
 +    final com.destroystokyo.paper.util.maplist.IBlockDataList tickingList = new com.destroystokyo.paper.util.maplist.IBlockDataList(); // Paper
 +
-     public ChunkSection(int i) {
-         // Paper start - add parameters
-         this(i, (IChunkAccess)null, (IWorldReader)null, true);
-@@ -31,6 +34,11 @@ public class ChunkSection {
-         this.tickingBlockCount = short1;
-         this.e = short2;
-         this.blockIds = new DataPaletteBlock<>(ChunkSection.GLOBAL_PALETTE, Block.REGISTRY_ID, GameProfileSerializer::d, GameProfileSerializer::a, Blocks.AIR.getBlockData(), world instanceof GeneratorAccess ? ((GeneratorAccess) world).getMinecraftWorld().chunkPacketBlockController.getPredefinedBlockData(world, chunk, this, initializeBlocks) : null, initializeBlocks); // Paper - Anti-Xray - Add predefined block data
-+        // Paper start
-+        if (chunk instanceof Chunk) {
-+            this.chunk = (Chunk)chunk;
-+        }
-+        // Paper end
-     }
- 
-     public IBlockData getType(int i, int j, int k) {
-@@ -69,6 +77,9 @@ public class ChunkSection {
+     // Paper start - Anti-Xray - Add parameters
+     @Deprecated public ChunkSection(int i) { this(i, null, null, true); } // Notice for updates: Please make sure this constructor isn't used anywhere
+     public ChunkSection(int i, IChunkAccess chunk, World world, boolean initializeBlocks) {
+@@ -66,6 +68,9 @@ public class ChunkSection {
              --this.nonEmptyBlockCount;
              if (iblockdata1.q()) {
                  --this.tickingBlockCount;
@@ -169,7 +156,7 @@ index 4526527aca..3eaf893cdf 100644
              }
          }
  
-@@ -80,6 +91,9 @@ public class ChunkSection {
+@@ -77,6 +82,9 @@ public class ChunkSection {
              ++this.nonEmptyBlockCount;
              if (iblockdata.q()) {
                  ++this.tickingBlockCount;
@@ -179,7 +166,7 @@ index 4526527aca..3eaf893cdf 100644
              }
          }
  
-@@ -115,23 +129,29 @@ public class ChunkSection {
+@@ -112,23 +120,29 @@ public class ChunkSection {
      }
  
      public void recalcBlockCounts() {
@@ -215,7 +202,7 @@ index 4526527aca..3eaf893cdf 100644
              }
  
 diff --git a/src/main/java/net/minecraft/server/DataBits.java b/src/main/java/net/minecraft/server/DataBits.java
-index f9680b6830..a61cffa3f4 100644
+index f9680b6830c77f31e1eb8b6845dd6d58d04f624a..a61cffa3f494be5fea785a573b0faf05b149a30d 100644
 --- a/src/main/java/net/minecraft/server/DataBits.java
 +++ b/src/main/java/net/minecraft/server/DataBits.java
 @@ -127,4 +127,46 @@ public class DataBits {
@@ -266,10 +253,10 @@ index f9680b6830..a61cffa3f4 100644
 +    // Paper end
  }
 diff --git a/src/main/java/net/minecraft/server/DataPaletteBlock.java b/src/main/java/net/minecraft/server/DataPaletteBlock.java
-index 44aed67274..fa664897fb 100644
+index 2c7872bd0516c820a42682b5281dbbaa1b467beb..be5f98c3c368cb046112dc488344bb529fc395c1 100644
 --- a/src/main/java/net/minecraft/server/DataPaletteBlock.java
 +++ b/src/main/java/net/minecraft/server/DataPaletteBlock.java
-@@ -287,6 +287,14 @@ public class DataPaletteBlock<T> implements DataPaletteExpandable<T> {
+@@ -281,6 +281,14 @@ public class DataPaletteBlock<T> implements DataPaletteExpandable<T> {
          });
      }
  
@@ -285,7 +272,7 @@ index 44aed67274..fa664897fb 100644
      public interface a<T> {
  
 diff --git a/src/main/java/net/minecraft/server/EntityTurtle.java b/src/main/java/net/minecraft/server/EntityTurtle.java
-index dd02cb3485..b24a5100b4 100644
+index dd02cb3485021c3afd23c2985a71e93c6b0ab07d..b24a5100b452f69f771b724ca96d34613c7fa170 100644
 --- a/src/main/java/net/minecraft/server/EntityTurtle.java
 +++ b/src/main/java/net/minecraft/server/EntityTurtle.java
 @@ -29,7 +29,7 @@ public class EntityTurtle extends EntityAnimal {
@@ -298,7 +285,7 @@ index dd02cb3485..b24a5100b4 100644
  
      public final BlockPosition getHome() { return this.es(); } // Paper - OBFHELPER
 diff --git a/src/main/java/net/minecraft/server/IBlockData.java b/src/main/java/net/minecraft/server/IBlockData.java
-index de43881653..e821c236b4 100644
+index de43881653ff37e38dc42c7f953dc96126a30c61..e821c236b45993cf4fb670cafbc979ead7d207a1 100644
 --- a/src/main/java/net/minecraft/server/IBlockData.java
 +++ b/src/main/java/net/minecraft/server/IBlockData.java
 @@ -22,11 +22,15 @@ public class IBlockData extends BlockDataAbstract<Block, IBlockData> implements
@@ -351,7 +338,7 @@ index de43881653..e821c236b4 100644
  
      public final SoundEffectType getStepSound() { return this.r(); } // Paper - OBFHELPER
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 0c23fc89d7..de9f49b884 100644
+index 0c23fc89d7ad980aa8b094784e88e2d91fb4f07b..de9f49b884838105c537b73d69234eb26fddb708 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -1563,10 +1563,19 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -376,7 +363,7 @@ index 0c23fc89d7..de9f49b884 100644
  
      public boolean isSavingDisabled() {
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index 62fabb7ad5..9a2b4fa7a2 100644
+index c348e3e5008e9213f96f2eb718cfb07c340bf77b..fcbc9f29139ce5cd3b165130006f9c326a5d9eea 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
 @@ -531,7 +531,12 @@ public class WorldServer extends World {
@@ -519,6 +506,3 @@ index 62fabb7ad5..9a2b4fa7a2 100644
      }
  
      protected BlockPosition a(BlockPosition blockposition) {
--- 
-2.26.2
-

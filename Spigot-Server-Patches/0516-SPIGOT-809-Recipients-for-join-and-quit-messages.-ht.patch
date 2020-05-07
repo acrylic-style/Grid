@@ -1,0 +1,113 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Thu, 30 Apr 2020 19:24:40 +0900
+Subject: [PATCH] SPIGOT-809 Recipients for join and quit messages.
+ https://hub.spigotmc.org/jira/projects/SPIGOT/issues/SPIGOT-809
+
+
+diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
+index 10155fcfa5936c6fce2300e21352c5a56b75de6c..84102c3f5acfa65584fa6705385efcd6bf4485e1 100644
+--- a/src/main/java/net/minecraft/server/PlayerConnection.java
++++ b/src/main/java/net/minecraft/server/PlayerConnection.java
+@@ -22,6 +22,8 @@ import org.apache.logging.log4j.Logger;
+ // CraftBukkit start
+ import java.util.concurrent.ExecutionException;
+ import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
++import java.util.function.Consumer;
++
+ import org.bukkit.Location;
+ import org.bukkit.craftbukkit.entity.CraftPlayer;
+ import org.bukkit.craftbukkit.event.CraftEventFactory;
+@@ -40,21 +42,7 @@ import org.bukkit.event.inventory.InventoryAction;
+ import org.bukkit.event.inventory.InventoryClickEvent;
+ import org.bukkit.event.inventory.InventoryCreativeEvent;
+ import org.bukkit.event.inventory.InventoryType.SlotType;
+-import org.bukkit.event.player.AsyncPlayerChatEvent;
+-import org.bukkit.event.player.PlayerAnimationEvent;
+-import org.bukkit.event.player.PlayerChatEvent;
+-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+-import org.bukkit.event.player.PlayerInteractEntityEvent;
+-import org.bukkit.event.player.PlayerItemHeldEvent;
+-import org.bukkit.event.player.PlayerKickEvent;
+-import org.bukkit.event.player.PlayerMoveEvent;
+-import org.bukkit.event.player.PlayerResourcePackStatusEvent;
+-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+-import org.bukkit.event.player.PlayerTeleportEvent;
+-import org.bukkit.event.player.PlayerToggleFlightEvent;
+-import org.bukkit.event.player.PlayerToggleSneakEvent;
+-import org.bukkit.event.player.PlayerToggleSprintEvent;
++import org.bukkit.event.player.*;
+ import org.bukkit.inventory.CraftingInventory;
+ import org.bukkit.inventory.EquipmentSlot;
+ import org.bukkit.inventory.InventoryView;
+@@ -1530,9 +1518,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
+         */
+ 
+         this.player.n();
+-        String quitMessage = this.minecraftServer.getPlayerList().disconnect(this.player);
+-        if ((quitMessage != null) && (quitMessage.length() > 0)) {
+-            this.minecraftServer.getPlayerList().sendMessage(CraftChatMessage.fromString(quitMessage));
++        PlayerQuitEvent quitMessage = this.minecraftServer.getPlayerList().disconnect(this.player);
++        IChatBaseComponent[] chatMessage = CraftChatMessage.fromString(quitMessage.getQuitMessage());
++        if (this.player.didPlayerJoinEvent && (quitMessage.getQuitMessage() != null) && (quitMessage.getQuitMessage().length() > 0)) { // Paper - don't print quit if we never printed join
++            // Paper start - Recipients for join and quit messages. (SPIGOT-809)
++            quitMessage.getRecipients().forEach(new Consumer<Player>() {
++                @Override
++                public void accept(Player player) {
++                    ((org.bukkit.craftbukkit.entity.CraftPlayer) player).getHandle().sendMessage(chatMessage);
++                }
++            });
++            // Paper end
++            this.minecraftServer.getPlayerList().sendMessage(CraftChatMessage.fromString(quitMessage.getQuitMessage()));
+         }
+         // CraftBukkit end
+         if (this.isExemptPlayer()) {
+diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
+index 9786f110c5e0d02cc015dc5d9d2549734bda501d..69ffc0326d5a1862bcf61c0f7f55448764436039 100644
+--- a/src/main/java/net/minecraft/server/PlayerList.java
++++ b/src/main/java/net/minecraft/server/PlayerList.java
+@@ -16,6 +16,7 @@ import java.util.Map;
+ import java.util.Optional;
+ import java.util.Set;
+ import java.util.UUID;
++import java.util.function.Consumer;
+ import javax.annotation.Nullable;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+@@ -245,7 +246,16 @@ public abstract class PlayerList {
+ 
+         if (joinMessage != null && joinMessage.length() > 0) {
+             // Paper start - Removed sendAll for loop and broadcasted to console also
+-            server.getPlayerList().sendMessage(CraftChatMessage.fromString(joinMessage));
++            // Paper start - Recipients for join and quit messages. (SPIGOT-809)
++            IChatBaseComponent[] chatMessage = CraftChatMessage.fromString(joinMessage);
++            server.sendMessage(chatmessage);
++            playerJoinEvent.getRecipients().forEach(new Consumer<Player>() {
++                @Override
++                public void accept(Player player) {
++                    ((org.bukkit.craftbukkit.entity.CraftPlayer) player).getHandle().sendMessage(chatMessage);
++                }
++            });
++            // Paper end
+             // Paper end
+         }
+         // CraftBukkit end
+@@ -456,7 +466,7 @@ public abstract class PlayerList {
+ 
+     }
+ 
+-    public String disconnect(EntityPlayer entityplayer) { // CraftBukkit - return string
++    public PlayerQuitEvent disconnect(EntityPlayer entityplayer) { // CraftBukkit - return string // Paper - return PlayerQuitEvent
+         WorldServer worldserver = entityplayer.getWorldServer();
+ 
+         entityplayer.a(StatisticList.LEAVE_GAME);
+@@ -541,7 +551,7 @@ public abstract class PlayerList {
+         cserver.getScoreboardManager().removePlayer(entityplayer.getBukkitEntity());
+         // CraftBukkit end
+ 
+-        return entityplayer.didPlayerJoinEvent ? playerQuitEvent.getQuitMessage() : null; // CraftBukkit // Paper - don't print quit if we never printed join
++        return playerQuitEvent; // CraftBukkit // Paper - don't print quit if we never printed join
+     }
+ 
+     // CraftBukkit start - Whole method, SocketAddress to LoginListener, added hostname to signature, return EntityPlayer

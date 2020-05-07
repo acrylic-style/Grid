@@ -1,11 +1,11 @@
-From 7d83dee39b44b6b8fca86dcedb65c61f948a54b9 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Wed, 29 Apr 2020 17:54:04 +0900
 Subject: [PATCH] Add PluginSendMessageEvent API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 3515b726..51fd61cb 100644
+index dcbda5b35ab4d44e6b1d6c34bb8763a7dd08e629..5947314af6ebb448254e10e140eb2ecbe7e6ef86 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -125,6 +125,7 @@ import org.bukkit.plugin.messaging.StandardMessenger;
@@ -31,6 +31,3 @@ index 3515b726..51fd61cb 100644
              getHandle().playerConnection.sendPacket(new PacketPlayOutChat(component));
          }
      }
--- 
-2.21.0.windows.1
-

@@ -1,0 +1,38 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Wed, 29 Apr 2020 23:55:00 +0900
+Subject: [PATCH] add non-asynchronous api
+
+
+diff --git a/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendActionBarEvent.java b/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendActionBarEvent.java
+index 3bf858881752e0c1079a352c7c266e163702db81..9220626677ac82e05cca1c5425e16659d3e852c8 100644
+--- a/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendActionBarEvent.java
++++ b/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendActionBarEvent.java
+@@ -20,6 +20,11 @@ public class PluginSendActionBarEvent extends PlayerEvent implements Cancellable
+         this.message = message;
+     }
+ 
++    public PluginSendActionBarEvent(@NotNull Player player, @NotNull String message) {
++        super(player);
++        this.message = message;
++    }
++
+     /**
+      * Gets the cancellation state of this event. A cancelled event will not
+      * be executed in the server, but will still pass to other plugins
+diff --git a/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendMessageEvent.java b/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendMessageEvent.java
+index 22ee7e94bcff4b27a600f8425b297ea4f86a93f7..5062be774ce15c74048a14bc086fcbe774197eb2 100644
+--- a/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendMessageEvent.java
++++ b/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendMessageEvent.java
+@@ -22,6 +22,11 @@ public class PluginSendMessageEvent extends PlayerEvent implements Cancellable {
+         this.message = message;
+     }
+ 
++    public PluginSendMessageEvent(@NotNull Player player, @Nullable String message) {
++        super(player);
++        this.message = message;
++    }
++
+     /**
+      * Gets the cancellation state of this event. A cancelled event will not
+      * be executed in the server, but will still pass to other plugins

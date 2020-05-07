@@ -1,0 +1,45 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Mon, 4 May 2020 13:22:05 +0900
+Subject: [PATCH] Allow 0, 1, yes, no for boolean gamerules
+
+
+diff --git a/src/main/java/com/mojang/brigadier/StringReader.java b/src/main/java/com/mojang/brigadier/StringReader.java
+index c1465df63a48e08ec9ccd6889be4f2f8d13d7552..951d8941456453caf14f9ffef2dc2e456ab6738f 100644
+--- a/src/main/java/com/mojang/brigadier/StringReader.java
++++ b/src/main/java/com/mojang/brigadier/StringReader.java
+@@ -238,9 +238,9 @@ public class StringReader implements ImmutableStringReader {
+             throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerExpectedBool().createWithContext(this);
+         }
+ 
+-        if (value.equals("true")) {
++        if (value.equals("true") || value.equals("yes") || value.equals("1")) {
+             return true;
+-        } else if (value.equals("false")) {
++        } else if (value.equals("false") || value.equals("no") || value.equals("0")) {
+             return false;
+         } else {
+             cursor = start;
+diff --git a/src/main/java/com/mojang/brigadier/arguments/BoolArgumentType.java b/src/main/java/com/mojang/brigadier/arguments/BoolArgumentType.java
+index cb993ca102402d9c19ea9fa04e5db09c21205896..1c6f5d52ff1e5572a168bdd3da398aca33391b39 100644
+--- a/src/main/java/com/mojang/brigadier/arguments/BoolArgumentType.java
++++ b/src/main/java/com/mojang/brigadier/arguments/BoolArgumentType.java
+@@ -40,6 +40,18 @@ public class BoolArgumentType implements ArgumentType<Boolean> {
+         if ("false".startsWith(builder.getRemaining().toLowerCase())) {
+             builder.suggest("false");
+         }
++        if ("yes".startsWith(builder.getRemaining().toLowerCase())) {
++            builder.suggest("yes");
++        }
++        if ("no".startsWith(builder.getRemaining().toLowerCase())) {
++            builder.suggest("no");
++        }
++        if ("1".startsWith(builder.getRemaining().toLowerCase())) {
++            builder.suggest("1");
++        }
++        if ("0".startsWith(builder.getRemaining().toLowerCase())) {
++            builder.suggest("0");
++        }
+         return builder.buildFuture();
+     }
+ 

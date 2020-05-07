@@ -1,0 +1,36 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Wed, 29 Apr 2020 23:42:40 +0900
+Subject: [PATCH] allow events to be fired as asynchronously
+
+
+diff --git a/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendActionBarEvent.java b/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendActionBarEvent.java
+index ed1ba49325b018bbbedd2893c90848341b618226..3bf858881752e0c1079a352c7c266e163702db81 100644
+--- a/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendActionBarEvent.java
++++ b/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendActionBarEvent.java
+@@ -15,8 +15,8 @@ public class PluginSendActionBarEvent extends PlayerEvent implements Cancellable
+     private boolean cancelled = false;
+     protected String message;
+ 
+-    public PluginSendActionBarEvent(@NotNull Player player, @NotNull String message) {
+-        super(player);
++    public PluginSendActionBarEvent(final boolean async, @NotNull Player player, @NotNull String message) {
++        super(player, async);
+         this.message = message;
+     }
+ 
+diff --git a/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendMessageEvent.java b/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendMessageEvent.java
+index 533d8908576894181f2d62a1d4a73a67929cf2e1..22ee7e94bcff4b27a600f8425b297ea4f86a93f7 100644
+--- a/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendMessageEvent.java
++++ b/src/main/java/xyz/acrylicstyle/paper/event/server/PluginSendMessageEvent.java
+@@ -17,8 +17,8 @@ public class PluginSendMessageEvent extends PlayerEvent implements Cancellable {
+     private boolean cancelled = false;
+     protected String message;
+ 
+-    public PluginSendMessageEvent(@NotNull Player player, @Nullable String message) {
+-        super(player);
++    public PluginSendMessageEvent(final boolean async, @NotNull Player player, @Nullable String message) {
++        super(player, async);
+         this.message = message;
+     }
+ 

@@ -1,14 +1,14 @@
-From 8a2660468466486b4fe5fb1107be67204f4d6699 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Trigary <trigary0@gmail.com>
 Date: Sun, 1 Mar 2020 22:43:24 +0100
 Subject: [PATCH] add hand to BlockMultiPlaceEvent
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index fcf2b190aa..c3f7e46121 100644
+index 91cfc6966e19a8d3d3b2cafdb0464162c9a94de5..08471184b04690653761a17d79941cd4ae8b1f81 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -303,13 +303,18 @@ public class CraftEventFactory {
+@@ -304,13 +304,18 @@ public class CraftEventFactory {
          }
  
          org.bukkit.inventory.ItemStack item;
@@ -28,6 +28,3 @@ index fcf2b190aa..c3f7e46121 100644
          craftServer.getPluginManager().callEvent(event);
  
          return event;
--- 
-2.26.2
-
