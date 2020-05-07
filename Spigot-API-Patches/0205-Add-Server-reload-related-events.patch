@@ -1,0 +1,169 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Wed, 29 Apr 2020 21:37:38 +0900
+Subject: [PATCH] Add Server reload related events
+
+
+diff --git a/src/main/java/org/bukkit/command/defaults/ReloadCommand.java b/src/main/java/org/bukkit/command/defaults/ReloadCommand.java
+index 0c7ba0718de2b93d013968ca0fec34ffd423990f..31afb14e96d8c7593e6411bcd5884d547ee02be7 100644
+--- a/src/main/java/org/bukkit/command/defaults/ReloadCommand.java
++++ b/src/main/java/org/bukkit/command/defaults/ReloadCommand.java
+@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
+ import org.bukkit.command.Command;
+ import org.bukkit.command.CommandSender;
+ import org.jetbrains.annotations.NotNull;
++import xyz.acrylicstyle.paper.event.command.ReloadCommandEvent;
+ 
+ public class ReloadCommand extends BukkitCommand {
+     public ReloadCommand(@NotNull String name) {
+@@ -49,6 +50,11 @@ public class ReloadCommand extends BukkitCommand {
+         }
+         // Paper end
+ 
++        // Paper start - Call ReloadCommandEvent before the sender invokes Bukkit#reload
++        ReloadCommandEvent event = new ReloadCommandEvent(sender);
++        Bukkit.getPluginManager().callEvent(event);
++        if (event.isCancelled()) return true;
++        // Paper end
+         Command.broadcastCommandMessage(sender, ChatColor.RED + "Please note that this command is not supported and may cause issues when using some plugins.");
+         Command.broadcastCommandMessage(sender, ChatColor.RED + "If you encounter any issues please use the /stop command to restart your server.");
+         Bukkit.reload();
+diff --git a/src/main/java/xyz/acrylicstyle/paper/event/command/ReloadCommandEvent.java b/src/main/java/xyz/acrylicstyle/paper/event/command/ReloadCommandEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d1631a054d56ab652773568fcb105cfcaf48009
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/event/command/ReloadCommandEvent.java
+@@ -0,0 +1,53 @@
++package xyz.acrylicstyle.paper.event.command;
++
++import org.bukkit.command.CommandSender;
++import org.bukkit.event.Cancellable;
++import org.bukkit.event.Event;
++import org.bukkit.event.HandlerList;
++import org.jetbrains.annotations.NotNull;
++
++/**
++ * Allows plugin to do something before the reload message sends to the sender.
++ * @see org.bukkit.command.defaults.ReloadCommand#execute(CommandSender, String, String[]) 
++ */
++public class ReloadCommandEvent extends Event implements Cancellable {
++    private static final HandlerList handlers = new HandlerList();
++    private boolean cancelled = false;
++    protected final CommandSender sender;
++    
++    public ReloadCommandEvent(@NotNull CommandSender sender) {
++        this.sender = sender;
++    }
++    
++    @Override
++    public @NotNull HandlerList getHandlers() {
++        return handlers;
++    }
++
++    @NotNull
++    public static HandlerList getHandlerList() {
++        return handlers;
++    }
++
++    /**
++     * Gets the cancellation state of this event. A cancelled event will not
++     * be executed in the server, but will still pass to other plugins
++     *
++     * @return true if this event is cancelled
++     */
++    @Override
++    public boolean isCancelled() {
++        return cancelled;
++    }
++
++    /**
++     * Sets the cancellation state of this event. A cancelled event will not
++     * be executed in the server, but will still pass to other plugins.
++     *
++     * @param cancel true if you wish to cancel this event
++     */
++    @Override
++    public void setCancelled(boolean cancel) {
++        this.cancelled = cancel;
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/event/server/ServerPreReloadEvent.java b/src/main/java/xyz/acrylicstyle/paper/event/server/ServerPreReloadEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..7ed02ab96c13fa2848ff0fe20bc9c9881b4bc908
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/event/server/ServerPreReloadEvent.java
+@@ -0,0 +1,46 @@
++package xyz.acrylicstyle.paper.event.server;
++
++import org.bukkit.event.Cancellable;
++import org.bukkit.event.HandlerList;
++import org.bukkit.event.server.ServerEvent;
++import org.jetbrains.annotations.NotNull;
++
++/**
++ * Allows plugin to prevent server reload and proper handling before reloading.
++ */
++public class ServerPreReloadEvent extends ServerEvent implements Cancellable {
++    private static final HandlerList handlers = new HandlerList();
++    private boolean cancelled = false;
++
++    @Override
++    public @NotNull HandlerList getHandlers() {
++        return handlers;
++    }
++
++    @NotNull
++    public static HandlerList getHandlerList() {
++        return handlers;
++    }
++
++    /**
++     * Gets the cancellation state of this event. A cancelled event will not
++     * be executed in the server, but will still pass to other plugins
++     *
++     * @return true if this event is cancelled
++     */
++    @Override
++    public boolean isCancelled() {
++        return cancelled;
++    }
++
++    /**
++     * Sets the cancellation state of this event. A cancelled event will not
++     * be executed in the server, but will still pass to other plugins.
++     *
++     * @param cancel true if you wish to cancel this event
++     */
++    @Override
++    public void setCancelled(boolean cancel) {
++        this.cancelled = cancel;
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/event/server/ServerReloadedEvent.java b/src/main/java/xyz/acrylicstyle/paper/event/server/ServerReloadedEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..739cbaacc85f5ff260ff3611aef34dd3e448fd71
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/event/server/ServerReloadedEvent.java
+@@ -0,0 +1,22 @@
++package xyz.acrylicstyle.paper.event.server;
++
++import org.bukkit.event.HandlerList;
++import org.bukkit.event.server.ServerEvent;
++import org.jetbrains.annotations.NotNull;
++
++/**
++ * Allows plugin to handle server reload without nesting code.
++ */
++public class ServerReloadedEvent extends ServerEvent {
++    private static final HandlerList handlers = new HandlerList();
++
++    @Override
++    public @NotNull HandlerList getHandlers() {
++        return handlers;
++    }
++
++    @NotNull
++    public static HandlerList getHandlerList() {
++        return handlers;
++    }
++}

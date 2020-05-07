@@ -1,0 +1,27 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aikar <aikar@aikar.co>
+Date: Mon, 28 Mar 2016 20:32:58 -0400
+Subject: [PATCH] Entity AddTo/RemoveFrom World Events
+
+
+diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
+index 3769f0533dc0cfaf23e2411df982f901d788f80b..f8d1cb0231bc3b5a45d7150cb125a8af64a9c0a7 100644
+--- a/src/main/java/net/minecraft/server/WorldServer.java
++++ b/src/main/java/net/minecraft/server/WorldServer.java
+@@ -1146,7 +1146,7 @@ public class WorldServer extends World {
+         if (entity instanceof EntityInsentient) {
+             this.navigators.remove(((EntityInsentient) entity).getNavigation());
+         }
+-
++        new com.destroystokyo.paper.event.entity.EntityRemoveFromWorldEvent(entity.getBukkitEntity()).callEvent(); // Paper - fire while valid
+         entity.valid = false; // CraftBukkit
+     }
+ 
+@@ -1184,6 +1184,7 @@ public class WorldServer extends World {
+                 entity.origin = entity.getBukkitEntity().getLocation();
+             }
+             // Paper end
++            new com.destroystokyo.paper.event.entity.EntityAddToWorldEvent(entity.getBukkitEntity()).callEvent(); // Paper - fire while valid
+         }
+ 
+     }

@@ -1,14 +1,14 @@
-From 1801e9752d6966f08a71b51e05ab6c491b48d82b Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: William Blake Galbreath <Blake.Galbreath@GMail.com>
 Date: Fri, 7 Feb 2020 14:36:56 -0600
 Subject: [PATCH] Add option to nerf pigmen from nether portals
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index bce502181f..7d408542e7 100644
+index ade7af40effbfff72e731628ac45c5fc40507c99..47c6d66b78ed312ef85dd90178c7d6059bc94661 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-@@ -653,4 +653,9 @@ public class PaperWorldConfig {
+@@ -641,4 +641,9 @@ public class PaperWorldConfig {
          disableHopperMoveEvents = getBoolean("hopper.disable-move-event", disableHopperMoveEvents);
          log("Hopper Move Item Events: " + (disableHopperMoveEvents ? "disabled" : "enabled"));
      }
@@ -19,7 +19,7 @@ index bce502181f..7d408542e7 100644
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/BlockPortal.java b/src/main/java/net/minecraft/server/BlockPortal.java
-index 2dc3ab4cfa..09c7c13183 100644
+index 2dc3ab4cfa3fb9335d271e91c89f0b22f21eeb39..09c7c131833ded951e49a7a1a2eb2e1f6f8cb989 100644
 --- a/src/main/java/net/minecraft/server/BlockPortal.java
 +++ b/src/main/java/net/minecraft/server/BlockPortal.java
 @@ -45,6 +45,8 @@ public class BlockPortal extends Block {
@@ -32,7 +32,7 @@ index 2dc3ab4cfa..09c7c13183 100644
                  }
              }
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
-index 599bcabd14..00df89d650 100644
+index 599bcabd14a7f234d2cf7f2755d76413e7d0ceac..00df89d65099cbdd96c77ac26c892f05a2c37d79 100644
 --- a/src/main/java/net/minecraft/server/Entity.java
 +++ b/src/main/java/net/minecraft/server/Entity.java
 @@ -194,6 +194,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
@@ -61,6 +61,3 @@ index 599bcabd14..00df89d650 100644
              if (nbttagcompound.hasKey("Paper.SpawnReason")) {
                  String spawnReasonName = nbttagcompound.getString("Paper.SpawnReason");
                  try {
--- 
-2.26.2
-

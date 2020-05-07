@@ -1,0 +1,171 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Sun, 3 May 2020 11:36:52 +0900
+Subject: [PATCH] Add DamageSource and Damageable#damage API
+
+
+diff --git a/src/main/java/org/bukkit/entity/Damageable.java b/src/main/java/org/bukkit/entity/Damageable.java
+index fc4d3bcd9b16097086fef7975274d825b65adb10..9450f5281190f3bd7b164961d435fdd5d9a70ce3 100644
+--- a/src/main/java/org/bukkit/entity/Damageable.java
++++ b/src/main/java/org/bukkit/entity/Damageable.java
+@@ -1,7 +1,9 @@
+ package org.bukkit.entity;
+ 
+ import org.bukkit.attribute.Attribute;
++import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
++import xyz.acrylicstyle.paper.DamageSource;
+ 
+ /**
+  * Represents an {@link Entity} that has health and can take damage.
+@@ -86,4 +88,15 @@ public interface Damageable extends Entity {
+      */
+     @Deprecated
+     void resetMaxHealth();
++
++    // Paper start
++    /**
++     * Deals the given amount of damage to this entity, from a specified
++     * DamageSource.
++     *
++     * @param amount Amount of damage to deal
++     * @param damageSource DamageSource which will determine source (type) of this damage
++     */
++    void damage(@NotNull DamageSource damageSource, float amount);
++    // Paper end
+ }
+diff --git a/src/main/java/xyz/acrylicstyle/paper/DamageSource.java b/src/main/java/xyz/acrylicstyle/paper/DamageSource.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..0b7077ba1dfa24def8166a13cbc5f1656136b59b
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/DamageSource.java
+@@ -0,0 +1,129 @@
++package xyz.acrylicstyle.paper;
++
++import org.jetbrains.annotations.NotNull;
++
++public class DamageSource {
++    public static final DamageSource FIRE = new DamageSource("FIRE").setFire();
++    public static final DamageSource LIGHTNING = new DamageSource("LIGHTNING");
++    public static final DamageSource BURN = new DamageSource("BURN").setIgnoreArmor().setFire();
++    public static final DamageSource LAVA = new DamageSource("LAVA").setFire();
++    public static final DamageSource HOT_FLOOR = new DamageSource("HOT_FLOOR").setFire();
++    public static final DamageSource STUCK = new DamageSource("STUCK").setIgnoreArmor();
++    public static final DamageSource CRAMMING = new DamageSource("CRAMMING").setIgnoreArmor();
++    public static final DamageSource DROWN = new DamageSource("DROWN").setIgnoreArmor();
++    public static final DamageSource STARVE = new DamageSource("STARVE").setIgnoreArmor().setStarvation();
++    public static final DamageSource CACTUS = new DamageSource("CACTUS");
++    public static final DamageSource FALL = new DamageSource("FALL").setIgnoreArmor();
++    public static final DamageSource FLY_INTO_WALL = new DamageSource("FLY_INTO_WALL").setIgnoreArmor();
++    public static final DamageSource OUT_OF_WORLD = new DamageSource("OUT_OF_WORLD").setIgnoreArmor().setIgnoresInvulnerability();
++    public static final DamageSource GENERIC = new DamageSource("GENERIC").setIgnoreArmor();
++    public static final DamageSource MAGIC = new DamageSource("MAGIC").setIgnoreArmor().setMagic();
++    public static final DamageSource WITHER = new DamageSource("WITHER").setIgnoreArmor();
++    public static final DamageSource ANVIL = new DamageSource("ANVIL");
++    public static final DamageSource FALLING_BLOCK = new DamageSource("FALLING_BLOCK");
++    public static final DamageSource DRAGON_BREATH = new DamageSource("DRAGON_BREATH").setIgnoreArmor();
++    public static final DamageSource FIREWORKS = new DamageSource("FIREWORKS").setExplosion();
++    public static final DamageSource DRYOUT = new DamageSource("DRYOUT");
++    public static final DamageSource SWEET_BERRY_BUSH = new DamageSource("SWEET_BERRY_BUSH");
++
++    private DamageSource(@NotNull String s) {
++        this.name = s;
++    }
++
++    private final String name;
++    private boolean ignoreArmor = false;
++    private boolean fire = false;
++    private boolean magic = false;
++    private boolean starvation = false;
++    private boolean explosion = false;
++    private boolean ignoresInvulnerability = false;
++
++    @NotNull
++    public String name() {
++        return name;
++    }
++
++    @NotNull
++    private DamageSource setFire() {
++        fire = true;
++        return this;
++    }
++
++    @NotNull
++    private DamageSource setIgnoreArmor() {
++        this.ignoreArmor = true;
++        return this;
++    }
++
++    @NotNull
++    private DamageSource setExplosion() {
++        this.explosion = true;
++        return this;
++    }
++
++    @NotNull
++    private DamageSource setIgnoresInvulnerability() {
++        this.ignoresInvulnerability = true;
++        return this;
++    }
++
++    @NotNull
++    private DamageSource setMagic() {
++        this.magic = true;
++        return this;
++    }
++
++    @NotNull
++    private DamageSource setStarvation() {
++        this.starvation = true;
++        return this;
++    }
++
++    /**
++     * Returns true if this damage causes or caused by fire.
++     * @return True if this damage causes or caused by fire
++     */
++    public boolean isFire() {
++        return fire;
++    }
++
++    /**
++     * Returns true if this damage ignores armor.
++     * @return True if this damage ignores armor
++     */
++    public boolean isIgnoreArmor() {
++        return ignoreArmor;
++    }
++
++    /**
++     * Returns true if this damage is caused by magic. (damage potions for example)
++     * @return True if this damage is caused by magic
++     */
++    public boolean isMagic() {
++        return magic;
++    }
++
++    /**
++     * Returns true if this damage is caused by explosion.
++     * @return True if this damage is caused by explosion
++     */
++    public boolean isExplosion() {
++        return explosion;
++    }
++
++    /**
++     * Returns true if this damage ignores invulnerability.
++     * @return True if this damage ignores invulnerability
++     */
++    public boolean isIgnoresInvulnerability() {
++        return ignoresInvulnerability;
++    }
++
++    /**
++     * Returns true if this damage is caused by starvation.
++     * @return True if this damage is caused by starvation
++     */
++    public boolean isStarvation() {
++        return starvation;
++    }
++}
