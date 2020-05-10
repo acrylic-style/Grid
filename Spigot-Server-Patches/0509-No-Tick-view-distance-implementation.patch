@@ -114,7 +114,7 @@ index 6e8179b4651fca214b8957992ec6c9438c0da799..e32c458dfe5f22572a365cbcdf45140b
          super((World) worldserver, gameprofile);
          playerinteractmanager.player = this;
 diff --git a/src/main/java/net/minecraft/server/PlayerChunk.java b/src/main/java/net/minecraft/server/PlayerChunk.java
-index bae9371a1e220f4fc78a3905cad24a2e7f88771c..9d71c4c455d68bcc82dc56b0706c7305e4897e46 100644
+index 0f303be3c3257548d1888ddbb575ba69ba12d0b8..7b2a3287ce8d296d29cbef45322a469921cf9944 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunk.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunk.java
 @@ -160,6 +160,18 @@ public class PlayerChunk {
@@ -550,7 +550,7 @@ index b3c9cb67664491c3a8c83a67ac0e79d48561f3fe..ce7462283873635ad0d3bce2395346ed
                          }
                      }
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 61c7f5f9528ceea34af8dbf4503b9c320b7f67a1..9786f110c5e0d02cc015dc5d9d2549734bda501d 100644
+index 0ada5b4ac61a9b77e67da1695327d72c8212c5d6..bcf95c4bb09b881858e22926adef9efd4f525c90 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -151,7 +151,7 @@ public abstract class PlayerList {
@@ -562,7 +562,7 @@ index 61c7f5f9528ceea34af8dbf4503b9c320b7f67a1..9786f110c5e0d02cc015dc5d9d254973
          entityplayer.getBukkitEntity().sendSupportedChannels(); // CraftBukkit
          playerconnection.sendPacket(new PacketPlayOutCustomPayload(PacketPlayOutCustomPayload.a, (new PacketDataSerializer(Unpooled.buffer())).a(this.getServer().getServerModName())));
          playerconnection.sendPacket(new PacketPlayOutServerDifficulty(worlddata.getDifficulty(), worlddata.isDifficultyLocked()));
-@@ -772,7 +772,7 @@ public abstract class PlayerList {
+@@ -773,7 +773,7 @@ public abstract class PlayerList {
          WorldData worlddata = worldserver.getWorldData();
  
          entityplayer1.playerConnection.sendPacket(new PacketPlayOutRespawn(worldserver.worldProvider.getDimensionManager().getType(),  WorldData.c(worldserver.getWorldData().getSeed()), worldserver.getWorldData().getType(), entityplayer1.playerInteractManager.getGameMode()));
@@ -571,7 +571,7 @@ index 61c7f5f9528ceea34af8dbf4503b9c320b7f67a1..9786f110c5e0d02cc015dc5d9d254973
          entityplayer1.spawnIn(worldserver);
          entityplayer1.dead = false;
          entityplayer1.playerConnection.teleport(new Location(worldserver.getWorld(), entityplayer1.locX(), entityplayer1.locY(), entityplayer1.locZ(), entityplayer1.yaw, entityplayer1.pitch));
-@@ -1256,7 +1256,7 @@ public abstract class PlayerList {
+@@ -1257,7 +1257,7 @@ public abstract class PlayerList {
  
      public void a(int i) {
          this.viewDistance = i;
@@ -600,10 +600,10 @@ index 899c535c4056cd2375ab8f834f03267d405f4bda..0e6368d0fb3beccb492ae3867fb4e228
  
              if (!this.isClientSide && (i & 1) != 0) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index ac257d50dea8f42a515f19bbae12ab5680e26bb4..4aafad0762df44990ed9d610a59f3862bd3fe3b0 100644
+index 64c643aa15d6ea68f9dad3104cc41e412255cee3..874240d9dddc3150d65d56d95c459b59f07b8815 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2483,10 +2483,39 @@ public class CraftWorld implements World {
+@@ -2488,10 +2488,39 @@ public class CraftWorld implements World {
      // Spigot start
      @Override
      public int getViewDistance() {
