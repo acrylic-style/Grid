@@ -64,10 +64,10 @@ index 4b0c4da5408e5596fdd2516617b7f977d83fc246..589954f40f235dc480adf382ef7d0ddf
  
          Entity entity1 = this.getShooter();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 0c2fa88f3562b78bec6c0bb257b71525a5f80bd5..7b2fb03520d8904103277948b258734aa52b4169 100644
+index 0522ea3653eccb5e88b28ceab7f90000d5086ced..7faf7c30d85eb9b4134367fd37e27e89d522d20c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -200,8 +200,7 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
+@@ -201,8 +201,7 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
  import org.yaml.snakeyaml.error.MarkedYAMLException;
  
  import net.md_5.bungee.api.chat.BaseComponent; // Spigot

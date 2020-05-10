@@ -114,7 +114,7 @@ index 6e8179b4651fca214b8957992ec6c9438c0da799..e32c458dfe5f22572a365cbcdf45140b
          super((World) worldserver, gameprofile);
          playerinteractmanager.player = this;
 diff --git a/src/main/java/net/minecraft/server/PlayerChunk.java b/src/main/java/net/minecraft/server/PlayerChunk.java
-index 0f303be3c3257548d1888ddbb575ba69ba12d0b8..7b2a3287ce8d296d29cbef45322a469921cf9944 100644
+index e661d92d53cd642cad3946ecd542fa937396d251..d0085b7459293e3e3460cfda34c67bda6e7bc324 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunk.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunk.java
 @@ -160,6 +160,18 @@ public class PlayerChunk {
@@ -154,9 +154,9 @@ index 0f303be3c3257548d1888ddbb575ba69ba12d0b8..7b2a3287ce8d296d29cbef45322a4699
  
          if (chunk != null) {
              chunk.setNeedsSaving(true);
-@@ -426,9 +438,48 @@ public class PlayerChunk {
-     }
+@@ -427,9 +439,48 @@ public class PlayerChunk {
  
+     public void sendPacketToTrackedPlayers(Packet<?> packet, boolean flag) { a(packet, flag); } // Paper - OBFHELPER
      private void a(Packet<?> packet, boolean flag) {
 -        this.players.a(this.location, flag).forEach((entityplayer) -> {
 -            entityplayer.playerConnection.sendPacket(packet);
