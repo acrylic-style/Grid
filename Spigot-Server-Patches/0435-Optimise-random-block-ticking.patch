@@ -99,10 +99,10 @@ index 6d351f0979ecfa8e500edf8dd03b4a455fd5d180..a44f65f40d2080b63069602a454266ee
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/BlockPosition.java b/src/main/java/net/minecraft/server/BlockPosition.java
-index db7ba12fd4fa4f30b94471f1efbec5426b99a5db..9010359fbdc393e43ab2a0702cfc27427458b1ff 100644
+index df93e32242bb91ddb1c2da8965956d38ee381dc2..063f8eb08635aaa44803f2a67d118805294ae938 100644
 --- a/src/main/java/net/minecraft/server/BlockPosition.java
 +++ b/src/main/java/net/minecraft/server/BlockPosition.java
-@@ -451,6 +451,7 @@ public class BlockPosition extends BaseBlockPosition implements MinecraftSeriali
+@@ -453,6 +453,7 @@ public class BlockPosition extends BaseBlockPosition implements MinecraftSeriali
              return this.d(MathHelper.floor(d0), MathHelper.floor(d1), MathHelper.floor(d2));
          }
  
@@ -285,7 +285,7 @@ index dd02cb3485021c3afd23c2985a71e93c6b0ab07d..b24a5100b452f69f771b724ca96d3461
  
      public final BlockPosition getHome() { return this.es(); } // Paper - OBFHELPER
 diff --git a/src/main/java/net/minecraft/server/IBlockData.java b/src/main/java/net/minecraft/server/IBlockData.java
-index de43881653ff37e38dc42c7f953dc96126a30c61..e821c236b45993cf4fb670cafbc979ead7d207a1 100644
+index 321eae23c575528788b1b575f17593580d6ba737..b19bbbbc81376177751396a2de9452ce1f84c06b 100644
 --- a/src/main/java/net/minecraft/server/IBlockData.java
 +++ b/src/main/java/net/minecraft/server/IBlockData.java
 @@ -22,11 +22,15 @@ public class IBlockData extends BlockDataAbstract<Block, IBlockData> implements
@@ -304,7 +304,7 @@ index de43881653ff37e38dc42c7f953dc96126a30c61..e821c236b45993cf4fb670cafbc979ea
      }
  
      public void c() {
-@@ -81,8 +85,8 @@ public class IBlockData extends BlockDataAbstract<Block, IBlockData> implements
+@@ -82,8 +86,8 @@ public class IBlockData extends BlockDataAbstract<Block, IBlockData> implements
          return this.d;
      }
  
@@ -315,7 +315,7 @@ index de43881653ff37e38dc42c7f953dc96126a30c61..e821c236b45993cf4fb670cafbc979ea
      }
  
      public MaterialMapColor c(IBlockAccess iblockaccess, BlockPosition blockposition) {
-@@ -267,12 +271,19 @@ public class IBlockData extends BlockDataAbstract<Block, IBlockData> implements
+@@ -268,12 +272,19 @@ public class IBlockData extends BlockDataAbstract<Block, IBlockData> implements
          return this.getBlock().a(tag);
      }
  
