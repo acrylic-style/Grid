@@ -1,0 +1,20 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aikar <aikar@aikar.co>
+Date: Thu, 7 May 2020 19:17:36 -0400
+Subject: [PATCH] Fix Light Command
+
+This lets you run /paper fixlight <chunkRadius> (max 5) to automatically
+fix all light data in the chunks.
+
+diff --git a/src/main/java/net/minecraft/server/PlayerChunk.java b/src/main/java/net/minecraft/server/PlayerChunk.java
+index 0f303be3c3257548d1888ddbb575ba69ba12d0b8..e661d92d53cd642cad3946ecd542fa937396d251 100644
+--- a/src/main/java/net/minecraft/server/PlayerChunk.java
++++ b/src/main/java/net/minecraft/server/PlayerChunk.java
+@@ -425,6 +425,7 @@ public class PlayerChunk {
+ 
+     }
+ 
++    public void sendPacketToTrackedPlayers(Packet<?> packet, boolean flag) { a(packet, flag); } // Paper - OBFHELPER
+     private void a(Packet<?> packet, boolean flag) {
+         this.players.a(this.location, flag).forEach((entityplayer) -> {
+             entityplayer.playerConnection.sendPacket(packet);
