@@ -64,7 +64,7 @@ index 10155fcfa5936c6fce2300e21352c5a56b75de6c..84102c3f5acfa65584fa6705385efcd6
          // CraftBukkit end
          if (this.isExemptPlayer()) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index bcf95c4bb09b881858e22926adef9efd4f525c90..ddf44b944f37adb5a5ba45b5deea8f20a29912d7 100644
+index d1533a8265b4704f5d8abe28cfa94e71d921af39..6197e19bf92c7981b9e0d1e16f9f23037805e848 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -16,6 +16,7 @@ import java.util.Map;
