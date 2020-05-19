@@ -50,10 +50,10 @@ index 0000000000000000000000000000000000000000..e0ad725b2e63ffd329fc4725d15290cb
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/ChunkProviderServer.java b/src/main/java/net/minecraft/server/ChunkProviderServer.java
-index 7da40ea2fbc1aace8ca9fd8556501ad580efd240..1ee69b5c657feb468ec2834536c2cd178e0526f3 100644
+index fd998e4fb1534690a2ef8c1bca55e0ae9fe855f9..8f849d83d08b39f1cd9184f484a2089a7a3124ef 100644
 --- a/src/main/java/net/minecraft/server/ChunkProviderServer.java
 +++ b/src/main/java/net/minecraft/server/ChunkProviderServer.java
-@@ -754,7 +754,7 @@ public class ChunkProviderServer extends IChunkProvider {
+@@ -755,7 +755,7 @@ public class ChunkProviderServer extends IChunkProvider {
                  entityPlayer.playerNaturallySpawnedEvent.callEvent();
              };
              // Paper end
@@ -63,10 +63,10 @@ index 7da40ea2fbc1aace8ca9fd8556501ad580efd240..1ee69b5c657feb468ec2834536c2cd17
  
                  if (optional.isPresent()) {
 diff --git a/src/main/java/net/minecraft/server/MCUtil.java b/src/main/java/net/minecraft/server/MCUtil.java
-index d9941b38ca037a31f520784b3706080f1d322fb4..71ab65e00fe31ea4047cf8a5921c6deba13de6b9 100644
+index 0e01e5c2c008823355e370d0c9ced79130e5fb92..d129c7f54d9f65fff6f512d8ff5f1c3866632603 100644
 --- a/src/main/java/net/minecraft/server/MCUtil.java
 +++ b/src/main/java/net/minecraft/server/MCUtil.java
-@@ -529,7 +529,7 @@ public final class MCUtil {
+@@ -602,7 +602,7 @@ public final class MCUtil {
  
              WorldServer world = ((org.bukkit.craftbukkit.CraftWorld)bukkitWorld).getHandle();
              PlayerChunkMap chunkMap = world.getChunkProvider().playerChunkMap;
