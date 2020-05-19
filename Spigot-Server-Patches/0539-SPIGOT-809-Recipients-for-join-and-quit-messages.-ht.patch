@@ -6,7 +6,7 @@ Subject: [PATCH] SPIGOT-809 Recipients for join and quit messages.
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 10155fcfa5936c6fce2300e21352c5a56b75de6c..84102c3f5acfa65584fa6705385efcd6bf4485e1 100644
+index b25b3b48165e5fef4db99c2838de21d4eca502f4..e858eb53b2d502acfe680d432094ff2f390d2eea 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -22,6 +22,8 @@ import org.apache.logging.log4j.Logger;
@@ -41,7 +41,7 @@ index 10155fcfa5936c6fce2300e21352c5a56b75de6c..84102c3f5acfa65584fa6705385efcd6
  import org.bukkit.inventory.CraftingInventory;
  import org.bukkit.inventory.EquipmentSlot;
  import org.bukkit.inventory.InventoryView;
-@@ -1530,9 +1518,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1538,9 +1526,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
          */
  
          this.player.n();
@@ -64,7 +64,7 @@ index 10155fcfa5936c6fce2300e21352c5a56b75de6c..84102c3f5acfa65584fa6705385efcd6
          // CraftBukkit end
          if (this.isExemptPlayer()) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index d1533a8265b4704f5d8abe28cfa94e71d921af39..6197e19bf92c7981b9e0d1e16f9f23037805e848 100644
+index 9b726de6daeba42120f3a948fbdcf080d0e72917..f84325379636c430746f45abeabb1811049249f1 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -16,6 +16,7 @@ import java.util.Map;
