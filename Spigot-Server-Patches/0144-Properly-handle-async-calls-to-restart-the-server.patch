@@ -30,7 +30,7 @@ will have plugins and worlds saving to the disk has a high potential to result
 in corruption/dataloss.
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 35d31a9c36e837fcc361e8ba82c89aaee319b73d..8d6a0890073adbbb39db202f80d4b83cef2ceca9 100644
+index 629304c403c596bf81dd8de919f0fcb5c77bd403..80d8b0b0eac47b8d8e62db60da9daf0da8671fb3 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -88,6 +88,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
@@ -50,7 +50,7 @@ index 35d31a9c36e837fcc361e8ba82c89aaee319b73d..8d6a0890073adbbb39db202f80d4b83c
              try { Thread.sleep(100); } catch (InterruptedException ex) {} // CraftBukkit - SPIGOT-625 - give server at least a chance to send packets
          }
  
-@@ -777,8 +778,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -780,8 +781,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          return this.isRunning;
      }
  
@@ -64,7 +64,7 @@ index 35d31a9c36e837fcc361e8ba82c89aaee319b73d..8d6a0890073adbbb39db202f80d4b83c
          if (flag) {
              try {
                  this.serverThread.join();
-@@ -788,6 +794,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -791,6 +797,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          }
  
      }
@@ -73,10 +73,10 @@ index 35d31a9c36e837fcc361e8ba82c89aaee319b73d..8d6a0890073adbbb39db202f80d4b83c
      // Spigot Start
      private static double calcTps(double avg, double exp, double tps)
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 2932519886d0b8af83c1e92d4af23753d4782ba5..56266a77296bc9a84de1d853a6d739337608b995 100644
+index a97941d1f8a125c6d033b1d359c1527937f97799..940c3acfa0dee0d454a1cc10dd3ca3862fd7b030 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -1029,10 +1029,15 @@ public abstract class PlayerList {
+@@ -1031,10 +1031,15 @@ public abstract class PlayerList {
          entityplayer.playerInteractManager.b(generatoraccess.getWorldData().getGameType());
      }
  
@@ -93,7 +93,7 @@ index 2932519886d0b8af83c1e92d4af23753d4782ba5..56266a77296bc9a84de1d853a6d73933
          }
          // CraftBukkit end
  
-@@ -1044,6 +1049,7 @@ public abstract class PlayerList {
+@@ -1046,6 +1051,7 @@ public abstract class PlayerList {
          }
          // Paper end
      }
