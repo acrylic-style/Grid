@@ -9,10 +9,36 @@ an object pool for these.
 Uses lots of advanced new capabilities of the Paper codebase :)
 
 diff --git a/src/main/java/net/minecraft/server/ChunkRegionLoader.java b/src/main/java/net/minecraft/server/ChunkRegionLoader.java
-index e625842e524f18e469f7695b27d52d4d04892266..82264bf651b9d1f6614fef5efc29419947407eca 100644
+index e625842e524f18e469f7695b27d52d4d04892266..49d95bb12083c306c8d257b202735066bad4388b 100644
 --- a/src/main/java/net/minecraft/server/ChunkRegionLoader.java
 +++ b/src/main/java/net/minecraft/server/ChunkRegionLoader.java
-@@ -387,11 +387,15 @@ public class ChunkRegionLoader {
+@@ -105,7 +105,11 @@ public class ChunkRegionLoader {
+             if (flag) {
+                 if (nbttagcompound2.hasKeyOfType("BlockLight", 7)) {
+                     // Paper start - delay this task since we're executing off-main
+-                    NibbleArray blockLight = new NibbleArray(nbttagcompound2.getByteArray("BlockLight"));
++                    // Pool safe get and clean
++                    NBTTagByteArray blockLightArray = nbttagcompound2.getByteArrayTag("BlockLight");
++                    // NibbleArray will copy the data in the ctor
++                    NibbleArray blockLight = new NibbleArray().markPoolSafe().cloneAndSet(blockLightArray.getBytesPoolSafe()); // This is going to light engine which handles releasing
++                    blockLightArray.cleanPooledBytes();
+                     // Note: We move the block light nibble array creation here for perf & in case the compound is modified
+                     tasksToExecuteOnMain.add(() -> {
+                         lightengine.a(EnumSkyBlock.BLOCK, SectionPosition.a(chunkcoordintpair, b0), blockLight);
+@@ -115,7 +119,11 @@ public class ChunkRegionLoader {
+ 
+                 if (flag2 && nbttagcompound2.hasKeyOfType("SkyLight", 7)) {
+                     // Paper start - delay this task since we're executing off-main
+-                    NibbleArray skyLight = new NibbleArray(nbttagcompound2.getByteArray("SkyLight"));
++                    // Pool safe get and clean
++                    NBTTagByteArray skyLightArray = nbttagcompound2.getByteArrayTag("SkyLight");
++                    // NibbleArray will copy the data in the ctor
++                    NibbleArray skyLight = new NibbleArray().markPoolSafe().cloneAndSet(skyLightArray.getBytesPoolSafe()); // This is going to light engine which handles releasing
++                    skyLightArray.cleanPooledBytes();
+                     // Note: We move the block light nibble array creation here for perf & in case the compound is modified
+                     tasksToExecuteOnMain.add(() -> {
+                         lightengine.a(EnumSkyBlock.SKY, SectionPosition.a(chunkcoordintpair, b0), skyLight);
+@@ -387,11 +395,15 @@ public class ChunkRegionLoader {
                  }
  
                  if (nibblearray != null && !nibblearray.c()) {
@@ -31,9 +57,18 @@ index e625842e524f18e469f7695b27d52d4d04892266..82264bf651b9d1f6614fef5efc294199
  
                  nbttaglist.add(nbttagcompound2);
 diff --git a/src/main/java/net/minecraft/server/LightEngineStorage.java b/src/main/java/net/minecraft/server/LightEngineStorage.java
-index 88277d23c36696fdd5363e41a130c9a443fac2c0..1a048cf586eac76499522599a0cac91e31472d72 100644
+index 88277d23c36696fdd5363e41a130c9a443fac2c0..fa8039d38d5b3110fd85abf850248ba7948374c3 100644
 --- a/src/main/java/net/minecraft/server/LightEngineStorage.java
 +++ b/src/main/java/net/minecraft/server/LightEngineStorage.java
+@@ -148,7 +148,7 @@ public abstract class LightEngineStorage<M extends LightEngineStorageArray<M>> e
+     protected NibbleArray j(long i) {
+         NibbleArray nibblearray = (NibbleArray) this.i.get(i);
+ 
+-        return nibblearray != null ? nibblearray : new NibbleArray();
++        return nibblearray != null ? nibblearray : new NibbleArray().markPoolSafe(); // Paper
+     }
+ 
+     protected void a(LightEngineLayer<?, ?> lightenginelayer, long i) {
 @@ -319,7 +319,7 @@ public abstract class LightEngineStorage<M extends LightEngineStorageArray<M>> e
          if (nibblearray != null) {
              this.i.put(i, nibblearray);
@@ -43,21 +78,37 @@ index 88277d23c36696fdd5363e41a130c9a443fac2c0..1a048cf586eac76499522599a0cac91e
          }
  
      }
+diff --git a/src/main/java/net/minecraft/server/LightEngineStorageArray.java b/src/main/java/net/minecraft/server/LightEngineStorageArray.java
+index 278aec8846d3bd448e359095063a711e78213ee5..f17b16d5c52cd77dd53807222dff4631d185e159 100644
+--- a/src/main/java/net/minecraft/server/LightEngineStorageArray.java
++++ b/src/main/java/net/minecraft/server/LightEngineStorageArray.java
+@@ -27,7 +27,7 @@ public abstract class LightEngineStorageArray<M extends LightEngineStorageArray<
+ 
+     public void a(long i) {
+         if (this.isVisible) { throw new IllegalStateException("writing to visible data"); } // Paper - avoid copying light data
+-        this.data.queueUpdate(i, ((NibbleArray) this.data.getUpdating(i)).b()); // Paper - avoid copying light data
++        this.data.queueUpdate(i, new NibbleArray().markPoolSafe(this.data.getUpdating(i).getCloneIfSet())); // Paper - avoid copying light data - pool safe clone
+         this.c();
+     }
+ 
 diff --git a/src/main/java/net/minecraft/server/LightEngineStorageSky.java b/src/main/java/net/minecraft/server/LightEngineStorageSky.java
-index 06bc8371fe9de4d23fdd47e5a3919541bb399fd8..bf37e4ec1f3f4f73c27e1eecffa96423f683a10b 100644
+index 06bc8371fe9de4d23fdd47e5a3919541bb399fd8..c15fbd8602d33955d8a625d4a86cdcd8ca7489f5 100644
 --- a/src/main/java/net/minecraft/server/LightEngineStorageSky.java
 +++ b/src/main/java/net/minecraft/server/LightEngineStorageSky.java
-@@ -166,7 +166,7 @@ public class LightEngineStorageSky extends LightEngineStorage<LightEngineStorage
+@@ -166,9 +166,9 @@ public class LightEngineStorageSky extends LightEngineStorage<LightEngineStorage
                      j = SectionPosition.a(j, EnumDirection.UP);
                  }
  
 -                return new NibbleArray((new NibbleArrayFlat(nibblearray1, 0)).asBytes());
-+                return new NibbleArray((new NibbleArrayFlat(nibblearray1, 0)).asBytes(), true); // Paper - mark buffer as safe
++                return new NibbleArray().markPoolSafe(new NibbleArrayFlat(nibblearray1, 0).asBytes()); // Paper - mark pool use as safe (no auto cleaner)
              } else {
-                 return new NibbleArray();
+-                return new NibbleArray();
++                return new NibbleArray().markPoolSafe(); // Paper - mark pool use as safe (no auto cleaner)
              }
+         }
+     }
 diff --git a/src/main/java/net/minecraft/server/NBTTagByteArray.java b/src/main/java/net/minecraft/server/NBTTagByteArray.java
-index 034244c2465b9999c6fba63ab2310becef51b887..a964647d1464d33c69b860cce44d918a20054532 100644
+index 034244c2465b9999c6fba63ab2310becef51b887..5310246ec97b8a78848214b152a67195fd8ddef9 100644
 --- a/src/main/java/net/minecraft/server/NBTTagByteArray.java
 +++ b/src/main/java/net/minecraft/server/NBTTagByteArray.java
 @@ -17,10 +17,17 @@ public class NBTTagByteArray extends NBTList<NBTTagByte> {
@@ -73,18 +124,79 @@ index 034244c2465b9999c6fba63ab2310becef51b887..a964647d1464d33c69b860cce44d918a
 +            NBTTagByteArray nbt = new NBTTagByteArray(abyte);
 +            if (abyte.length == 2048) {
 +                // register cleaner
-+                MCUtil.registerCleaner(nbt, abyte, NibbleArray::releaseBytes);
++                nbt.cleaner = MCUtil.registerCleaner(nbt, abyte, NibbleArray::releaseBytes);
 +            }
 +            return nbt;
 +            // Paper end
          }
  
          @Override
+@@ -121,6 +128,35 @@ public class NBTTagByteArray extends NBTList<NBTTagByte> {
+     }
+ 
+     public byte[] getBytes() {
++        // Paper start
++        Runnable cleaner = this.cleaner;
++        if (cleaner != null) { // This will only be possible for 2048 byte arrays
++            // cleaners are thread safe if it tries to run twice, if getBytes is accessed concurrently, worse
++            // case is multiple clones
++            this.data = this.data.clone();
++            this.cleaner = null;
++            cleaner.run();
++        }
++        if (this.data == null) {
++            new Throwable("Horrible thing happened! Something hooked into Chunk Loading internals and accessed NBT after chunk was done loading. Please tell plugin to stop doing this, clone the memory before hand.").printStackTrace();
++        }
++        return this.data;
++    }
++    Runnable cleaner;
++    public void cleanPooledBytes() {
++        Runnable cleaner = this.cleaner;
++        if (cleaner != null) { // This will only be possible for 2048 byte arrays
++            this.cleaner = null;
++            this.data = null;
++            cleaner.run();
++        }
++    }
++    /**
++     * Use ONLY if you know the life of your usage of the bytes matches the life of the nbt node itself.
++     * If this NBT node can go unreachable before your usage of the bytes is over with, DO NOT use this
++     */
++    public byte[] getBytesPoolSafe() {
++        // Paper end
+         return this.data;
+     }
+ 
+diff --git a/src/main/java/net/minecraft/server/NBTTagCompound.java b/src/main/java/net/minecraft/server/NBTTagCompound.java
+index 02a2ed1baa3f82d302432b7bc627f3179751f886..5f38c962115f732fae20b61410dfc35b09248f4c 100644
+--- a/src/main/java/net/minecraft/server/NBTTagCompound.java
++++ b/src/main/java/net/minecraft/server/NBTTagCompound.java
+@@ -298,6 +298,20 @@ public class NBTTagCompound implements NBTBase {
+         return new byte[0];
+     }
+ 
++    // Paper start
++    public NBTTagByteArray getByteArrayTag(String s) {
++        try {
++            if (this.hasKeyOfType(s, 7)) {
++                return ((NBTTagByteArray) this.map.get(s));
++            }
++        } catch (ClassCastException classcastexception) {
++            throw new ReportedException(this.a(s, NBTTagByteArray.a, classcastexception));
++        }
++
++        return new NBTTagByteArray(new byte[0]);
++    }
++    // Paper end
++
+     public int[] getIntArray(String s) {
+         try {
+             if (this.hasKeyOfType(s, 11)) {
 diff --git a/src/main/java/net/minecraft/server/NibbleArray.java b/src/main/java/net/minecraft/server/NibbleArray.java
-index 996c8326387b5a7fe62db6a76e000144565cb85b..1fcb1bdab28f79320aef50a9bbb2fbee8c7a2964 100644
+index 996c8326387b5a7fe62db6a76e000144565cb85b..073e16a4f08bf00b7d9187a5bfdfdbf84ed05593 100644
 --- a/src/main/java/net/minecraft/server/NibbleArray.java
 +++ b/src/main/java/net/minecraft/server/NibbleArray.java
-@@ -1,16 +1,50 @@
+@@ -1,16 +1,73 @@
  package net.minecraft.server;
  
 +import com.destroystokyo.paper.util.pooled.PooledObjects; // Paper
@@ -98,7 +210,7 @@ index 996c8326387b5a7fe62db6a76e000144565cb85b..1fcb1bdab28f79320aef50a9bbb2fbee
 +    public static byte[] EMPTY_NIBBLE = new byte[2048];
 +    private static final int nibbleBucketSizeMultiplier = Integer.getInteger("Paper.nibbleBucketSize", 3072);
 +    private static final int maxPoolSize = Integer.getInteger("Paper.maxNibblePoolSize", (int) Math.min(6, Math.max(1, Runtime.getRuntime().maxMemory() / 1024 / 1024 / 1024)) * (nibbleBucketSizeMultiplier * 8));
-+    public static final PooledObjects<byte[]> BYTE_2048 = new PooledObjects<>(() -> new byte[2048], maxPoolSize, 8);
++    public static final PooledObjects<byte[]> BYTE_2048 = new PooledObjects<>(() -> new byte[2048], maxPoolSize);
 +    public static void releaseBytes(byte[] bytes) {
 +        if (bytes != null && bytes != EMPTY_NIBBLE && bytes.length == 2048) {
 +            System.arraycopy(EMPTY_NIBBLE, 0, bytes, 0, 2048);
@@ -106,6 +218,14 @@ index 996c8326387b5a7fe62db6a76e000144565cb85b..1fcb1bdab28f79320aef50a9bbb2fbee
 +        }
 +    }
 +
++    public NibbleArray markPoolSafe(byte[] bytes) {
++        if (bytes != EMPTY_NIBBLE) this.a = bytes;
++        return markPoolSafe();
++    }
++    public NibbleArray markPoolSafe() {
++        poolSafe = true;
++        return this;
++    }
 +    public byte[] getIfSet() {
 +        return this.a != null ? this.a : EMPTY_NIBBLE;
 +    }
@@ -117,8 +237,23 @@ index 996c8326387b5a7fe62db6a76e000144565cb85b..1fcb1bdab28f79320aef50a9bbb2fbee
 +        System.arraycopy(getIfSet(), 0, ret, 0, 2048);
 +        return ret;
 +    }
++
++    public NibbleArray cloneAndSet(byte[] bytes) {
++        if (bytes != null && bytes != EMPTY_NIBBLE) {
++            this.a = BYTE_2048.acquire();
++            System.arraycopy(bytes, 0, this.a, 0, 2048);
++        }
++        return this;
++    }
++    boolean poolSafe = false;
 +    public java.lang.Runnable cleaner;
-+    private void registerCleaner() { cleaner = MCUtil.registerCleaner(this, this.a, NibbleArray::releaseBytes); }
++    private void registerCleaner() {
++        if (!poolSafe) {
++            cleaner = MCUtil.registerCleaner(this, this.a, NibbleArray::releaseBytes);
++        } else {
++            cleaner = MCUtil.once(() -> NibbleArray.releaseBytes(this.a));
++        }
++    }
 +    // Paper end
 +    @Nullable protected byte[] a;
 +
@@ -137,7 +272,7 @@ index 996c8326387b5a7fe62db6a76e000144565cb85b..1fcb1bdab28f79320aef50a9bbb2fbee
          if (abyte.length != 2048) {
              throw (IllegalArgumentException) SystemUtils.c(new IllegalArgumentException("ChunkNibbleArrays should be 2048 bytes not: " + abyte.length));
          }
-@@ -44,7 +78,8 @@ public class NibbleArray {
+@@ -44,7 +101,8 @@ public class NibbleArray {
  
      public void a(int i, int j) { // PAIL: private -> public
          if (this.a == null) {
@@ -147,7 +282,7 @@ index 996c8326387b5a7fe62db6a76e000144565cb85b..1fcb1bdab28f79320aef50a9bbb2fbee
          }
  
          int k = this.d(i);
-@@ -65,7 +100,8 @@ public class NibbleArray {
+@@ -65,7 +123,8 @@ public class NibbleArray {
  
      public byte[] asBytes() {
          if (this.a == null) {
@@ -157,7 +292,7 @@ index 996c8326387b5a7fe62db6a76e000144565cb85b..1fcb1bdab28f79320aef50a9bbb2fbee
          }
  
          return this.a;
-@@ -73,7 +109,7 @@ public class NibbleArray {
+@@ -73,7 +132,7 @@ public class NibbleArray {
  
      public NibbleArray copy() { return this.b(); } // Paper - OBFHELPER
      public NibbleArray b() {
