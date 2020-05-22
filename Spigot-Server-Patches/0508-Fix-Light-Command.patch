@@ -7,7 +7,7 @@ This lets you run /paper fixlight <chunkRadius> (max 5) to automatically
 fix all light data in the chunks.
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperCommand.java b/src/main/java/com/destroystokyo/paper/PaperCommand.java
-index 182b440ba4802d199b8e44f7779b3401ace495d5..10b72083322b7f8e3e14525b3e834f5374ec369d 100644
+index 182b440ba4802d199b8e44f7779b3401ace495d5..acde9cce93963f2a252ea8c9a8ecf5790d531268 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperCommand.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperCommand.java
 @@ -20,6 +20,7 @@ import org.bukkit.command.Command;
@@ -35,17 +35,7 @@ index 182b440ba4802d199b8e44f7779b3401ace495d5..10b72083322b7f8e3e14525b3e834f53
  
          switch (args[0].toLowerCase(Locale.ENGLISH))
          {
-@@ -144,6 +145,9 @@ public class PaperCommand extends Command {
-             case "syncloadinfo":
-                 this.doSyncLoadInfo(sender, args);
-                 break;
-+            case "fixlight":
-+                this.doFixLight(sender, args);
-+                break;
-             case "ver":
-             case "version":
-                 Command ver = org.bukkit.Bukkit.getServer().getCommandMap().getCommand("version");
-@@ -160,6 +164,75 @@ public class PaperCommand extends Command {
+@@ -160,6 +161,75 @@ public class PaperCommand extends Command {
          return true;
      }
  
@@ -122,25 +112,25 @@ index 182b440ba4802d199b8e44f7779b3401ace495d5..10b72083322b7f8e3e14525b3e834f53
          if (!SyncLoadFinder.ENABLED) {
              sender.sendMessage(ChatColor.RED + "This command requires the server startup flag '-Dpaper.debug-sync-loads=true' to be set.");
 diff --git a/src/main/java/net/minecraft/server/PlayerChunk.java b/src/main/java/net/minecraft/server/PlayerChunk.java
-index 03fb688fe4bdc19b4bc36b1f1d5b40c61e7bef9b..aeca6b2b9d5d73aeb6dc639b5cad2f2533a2de44 100644
+index 6980d19f36c18cdbed6679dbdf04afd694e078b6..2a94f6ffa818ee0d0c4df3c65ae9cbe385ebc247 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunk.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunk.java
-@@ -327,6 +327,7 @@ public class PlayerChunk {
+@@ -315,6 +315,7 @@ public class PlayerChunk {
  
      }
  
 +    public void sendPacketToTrackedPlayers(Packet<?> packet, boolean flag) { a(packet, flag); } // Paper - OBFHELPER
      private void a(Packet<?> packet, boolean flag) {
-         // Paper start - per player view distance
-         // there can be potential desync with player's last mapped section and the view distance map, so use the
+         this.players.a(this.location, flag).forEach((entityplayer) -> {
+             entityplayer.playerConnection.sendPacket(packet);
 diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-index 3b72b2c88575d19ec51f46226ddcc8a15c169721..a280f4af4f997f29e81a877455a2765d6751e842 100644
+index dcf4b04e811f9591ee147a0b34493db9d992bcbd..f1d64333d4b991baf0f9afb6765fdc1a9505ca85 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
 @@ -95,6 +95,12 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
      private final ChunkTaskQueueSorter p;
      private final Mailbox<ChunkTaskQueueSorter.a<Runnable>> mailboxWorldGen;
-     final Mailbox<ChunkTaskQueueSorter.a<Runnable>> mailboxMain; // Paper - private -> package private
+     private final Mailbox<ChunkTaskQueueSorter.a<Runnable>> mailboxMain;
 +    // Paper start
 +    final Mailbox<ChunkTaskQueueSorter.a<Runnable>> mailboxLight;
 +    public void addLightTask(PlayerChunk playerchunk, Runnable run) {
@@ -150,7 +140,7 @@ index 3b72b2c88575d19ec51f46226ddcc8a15c169721..a280f4af4f997f29e81a877455a2765d
      public final WorldLoadListener worldLoadListener;
      public final PlayerChunkMap.a chunkDistanceManager; public final PlayerChunkMap.a getChunkMapDistanceManager() { return this.chunkDistanceManager; } // Paper - OBFHELPER
      private final AtomicInteger u;
-@@ -282,11 +288,12 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -235,11 +241,12 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
          Mailbox<Runnable> mailbox = Mailbox.a("main", iasynctaskhandler::a);
  
          this.worldLoadListener = worldloadlistener;
