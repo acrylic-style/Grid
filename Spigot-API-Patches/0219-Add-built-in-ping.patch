@@ -18,10 +18,10 @@ index 460fda05a62b12db2edcfb7ea8b2a5dd8e4b110d..d01de91a08a6c8ebdb49a80a2416b3fa
  
 diff --git a/src/main/java/xyz/acrylicstyle/paper/command/defaults/PingCommand.java b/src/main/java/xyz/acrylicstyle/paper/command/defaults/PingCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..6e077d610521cc84816f79c01aa1752bffa373ac
+index 0000000000000000000000000000000000000000..c85171887559f20e4012292b220d54128a5651fb
 --- /dev/null
 +++ b/src/main/java/xyz/acrylicstyle/paper/command/defaults/PingCommand.java
-@@ -0,0 +1,57 @@
+@@ -0,0 +1,67 @@
 +package xyz.acrylicstyle.paper.command.defaults;
 +
 +import org.bukkit.Bukkit;
@@ -33,6 +33,7 @@ index 0000000000000000000000000000000000000000..6e077d610521cc84816f79c01aa1752b
 +
 +import java.util.Collections;
 +import java.util.List;
++import java.util.stream.Collectors;
 +
 +public class PingCommand extends BukkitCommand {
 +    public PingCommand(@NotNull String name) {
@@ -65,6 +66,15 @@ index 0000000000000000000000000000000000000000..6e077d610521cc84816f79c01aa1752b
 +    @NotNull
 +    @Override
 +    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
++        if (args.length == 0) return Bukkit.getOnlinePlayers()
++            .stream()
++            .map(Player::getName)
++            .collect(Collectors.toList());
++        if (args.length == 1) return Bukkit.getOnlinePlayers()
++            .stream()
++            .map(Player::getName)
++            .filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase()))
++            .collect(Collectors.toList());
 +        return Collections.emptyList();
 +    }
 +
