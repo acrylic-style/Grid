@@ -77,7 +77,7 @@ index efaf86eeb9f98eba07d4277c76edbba77a59215e..67e4f27511e92ff1ff903720431b040e
      // Paper end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 7230ddbf6eb765390543bdb3ff8c08d383bb2666..05f9569204ff447cc79d8820edb0eb6966f4d148 100644
+index 7230ddbf6eb765390543bdb3ff8c08d383bb2666..c26738d3cef00ddbc9860c6683c43621ef47896b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -22,78 +22,7 @@ import java.util.UUID;
@@ -160,7 +160,7 @@ index 7230ddbf6eb765390543bdb3ff8c08d383bb2666..05f9569204ff447cc79d8820edb0eb69
  import org.apache.commons.lang.Validate;
  import org.bukkit.BlockChangeDelegate;
  import org.bukkit.Bukkit;
-@@ -2519,6 +2448,24 @@ public class CraftWorld implements World {
+@@ -2519,6 +2448,44 @@ public class CraftWorld implements World {
      }
      // Paper end - per player view distance
  
@@ -179,6 +179,26 @@ index 7230ddbf6eb765390543bdb3ff8c08d383bb2666..05f9569204ff447cc79d8820edb0eb69
 +        } else {
 +            return new xyz.acrylicstyle.paper.block.CraftTileEntity(te);
 +        }
++    }
++
++    @Override
++    public void removeTileEntity(Location location) {
++        removeTileEntity(location.getBlockX(), location.getBlockY(), location.getBlockZ());
++    }
++
++    @Override
++    public void removeTileEntity(int x, int y, int z) {
++        getHandle().removeTileEntity(new BlockPosition(x, y, z));
++    }
++
++    @Override
++    public void setTileEntity(Location location, xyz.acrylicstyle.paper.block.TileEntity tileEntity) {
++        setTileEntity(location.getBlockX(), location.getBlockY(), location.getBlockZ(), tileEntity);
++    }
++
++    @Override
++    public void setTileEntity(int x, int y, int z, xyz.acrylicstyle.paper.block.TileEntity tileEntity) {
++        getHandle().setTileEntity(new BlockPosition(x, y, z), ((xyz.acrylicstyle.paper.block.CraftTileEntity) tileEntity).getHandle());
 +    }
 +    // Paper end - TileEntity API
 +

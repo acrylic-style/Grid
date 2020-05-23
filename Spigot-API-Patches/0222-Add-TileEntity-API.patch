@@ -58,7 +58,7 @@ index cc06492f46ba5776221cd2614c1dcd8f33cc8faf..d2bc0e75b1a7edaab9e90473f72dbc84
      // Paper end
  }
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 9518da825ed752c5a477ca9132de50f923f9192d..061d14700ebc532af828e4f170739fe4347d32b9 100644
+index 9518da825ed752c5a477ca9132de50f923f9192d..3a83ae225734e5e82da7241f9a21994078831c34 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
 @@ -39,6 +39,7 @@ import org.bukkit.util.Vector;
@@ -69,7 +69,7 @@ index 9518da825ed752c5a477ca9132de50f923f9192d..061d14700ebc532af828e4f170739fe4
  
  /**
   * Represents a world, which may contain entities, chunks and blocks
-@@ -3397,6 +3398,33 @@ public interface World extends PluginMessageRecipient, Metadatable {
+@@ -3397,6 +3398,71 @@ public interface World extends PluginMessageRecipient, Metadatable {
      @Nullable
      public DragonBattle getEnderDragonBattle();
  
@@ -98,6 +98,44 @@ index 9518da825ed752c5a477ca9132de50f923f9192d..061d14700ebc532af828e4f170739fe4
 +     */
 +    @Nullable
 +    TileEntity getTileEntity(int x, int y, int z);
++
++    /**
++     * Removes {@link TileEntity} at specified location.
++     *
++     * If there isn't TileEntity, it does nothing.
++     *
++     * @param location the block location
++     */
++    void removeTileEntity(@NotNull Location location);
++
++    /**
++     * Removes {@link TileEntity} at specified location.
++     *
++     * If there isn't TileEntity, it does nothing.
++     *
++     * @param x the X pos of the block location
++     * @param y the Y pos of the block location
++     * @param z the Z pos of the block location
++     */
++    void removeTileEntity(int x, int y, int z);
++
++    /**
++     * Set {@link TileEntity} at specified location.
++     *
++     * @param location the block location
++     * @param tileEntity TileEntity that will be placed
++     */
++    void setTileEntity(@NotNull Location location, @NotNull TileEntity tileEntity);
++
++    /**
++     * Set {@link TileEntity} at specified location.
++     *
++     * @param x the X pos of the block location
++     * @param y the Y pos of the block location
++     * @param z the Z pos of the block location
++     * @param tileEntity TileEntity that will be placed
++     */
++    void setTileEntity(int x, int y, int z, @NotNull TileEntity tileEntity);
 +    // Paper end
 +
      /**
