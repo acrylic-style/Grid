@@ -5,7 +5,7 @@ Subject: [PATCH] Add NBT APIs
 
 
 diff --git a/src/main/java/net/minecraft/server/NBTTagCompound.java b/src/main/java/net/minecraft/server/NBTTagCompound.java
-index 5f38c962115f732fae20b61410dfc35b09248f4c..4e5cf19215370ba135283df27c187bf1d6ddfedf 100644
+index 02a2ed1baa3f82d302432b7bc627f3179751f886..65f9b678eb215844f61b54fc06f1bdcb054ae3af 100644
 --- a/src/main/java/net/minecraft/server/NBTTagCompound.java
 +++ b/src/main/java/net/minecraft/server/NBTTagCompound.java
 @@ -62,7 +62,7 @@ public class NBTTagCompound implements NBTBase {

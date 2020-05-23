@@ -602,7 +602,7 @@ index aeca6b2b9d5d73aeb6dc639b5cad2f2533a2de44..b8fe42e8123e972b1ec97b048c35d901
      }
  
 diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-index f1c3cb3ff8961bc688a1d38cd79b999e539cf866..8fa1d5f7af6920a5fc63347c3a5dcfc5948d50c4 100644
+index 419bac3d03c40e6d7c915816affb5f7f823e6af8..9bc21dd87b3b6bb08c945c7b96e29b42809e950b 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
 @@ -50,6 +50,7 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
