@@ -1,0 +1,30 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Sun, 24 May 2020 05:24:23 +0900
+Subject: [PATCH] POM Change
+
+
+diff --git a/pom.xml b/pom.xml
+index 1ae57e8ab2681e674f97ef3220c5cbf9143c6a7e..eeb7c1b7fe159eee39c71d8310b6b064ec3ed94c 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -331,6 +331,19 @@
+                     </excludes>
+                 </configuration>
+             </plugin>
++            <plugin> <!-- Paper start -->
++                <groupId>org.apache.maven.plugins</groupId>
++                <artifactId>maven-source-plugin</artifactId>
++                <version>3.1.0</version>
++                <executions>
++                    <execution>
++                        <id>attach-sources</id>
++                        <goals>
++                            <goal>jar</goal>
++                        </goals>
++                    </execution>
++                </executions>
++            </plugin> <!-- Paper end -->
+         </plugins>
+     </build>
+ 
