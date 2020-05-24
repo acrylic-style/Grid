@@ -1,15 +1,15 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Sun, 24 May 2020 21:55:27 +0900
-Subject: [PATCH] async chunk loading, probably prevents server watchdog
- timeouts.
+Subject: [PATCH] chunk loading with timeouts, probably prevents server
+ watchdog timeout crash.
 
 
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 508a3ed1ed041c21f5ec1fd18dfb01311e5310bf..9d2351b2cf7bddbc2456e9ae375bea9a95e2a6c1 100644
+index 508a3ed1ed041c21f5ec1fd18dfb01311e5310bf..8c1942bf3a46ba1eef9f06f207c962b7d8096c92 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
-@@ -1201,11 +1201,30 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -1201,11 +1201,29 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
  
          for (int i1 = i; i1 <= j; ++i1) {
              for (int j1 = k; j1 <= l; ++j1) {
@@ -17,16 +17,15 @@ index 508a3ed1ed041c21f5ec1fd18dfb01311e5310bf..9d2351b2cf7bddbc2456e9ae375bea9a
 -
 -                if (chunk != null) {
 -                    chunk.getHardCollidingEntities(entity, axisalignedbb, list);
-+                // Paper start - async chunk loading
-+                java.util.concurrent.CompletableFuture<com.mojang.datafixers.util.Either<IChunkAccess, PlayerChunk.Failure>> chunk =
-+                    chunkProvider.getChunkAtAsynchronously(i1, j1, true, true);
-+
++                // Paper start - timed chunk loading
++                int finalI = i1;
++                int finalJ = j1;
 +                try {
-+                    chunk.thenApplyAsync((either) -> {
-+                        java.util.Optional<IChunkAccess> optional = either.left();
-+                        optional.ifPresent(iChunkAccess -> ((Chunk) iChunkAccess).getHardCollidingEntities(entity, axisalignedbb, list));
-+                        return either;
-+                    }).get(10, java.util.concurrent.TimeUnit.SECONDS);
++                    java.util.concurrent.CompletableFuture
++                        .supplyAsync(() -> chunkProvider.getChunkAtIfLoadedMainThread(finalI, finalJ))
++                        .thenAcceptAsync((ch) -> {
++                            if (ch != null) ch.getHardCollidingEntities(entity, axisalignedbb, list);
++                        }).get(5, java.util.concurrent.TimeUnit.SECONDS);
 +                } catch (InterruptedException e) {
 +                    LOGGER.error("Async chunk operation was interrupted!");
 +                    LOGGER.error("Tried to get chunk at " + i1 + ", " + j1);
@@ -40,7 +39,7 @@ index 508a3ed1ed041c21f5ec1fd18dfb01311e5310bf..9d2351b2cf7bddbc2456e9ae375bea9a
 +                    LOGGER.error("Tried to get chunk at " + i1 + ", " + j1);
 +                    e.printStackTrace();
                  }
-+                // Paper end
++                // Paper end - timed chunk loading
              }
          }
  
