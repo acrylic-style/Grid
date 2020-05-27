@@ -602,7 +602,7 @@ index aeca6b2b9d5d73aeb6dc639b5cad2f2533a2de44..b8fe42e8123e972b1ec97b048c35d901
      }
  
 diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-index 419bac3d03c40e6d7c915816affb5f7f823e6af8..9bc21dd87b3b6bb08c945c7b96e29b42809e950b 100644
+index 4a9d6f0c193c6d8a65d548ac1dd1461e7056f0a4..2b09437642ec846d025b226692f2290f9bb5b556 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
 @@ -50,6 +50,7 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
@@ -756,7 +756,7 @@ index 419bac3d03c40e6d7c915816affb5f7f823e6af8..9bc21dd87b3b6bb08c945c7b96e29b42
  
                  list.add(completablefuture);
              }
-@@ -1020,14 +1113,22 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1022,14 +1115,22 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
          };
  
          CompletableFuture<NBTTagCompound> chunkSaveFuture = this.world.asyncChunkTaskManager.getChunkSaveFuture(chunkcoordintpair.x, chunkcoordintpair.z);
@@ -784,7 +784,7 @@ index 419bac3d03c40e6d7c915816affb5f7f823e6af8..9bc21dd87b3b6bb08c945c7b96e29b42
          return ret;
          // Paper end
      }
-@@ -1156,7 +1257,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1158,7 +1259,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
              long i = playerchunk.i().pair();
  
              playerchunk.getClass();
@@ -819,11 +819,11 @@ index 8055f5998213ab1c6c10d03d88d2b14d220a5e40..24ec5d77ca7fdf12585c1bb744255438
      public static <T> TicketType<T> a(String s, Comparator<T> comparator) {
          return new TicketType<>(s, comparator, 0L);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index bbfbfeed12890c9d20d78a9661ab172c901f008c..7230ddbf6eb765390543bdb3ff8c08d383bb2666 100644
+index 5f180bb77b736220c848357b2cac4d0d2b99e3df..d3c5b7d1904a6cbd65db406639ed2ba90ec9fd2a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2472,6 +2472,10 @@ public class CraftWorld implements World {
-             }
+@@ -2484,6 +2484,10 @@ public class CraftWorld implements World {
+             return future;
          }
  
 +        if (!urgent) {

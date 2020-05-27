@@ -6,10 +6,10 @@ Subject: [PATCH] chunk loading with timeouts, probably prevents server
 
 
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 508a3ed1ed041c21f5ec1fd18dfb01311e5310bf..8c1942bf3a46ba1eef9f06f207c962b7d8096c92 100644
+index 561b42472261a973fea6344d76ca7ea1993aee27..0b4c28fc1b6835ae13bd0aa4444293db890cc663 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
-@@ -1201,11 +1201,29 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -1202,11 +1202,29 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
  
          for (int i1 = i; i1 <= j; ++i1) {
              for (int j1 = k; j1 <= l; ++j1) {

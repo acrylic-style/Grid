@@ -12,7 +12,7 @@ to the client, so that it doesn't attempt to calculate them.
 This mitigates the frametime impact to a minimum (but it's still there).
 
 diff --git a/src/main/java/net/minecraft/server/Chunk.java b/src/main/java/net/minecraft/server/Chunk.java
-index 8c1f3290d23795b58a30274c9437dc7dc43fa3a1..33cca62d90bf037df1b0b4e901baedb91400aee7 100644
+index fc332dd824ecb4237edbf2974cfe036309d9765c..f22c37be6e779e569db6016b633872fefa20b1a2 100644
 --- a/src/main/java/net/minecraft/server/Chunk.java
 +++ b/src/main/java/net/minecraft/server/Chunk.java
 @@ -277,7 +277,7 @@ public class Chunk implements IChunkAccess {
@@ -37,7 +37,7 @@ index b7b06e082e59f8518be2036637385c7710d524ea..71da9f00b8a969e84414066fb1852cec
          return chunksection == Chunk.a || chunksection.c();
      }
 diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-index 9bc21dd87b3b6bb08c945c7b96e29b42809e950b..becc902898d0c819967129292507b801969e071e 100644
+index 7d7206bc0f9904e49d0bb142c2b523b984c8db09..b7d8a7487e303c2c44160ec1093987b3e0d175bc 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
 @@ -407,7 +407,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
@@ -49,7 +49,7 @@ index 9bc21dd87b3b6bb08c945c7b96e29b42809e950b..becc902898d0c819967129292507b801
              },
              (EntityPlayer player, int rangeX, int rangeZ, int currPosX, int currPosZ, int prevPosX, int prevPosZ,
               com.destroystokyo.paper.util.misc.PooledLinkedHashSets.PooledObjectLinkedOpenHashSet<EntityPlayer> newState) -> {
-@@ -2054,12 +2054,112 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -2062,12 +2062,112 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
  
      }
  

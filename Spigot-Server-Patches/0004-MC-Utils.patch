@@ -2283,6 +2283,18 @@ index 4f60b931a143ebf70a8469913ec445ff13da4d8d..3e90b57b6fd5dcb6cb1325861306e2ff
      public double a() {
          double d0 = this.b();
          double d1 = this.c();
+diff --git a/src/main/java/net/minecraft/server/BaseBlockPosition.java b/src/main/java/net/minecraft/server/BaseBlockPosition.java
+index a3b5793e4824718c8bf3d0a4f963de0ca94a738e..3f09c24e1cd1bba2809b70b1fa6e89773537d834 100644
+--- a/src/main/java/net/minecraft/server/BaseBlockPosition.java
++++ b/src/main/java/net/minecraft/server/BaseBlockPosition.java
+@@ -80,6 +80,7 @@ public class BaseBlockPosition implements Comparable<BaseBlockPosition> {
+         return this.distanceSquared(iposition.getX(), iposition.getY(), iposition.getZ(), true) < d0 * d0;
+     }
+ 
++    public final double distanceSquared(BaseBlockPosition baseblockposition) { return m(baseblockposition); } // Paper - OBFHELPER
+     public double m(BaseBlockPosition baseblockposition) {
+         return this.distanceSquared((double) baseblockposition.getX(), (double) baseblockposition.getY(), (double) baseblockposition.getZ(), true);
+     }
 diff --git a/src/main/java/net/minecraft/server/BlockAccessAir.java b/src/main/java/net/minecraft/server/BlockAccessAir.java
 index eff6ebcd30b538cbaedaa031a46a59ea956253ba..30cbfc8eac20910aa55951e3dce63862f5a43c37 100644
 --- a/src/main/java/net/minecraft/server/BlockAccessAir.java
@@ -2382,7 +2394,7 @@ index c88a62f6b72a8851b95587bb49c898569d74e0c6..f8ac39e1b019b0918996f745d99f6ed0
              this.d = i;
          }
 diff --git a/src/main/java/net/minecraft/server/Chunk.java b/src/main/java/net/minecraft/server/Chunk.java
-index 55373cae078ddaf6c7c974abf59183698f669c24..b39ce329aa0b2e8da679a7b658f707f1da1f1a99 100644
+index 55373cae078ddaf6c7c974abf59183698f669c24..9397b58f047c837f8a9146723e4cd9a4d6b787a7 100644
 --- a/src/main/java/net/minecraft/server/Chunk.java
 +++ b/src/main/java/net/minecraft/server/Chunk.java
 @@ -25,7 +25,7 @@ import org.apache.logging.log4j.Logger;
@@ -2412,7 +2424,7 @@ index 55373cae078ddaf6c7c974abf59183698f669c24..b39ce329aa0b2e8da679a7b658f707f1
          this.i = chunkconverter;
          HeightMap.Type[] aheightmap_type = HeightMap.Type.values();
          int j = aheightmap_type.length;
-@@ -108,6 +108,107 @@ public class Chunk implements IChunkAccess {
+@@ -108,6 +108,110 @@ public class Chunk implements IChunkAccess {
      public boolean needsDecoration;
      // CraftBukkit end
  
@@ -2473,6 +2485,9 @@ index 55373cae078ddaf6c7c974abf59183698f669c24..b39ce329aa0b2e8da679a7b658f707f1
 +
 +    }
 +
++    public final boolean isAnyNeighborsLoaded() {
++        return neighbourChunksLoadedBitset != 0;
++    }
 +    public final boolean areNeighboursLoaded(final int radius) {
 +        return Chunk.areNeighboursLoaded(this.neighbourChunksLoadedBitset, radius);
 +    }
@@ -2520,7 +2535,7 @@ index 55373cae078ddaf6c7c974abf59183698f669c24..b39ce329aa0b2e8da679a7b658f707f1
      public Chunk(World world, ProtoChunk protochunk) {
          this(world, protochunk.getPos(), protochunk.getBiomeIndex(), protochunk.p(), protochunk.n(), protochunk.o(), protochunk.getInhabitedTime(), protochunk.getSections(), (Consumer) null);
          Iterator iterator = protochunk.y().iterator();
-@@ -213,6 +314,18 @@ public class Chunk implements IChunkAccess {
+@@ -213,6 +317,18 @@ public class Chunk implements IChunkAccess {
          }
      }
  
@@ -2539,7 +2554,7 @@ index 55373cae078ddaf6c7c974abf59183698f669c24..b39ce329aa0b2e8da679a7b658f707f1
      @Override
      public Fluid getFluid(BlockPosition blockposition) {
          return this.a(blockposition.getX(), blockposition.getY(), blockposition.getZ());
-@@ -352,6 +465,7 @@ public class Chunk implements IChunkAccess {
+@@ -352,6 +468,7 @@ public class Chunk implements IChunkAccess {
          entity.chunkX = this.loc.x;
          entity.chunkY = k;
          entity.chunkZ = this.loc.z;
@@ -2547,7 +2562,7 @@ index 55373cae078ddaf6c7c974abf59183698f669c24..b39ce329aa0b2e8da679a7b658f707f1
          this.entitySlices[k].add(entity);
      }
  
-@@ -374,6 +488,7 @@ public class Chunk implements IChunkAccess {
+@@ -374,6 +491,7 @@ public class Chunk implements IChunkAccess {
          }
  
          this.entitySlices[i].remove(entity);
@@ -2555,7 +2570,7 @@ index 55373cae078ddaf6c7c974abf59183698f669c24..b39ce329aa0b2e8da679a7b658f707f1
      }
  
      @Override
-@@ -395,6 +510,7 @@ public class Chunk implements IChunkAccess {
+@@ -395,6 +513,7 @@ public class Chunk implements IChunkAccess {
          return this.a(blockposition, Chunk.EnumTileEntityState.CHECK);
      }
  
@@ -2563,7 +2578,7 @@ index 55373cae078ddaf6c7c974abf59183698f669c24..b39ce329aa0b2e8da679a7b658f707f1
      @Nullable
      public TileEntity a(BlockPosition blockposition, Chunk.EnumTileEntityState chunk_enumtileentitystate) {
          // CraftBukkit start
-@@ -506,7 +622,25 @@ public class Chunk implements IChunkAccess {
+@@ -506,7 +625,25 @@ public class Chunk implements IChunkAccess {
  
      // CraftBukkit start
      public void loadCallback() {
@@ -2589,7 +2604,7 @@ index 55373cae078ddaf6c7c974abf59183698f669c24..b39ce329aa0b2e8da679a7b658f707f1
          if (server != null) {
              /*
               * If it's a new world, the first few chunks are generated inside
-@@ -545,6 +679,22 @@ public class Chunk implements IChunkAccess {
+@@ -545,6 +682,22 @@ public class Chunk implements IChunkAccess {
          server.getPluginManager().callEvent(unloadEvent);
          // note: saving can be prevented, but not forced if no saving is actually required
          this.mustNotSave = !unloadEvent.isSaveChunk();
@@ -2674,11 +2689,36 @@ index 11c4d23ba988dac5f3fd85142083c77fb603e673..a03e4c5b8693395f4a145ca565b074d6
      @Override
      public TileEntity getTileEntity(BlockPosition blockposition) {
 diff --git a/src/main/java/net/minecraft/server/ChunkCoordIntPair.java b/src/main/java/net/minecraft/server/ChunkCoordIntPair.java
-index 260644bf0be4c5b2d96033f11382f88231048ce3..f2a19acd84561e746bfc8da0331b5d4055e95327 100644
+index 260644bf0be4c5b2d96033f11382f88231048ce3..5a975f6bc60922ac872ec9c00c9150ce7dcad046 100644
 --- a/src/main/java/net/minecraft/server/ChunkCoordIntPair.java
 +++ b/src/main/java/net/minecraft/server/ChunkCoordIntPair.java
-@@ -31,7 +31,9 @@ public class ChunkCoordIntPair {
-         return pair(this.x, this.z);
+@@ -11,27 +11,33 @@ public class ChunkCoordIntPair {
+     public static final long a = pair(1875016, 1875016);
+     public final int x;
+     public final int z;
++    public final long longKey; // Paper
+ 
+     public ChunkCoordIntPair(int i, int j) {
+         this.x = i;
+         this.z = j;
++        this.longKey = pair(this.x, this.z); // Paper
+     }
+ 
+     public ChunkCoordIntPair(BlockPosition blockposition) {
+         this.x = blockposition.getX() >> 4;
+         this.z = blockposition.getZ() >> 4;
++        this.longKey = pair(this.x, this.z); // Paper
+     }
+ 
+     public ChunkCoordIntPair(long i) {
+         this.x = (int) i;
+         this.z = (int) (i >> 32);
++        this.longKey = pair(this.x, this.z); // Paper
+     }
+ 
+     public long pair() {
+-        return pair(this.x, this.z);
++        return longKey; // Paper
      }
  
 -    public static long pair(int i, int j) {
@@ -3004,6 +3044,18 @@ index 774a8f543424853be5fc8c0367d734ddf196d7f9..d5f5a51872dfabdbb828b6c20d61893a
      public void b(PacketDataSerializer packetdataserializer) {
          this.a();
          packetdataserializer.writeByte(this.i);
+diff --git a/src/main/java/net/minecraft/server/DimensionManager.java b/src/main/java/net/minecraft/server/DimensionManager.java
+index 5724fe6e57d3671b4978aecaf217ac4c2e0d7f82..393bc4dc700bbf8653db0662c7957f676b0a647a 100644
+--- a/src/main/java/net/minecraft/server/DimensionManager.java
++++ b/src/main/java/net/minecraft/server/DimensionManager.java
+@@ -55,6 +55,7 @@ public class DimensionManager implements MinecraftSerializable {
+         return this.folder.isEmpty() ? file : new File(file, this.folder);
+     }
+ 
++    public WorldServer world; // Paper - store ref to world this manager is for
+     public WorldProvider getWorldProvider(World world) {
+         return (WorldProvider) this.providerFactory.apply(world, this);
+     }
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
 index f4863852b04c5fa55b79acabe40ce59909b9bbbd..7e01f6a1807f9885a7f4b163ce6bb626d8786a9a 100644
 --- a/src/main/java/net/minecraft/server/Entity.java
@@ -4347,7 +4399,7 @@ index 143be566c683ae035997f9a4058381a109f3de23..0e30d8c9933dc6595b9715ef6dc99cc8
          return VoxelShapes.b;
      }
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 2e1eabba14a3757d03fd90741651001e78c6322f..2a4fa455ff3065f9b1ad9bcf8d236bbb6f830bc9 100644
+index 2e1eabba14a3757d03fd90741651001e78c6322f..d9ff52eda71fcdf88d4c9114450237bcba2ccb08 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -22,6 +22,7 @@ import org.bukkit.craftbukkit.SpigotTimings; // Spigot
@@ -4358,7 +4410,15 @@ index 2e1eabba14a3757d03fd90741651001e78c6322f..2a4fa455ff3065f9b1ad9bcf8d236bbb
  import org.bukkit.craftbukkit.block.data.CraftBlockData;
  import org.bukkit.event.block.BlockPhysicsEvent;
  // CraftBukkit end
-@@ -183,6 +184,39 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -94,6 +95,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+         this.spigotConfig = new org.spigotmc.SpigotWorldConfig( worlddata.getName() ); // Spigot
+         this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(worlddata.getName(), this.spigotConfig); // Paper
+         this.generator = gen;
++        dimensionmanager.world = (WorldServer) this; // Paper
+         this.world = new CraftWorld((WorldServer) this, gen, env);
+         this.ticksPerAnimalSpawns = this.getServer().getTicksPerAnimalSpawns(); // CraftBukkit
+         this.ticksPerMonsterSpawns = this.getServer().getTicksPerMonsterSpawns(); // CraftBukkit
+@@ -183,6 +185,39 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
          return (Chunk) this.getChunkAt(i, j, ChunkStatus.FULL);
      }
  
@@ -4398,7 +4458,7 @@ index 2e1eabba14a3757d03fd90741651001e78c6322f..2a4fa455ff3065f9b1ad9bcf8d236bbb
      @Override
      public IChunkAccess getChunkAt(int i, int j, ChunkStatus chunkstatus, boolean flag) {
          IChunkAccess ichunkaccess = this.chunkProvider.getChunkAt(i, j, chunkstatus, flag);
-@@ -336,8 +370,9 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -336,8 +371,9 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
  
      public void a(BlockPosition blockposition, IBlockData iblockdata, IBlockData iblockdata1) {}
  

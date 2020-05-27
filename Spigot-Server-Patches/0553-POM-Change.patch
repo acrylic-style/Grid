@@ -5,10 +5,10 @@ Subject: [PATCH] POM Change
 
 
 diff --git a/pom.xml b/pom.xml
-index 1ae57e8ab2681e674f97ef3220c5cbf9143c6a7e..eeb7c1b7fe159eee39c71d8310b6b064ec3ed94c 100644
+index e4c63bb76cb598545f9d215a8859724d6e7f8b81..f9f45a6875df52d26869fd0380fc3d06ea1c296f 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -331,6 +331,19 @@
+@@ -344,6 +344,19 @@
                      </excludes>
                  </configuration>
              </plugin>
