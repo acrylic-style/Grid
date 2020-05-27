@@ -105,7 +105,7 @@ index b8fe42e8123e972b1ec97b048c35d90118076e66..ecac7b72759a3884020b9c19c58d3db3
          boolean flag1 = this.ticketLevel <= PlayerChunkMap.GOLDEN_TICKET; // Paper - diff on change: (flag1 = new ticket level is in loadable range)
          PlayerChunk.State playerchunk_state = getChunkState(this.oldTicketLevel);
 diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-index 2b09437642ec846d025b226692f2290f9bb5b556..b7d8a7487e303c2c44160ec1093987b3e0d175bc 100644
+index 4ed78aaadab117038899202af0f88a338bc9dff1..7d7206bc0f9904e49d0bb142c2b523b984c8db09 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
 @@ -639,6 +639,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
