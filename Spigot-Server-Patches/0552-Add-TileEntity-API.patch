@@ -331,29 +331,3 @@ index 0000000000000000000000000000000000000000..72cc9439d7cc03152d665764e7d9ea8f
 +        return handle.getLocation();
 +    }
 +}
-diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/CraftNBT.java b/src/main/java/xyz/acrylicstyle/paper/nbt/CraftNBT.java
-index fbb18fb6208869b768c3f427e6fa4c467047c66e..0273687878857d417bec75a3c9aeb013437254f0 100644
---- a/src/main/java/xyz/acrylicstyle/paper/nbt/CraftNBT.java
-+++ b/src/main/java/xyz/acrylicstyle/paper/nbt/CraftNBT.java
-@@ -32,6 +32,10 @@ public final class CraftNBT {
-         return l;
-     }
- 
-+    public static net.minecraft.server.NBTTagCompound asNMSCompound(NBTTagCompound nbt) {
-+        return (net.minecraft.server.NBTTagCompound) asNMSCopy(nbt);
-+    }
-+
-     public static NBTBase asNMSCopy(xyz.acrylicstyle.paper.nbt.NBTBase nbt) {
-         if (nbt instanceof NBTTagString) {
-             return net.minecraft.server.NBTTagString.a(nbt.asString());
-@@ -63,6 +67,10 @@ public final class CraftNBT {
-         } else throw new IllegalArgumentException("Unknown type: " + nbt.getClass().getCanonicalName());
-     }
- 
-+    public static NBTTagCompound asBukkitCompound(net.minecraft.server.NBTTagCompound nbt) {
-+        return (NBTTagCompound) asBukkitCopy(nbt);
-+    }
-+
-     public static xyz.acrylicstyle.paper.nbt.NBTBase asBukkitCopy(NBTBase nbt) {
-         if (nbt instanceof net.minecraft.server.NBTTagString) {
-             return NBTTagString.create(nbt.asString());

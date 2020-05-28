@@ -30,12 +30,91 @@ index d778eac45de775cf4058621fadb55b1b4e1f3457..9dd57e67f863a5cd8ea8d7ad4734756b
          this.list = list;
          this.type = b0;
      }
+diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
+index ff60568ce4320e6ebfa50489a564538b0f57da82..def85e7af582f985dbaf06d68f6406b674c09b5e 100644
+--- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
++++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
+@@ -165,6 +165,7 @@ import org.bukkit.plugin.Plugin;
+ import org.bukkit.util.BoundingBox;
+ import org.bukkit.util.NumberConversions;
+ import org.bukkit.util.Vector;
++import xyz.acrylicstyle.paper.nbt.CraftNBT;
+ 
+ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+     private static PermissibleBase perm;
+@@ -1058,5 +1059,20 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+     public org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason getEntitySpawnReason() {
+         return getHandle().spawnReason;
+     }
++
++    @Override
++    public xyz.acrylicstyle.paper.nbt.NBTTagCompound save(xyz.acrylicstyle.paper.nbt.NBTTagCompound nbtTagCompound) {
++        return CraftNBT.asBukkitCompound(getHandle().save(nbtTagCompound == null ? new NBTTagCompound() : CraftNBT.asNMSCompound(nbtTagCompound)));
++    }
++
++    @Override
++    public xyz.acrylicstyle.paper.nbt.NBTTagCompound getTag() {
++        return save(null);
++    }
++
++    @Override
++    public void load(xyz.acrylicstyle.paper.nbt.NBTTagCompound nbtTagCompound) {
++        getHandle().f(CraftNBT.asNMSCompound(nbtTagCompound));
++    }
+     // Paper end
+ }
+diff --git a/src/main/java/xyz/acrylicstyle/paper/CraftPaperServer.java b/src/main/java/xyz/acrylicstyle/paper/CraftPaperServer.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..53a49f057f34afb3bd87b6d8d3a0bfa2f411c98b
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/CraftPaperServer.java
+@@ -0,0 +1,40 @@
++package xyz.acrylicstyle.paper;
++
++import org.bukkit.craftbukkit.inventory.CraftItemStack;
++import org.bukkit.inventory.ItemStack;
++import xyz.acrylicstyle.paper.inventory.ItemStackUtils;
++import xyz.acrylicstyle.paper.nbt.CraftNBT;
++import xyz.acrylicstyle.paper.nbt.NBTTagCompound;
++
++public class CraftPaperServer implements PaperServer {
++    static {
++        Paper.setServer(new CraftPaperServer());
++    }
++
++    @Override
++    public ItemStackUtils itemStack(ItemStack itemStack) {
++        return new ItemStackUtils(itemStack) {
++            @Override
++            public NBTTagCompound getOrCreateTag() {
++                return CraftNBT.asBukkitCompound(CraftItemStack.asNMSCopy(itemStack).getOrCreateTag());
++            }
++
++            @Override
++            public NBTTagCompound getTag() {
++                return CraftNBT.asBukkitCompound(CraftItemStack.asNMSCopy(itemStack).getTag());
++            }
++
++            @Override
++            public void setTag(NBTTagCompound nbtTagCompound) {
++                net.minecraft.server.ItemStack handle = CraftItemStack.asNMSCopy(itemStack);
++                handle.setTag(CraftNBT.asNMSCompound(nbtTagCompound));
++                this.itemStack = CraftItemStack.asBukkitCopy(handle);
++            }
++
++            @Override
++            public boolean hasTag() {
++                return CraftItemStack.asNMSCopy(itemStack).hasTag();
++            }
++        };
++    }
++}
 diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/CraftNBT.java b/src/main/java/xyz/acrylicstyle/paper/nbt/CraftNBT.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..fbb18fb6208869b768c3f427e6fa4c467047c66e
+index 0000000000000000000000000000000000000000..ec71eea109d4f2dbaf102ffc29cfeb583d7e7567
 --- /dev/null
 +++ b/src/main/java/xyz/acrylicstyle/paper/nbt/CraftNBT.java
-@@ -0,0 +1,96 @@
+@@ -0,0 +1,108 @@
 +package xyz.acrylicstyle.paper.nbt;
 +
 +import net.minecraft.server.NBTBase;
@@ -70,7 +149,13 @@ index 0000000000000000000000000000000000000000..fbb18fb6208869b768c3f427e6fa4c46
 +        return l;
 +    }
 +
++    public static net.minecraft.server.NBTTagCompound asNMSCompound(NBTTagCompound nbt) {
++        if (nbt == null) return null;
++        return (net.minecraft.server.NBTTagCompound) asNMSCopy(nbt);
++    }
++
 +    public static NBTBase asNMSCopy(xyz.acrylicstyle.paper.nbt.NBTBase nbt) {
++        if (nbt == null) return null;
 +        if (nbt instanceof NBTTagString) {
 +            return net.minecraft.server.NBTTagString.a(nbt.asString());
 +        } else if (nbt instanceof NBTTagLong) {
@@ -101,7 +186,13 @@ index 0000000000000000000000000000000000000000..fbb18fb6208869b768c3f427e6fa4c46
 +        } else throw new IllegalArgumentException("Unknown type: " + nbt.getClass().getCanonicalName());
 +    }
 +
++    public static NBTTagCompound asBukkitCompound(net.minecraft.server.NBTTagCompound nbt) {
++        if (nbt == null) return null;
++        return (NBTTagCompound) asBukkitCopy(nbt);
++    }
++
 +    public static xyz.acrylicstyle.paper.nbt.NBTBase asBukkitCopy(NBTBase nbt) {
++        if (nbt == null) return null;
 +        if (nbt instanceof net.minecraft.server.NBTTagString) {
 +            return NBTTagString.create(nbt.asString());
 +        } else if (nbt instanceof net.minecraft.server.NBTTagLong) {

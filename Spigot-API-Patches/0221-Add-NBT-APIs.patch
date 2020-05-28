@@ -4,6 +4,123 @@ Date: Sat, 23 May 2020 20:19:11 +0900
 Subject: [PATCH] Add NBT APIs
 
 
+diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
+index 3f0f38031000a4eda25584d069939f40fbfb026b..d11133ccf357f083b963b37d97ffa761e2be78ac 100644
+--- a/src/main/java/org/bukkit/entity/Entity.java
++++ b/src/main/java/org/bukkit/entity/Entity.java
+@@ -22,6 +22,7 @@ import org.bukkit.util.Vector;
+ import org.jetbrains.annotations.Contract;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
++import xyz.acrylicstyle.paper.nbt.NBTTagCompound;
+ 
+ /**
+  * Represents a base entity in the world
+@@ -658,5 +659,13 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+      */
+     @NotNull
+     org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason getEntitySpawnReason();
++
++    @NotNull
++    NBTTagCompound getTag();
++
++    @NotNull
++    NBTTagCompound save(@Nullable NBTTagCompound nbtTagCompound);
++
++    void load(@NotNull NBTTagCompound nbtTagCompound);
+     // Paper end
+ }
+diff --git a/src/main/java/xyz/acrylicstyle/paper/Paper.java b/src/main/java/xyz/acrylicstyle/paper/Paper.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..9e6e47f27c39891ed241f69873e65e4333b01006
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/Paper.java
+@@ -0,0 +1,33 @@
++package xyz.acrylicstyle.paper;
++
++import com.destroystokyo.paper.util.SneakyThrow;
++import org.bukkit.inventory.ItemStack;
++import org.jetbrains.annotations.NotNull;
++import xyz.acrylicstyle.paper.inventory.ItemStackUtils;
++
++public final class Paper {
++    private static PaperServer server = null;
++
++    static {
++        try {
++            Class.forName("xyz.acrylicstyle.paper.CraftPaperServer");
++        } catch (Exception exception) {
++            SneakyThrow.sneaky(exception);
++        }
++    }
++
++    @NotNull
++    public static PaperServer getServer() {
++        return server;
++    }
++
++    public static void setServer(@NotNull PaperServer server) {
++        if (Paper.server != null) throw new IllegalArgumentException("Cannot redefine server singleton");
++        Paper.server = server;
++    }
++
++    @NotNull
++    public static ItemStackUtils itemStack(@NotNull ItemStack itemStack) {
++        return server.itemStack(itemStack);
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/PaperServer.java b/src/main/java/xyz/acrylicstyle/paper/PaperServer.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..39b777387070e55f5763cb6a0f8f40d04d28e0ef
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/PaperServer.java
+@@ -0,0 +1,10 @@
++package xyz.acrylicstyle.paper;
++
++import org.bukkit.inventory.ItemStack;
++import org.jetbrains.annotations.NotNull;
++import xyz.acrylicstyle.paper.inventory.ItemStackUtils;
++
++public interface PaperServer {
++    @NotNull
++    ItemStackUtils itemStack(@NotNull ItemStack itemStack);
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/inventory/ItemStackUtils.java b/src/main/java/xyz/acrylicstyle/paper/inventory/ItemStackUtils.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..d870d99dee0069ec4f9bc4ec9870a6c3ad283a6e
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/inventory/ItemStackUtils.java
+@@ -0,0 +1,30 @@
++package xyz.acrylicstyle.paper.inventory;
++
++import org.bukkit.inventory.ItemStack;
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++import xyz.acrylicstyle.paper.nbt.NBTTagCompound;
++
++public abstract class ItemStackUtils {
++    protected ItemStack itemStack;
++
++    public ItemStackUtils(@NotNull ItemStack itemStack) {
++        this.itemStack = itemStack;
++    }
++
++    @NotNull
++    public ItemStack getItemStack() {
++        return itemStack;
++    }
++
++    @NotNull
++    public abstract NBTTagCompound getOrCreateTag();
++
++    @Nullable
++    public abstract NBTTagCompound getTag();
++
++    @NotNull
++    public abstract void setTag(@Nullable NBTTagCompound nbtTagCompound);
++
++    public abstract boolean hasTag();
++}
 diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTBase.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTBase.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..1e145f0a6d6698f19174bfd56f5915b03868afaf
