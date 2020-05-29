@@ -1,0 +1,55 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Fri, 29 May 2020 11:21:06 +0900
+Subject: [PATCH] Add #getPlayer to CraftItemEvent, PrepareItemCraftEvent
+
+It was possible to add #getPlayer on these events but there wasn't. Now we have (Nullable) getPlayer method.
+Please note that this doesn't break dependencies.
+
+diff --git a/src/main/java/net/minecraft/server/ContainerWorkbench.java b/src/main/java/net/minecraft/server/ContainerWorkbench.java
+index 8ffaba58fb13a33c023d71fdb88a29f98b0d1cea..fcc8bc5072fcf7c729aba3a7315d73ed7ea80acc 100644
+--- a/src/main/java/net/minecraft/server/ContainerWorkbench.java
++++ b/src/main/java/net/minecraft/server/ContainerWorkbench.java
+@@ -67,7 +67,7 @@ public class ContainerWorkbench extends ContainerRecipeBook<InventoryCrafting> {
+                     itemstack = recipecrafting.a(inventorycrafting);
+                 }
+             }
+-            itemstack = org.bukkit.craftbukkit.event.CraftEventFactory.callPreCraftEvent(inventorycrafting, inventorycraftresult, itemstack, container.getBukkitView(), false); // CraftBukkit
++            itemstack = org.bukkit.craftbukkit.event.CraftEventFactory.callPreCraftEvent(inventorycrafting, inventorycraftresult, itemstack, container.getBukkitView(), false, entityplayer); // CraftBukkit // Paper - add EntityPlayer param
+ 
+             inventorycraftresult.setItem(0, itemstack);
+             entityplayer.playerConnection.sendPacket(new PacketPlayOutSetSlot(i, 0, itemstack));
+diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
+index d710e98217b4aa52fde6ee5989ade839d6913ffa..e711cbf5a075a9385dbbb4013306f8f37e547b8d 100644
+--- a/src/main/java/net/minecraft/server/PlayerConnection.java
++++ b/src/main/java/net/minecraft/server/PlayerConnection.java
+@@ -2364,9 +2364,9 @@ public class PlayerConnection implements PacketListenerPlayIn {
+                         org.bukkit.inventory.Recipe recipe = ((CraftingInventory) top).getRecipe();
+                         if (recipe != null) {
+                             if (click == ClickType.NUMBER_KEY) {
+-                                event = new CraftItemEvent(recipe, inventory, type, packetplayinwindowclick.c(), click, action, packetplayinwindowclick.d());
++                                event = new CraftItemEvent(recipe, inventory, type, packetplayinwindowclick.c(), click, action, packetplayinwindowclick.d(), this.player.getBukkitEntity()); // Paper - add player param
+                             } else {
+-                                event = new CraftItemEvent(recipe, inventory, type, packetplayinwindowclick.c(), click, action);
++                                event = new CraftItemEvent(recipe, inventory, type, packetplayinwindowclick.c(), click, action, this.player.getBukkitEntity()); // Paper - add player param
+                             }
+                         }
+                     }
+diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+index 5a44c581dee1bcc1a8d354e20f22b0d803b0955d..ef46f68806982b3bf3d7e5210ac3a0a08a93efeb 100644
+--- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
++++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+@@ -1225,11 +1225,11 @@ public class CraftEventFactory {
+         return container;
+     }
+ 
+-    public static ItemStack callPreCraftEvent(IInventory matrix, IInventory resultInventory, ItemStack result, InventoryView lastCraftView, boolean isRepair) {
++    public static ItemStack callPreCraftEvent(IInventory matrix, IInventory resultInventory, ItemStack result, InventoryView lastCraftView, boolean isRepair, EntityPlayer entityPlayer) { // Paper - add EntityPlayer param
+         CraftInventoryCrafting inventory = new CraftInventoryCrafting(matrix, resultInventory);
+         inventory.setResult(CraftItemStack.asCraftMirror(result));
+ 
+-        PrepareItemCraftEvent event = new PrepareItemCraftEvent(inventory, lastCraftView, isRepair);
++        PrepareItemCraftEvent event = new PrepareItemCraftEvent(inventory, lastCraftView, isRepair, entityPlayer.getBukkitEntity()); // Paper - add player param
+         Bukkit.getPluginManager().callEvent(event);
+ 
+         org.bukkit.inventory.ItemStack bitem = event.getInventory().getResult();

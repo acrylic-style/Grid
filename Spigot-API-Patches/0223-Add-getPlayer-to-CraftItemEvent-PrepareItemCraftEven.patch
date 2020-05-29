@@ -1,0 +1,121 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Fri, 29 May 2020 11:21:07 +0900
+Subject: [PATCH] Add #getPlayer to CraftItemEvent, PrepareItemCraftEvent
+
+It was possible to add #getPlayer on these events but there wasn't. Now we have (Nullable) getPlayer method.
+Please note that this doesn't break dependencies.
+
+diff --git a/src/main/java/org/bukkit/event/inventory/CraftItemEvent.java b/src/main/java/org/bukkit/event/inventory/CraftItemEvent.java
+index cab13877fb38c361f18ce9a433e98fea689c9722..b091598ecff329b7e13947781dd18dd173a59bce 100644
+--- a/src/main/java/org/bukkit/event/inventory/CraftItemEvent.java
++++ b/src/main/java/org/bukkit/event/inventory/CraftItemEvent.java
+@@ -5,22 +5,43 @@ import org.bukkit.inventory.CraftingInventory;
+ import org.bukkit.inventory.InventoryView;
+ import org.bukkit.inventory.Recipe;
+ import org.jetbrains.annotations.NotNull;
++import org.bukkit.entity.Player; // Paper
++import org.jetbrains.annotations.Nullable; // Paper
+ 
+ /**
+  * Called when the recipe of an Item is completed inside a crafting matrix.
+  */
+ public class CraftItemEvent extends InventoryClickEvent {
+     private Recipe recipe;
++    private final Player player; // Paper
+ 
+     public CraftItemEvent(@NotNull Recipe recipe, @NotNull InventoryView what, @NotNull SlotType type, int slot, @NotNull ClickType click, @NotNull InventoryAction action) {
+         super(what, type, slot, click, action);
+         this.recipe = recipe;
++        this.player = null; // Paper
+     }
+ 
++    // Paper start
++    public CraftItemEvent(@NotNull Recipe recipe, @NotNull InventoryView what, @NotNull SlotType type, int slot, @NotNull ClickType click, @NotNull InventoryAction action, @Nullable Player player) {
++        super(what, type, slot, click, action);
++        this.recipe = recipe;
++        this.player = player;
++    }
++    // Paper end
++
+     public CraftItemEvent(@NotNull Recipe recipe, @NotNull InventoryView what, @NotNull SlotType type, int slot, @NotNull ClickType click, @NotNull InventoryAction action, int key) {
+         super(what, type, slot, click, action, key);
+         this.recipe = recipe;
++        this.player = null; // Paper
++    }
++
++    // Paper start
++    public CraftItemEvent(@NotNull Recipe recipe, @NotNull InventoryView what, @NotNull SlotType type, int slot, @NotNull ClickType click, @NotNull InventoryAction action, int key, @Nullable Player player) {
++        super(what, type, slot, click, action, key);
++        this.recipe = recipe;
++        this.player = player;
+     }
++    // Paper end
+ 
+     /**
+      * @return A copy of the current recipe on the crafting matrix.
+@@ -35,4 +56,16 @@ public class CraftItemEvent extends InventoryClickEvent {
+     public CraftingInventory getInventory() {
+         return (CraftingInventory) super.getInventory();
+     }
++
++    // Paper start
++    /**
++     * Get the player who crafted the item.
++     * This method returns null if player is not set.
++     * @return the player
++     */
++    @Nullable
++    public Player getPlayer() {
++        return player;
++    }
++    // Paper end
+ }
+diff --git a/src/main/java/org/bukkit/event/inventory/PrepareItemCraftEvent.java b/src/main/java/org/bukkit/event/inventory/PrepareItemCraftEvent.java
+index efd29d198dd847e22988963f70ad57e1b810aeb7..1f45db752304be5b04ab5ee9a10779a88984235f 100644
+--- a/src/main/java/org/bukkit/event/inventory/PrepareItemCraftEvent.java
++++ b/src/main/java/org/bukkit/event/inventory/PrepareItemCraftEvent.java
+@@ -1,5 +1,6 @@
+ package org.bukkit.event.inventory;
+ 
++import org.bukkit.entity.Player; // Paper
+ import org.bukkit.event.HandlerList;
+ import org.bukkit.inventory.CraftingInventory;
+ import org.bukkit.inventory.InventoryView;
+@@ -11,11 +12,19 @@ public class PrepareItemCraftEvent extends InventoryEvent {
+     private static final HandlerList handlers = new HandlerList();
+     private boolean repair;
+     private CraftingInventory matrix;
++    private final Player player; // Paper
+ 
+     public PrepareItemCraftEvent(@NotNull CraftingInventory what, @NotNull InventoryView view, boolean isRepair) {
++        // Paper start - add player param
++        this(what, view, isRepair, null);
++    }
++
++    public PrepareItemCraftEvent(@NotNull CraftingInventory what, @NotNull InventoryView view, boolean isRepair, @Nullable Player player) {
+         super(view);
+         this.matrix = what;
+         this.repair = isRepair;
++        this.player = player;
++        // Paper end - add player param
+     }
+ 
+     /**
+@@ -59,4 +68,16 @@ public class PrepareItemCraftEvent extends InventoryEvent {
+     public static HandlerList getHandlerList() {
+         return handlers;
+     }
++
++    // Paper start
++    /**
++     * Get player who are trying to craft item.
++     * This method will return null if player is not set.
++     * @return the player
++     */
++    @Nullable
++    public Player getPlayer() {
++        return player;
++    }
++    // Paper end
+ }
