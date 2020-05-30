@@ -65,10 +65,10 @@ index ff60568ce4320e6ebfa50489a564538b0f57da82..def85e7af582f985dbaf06d68f6406b6
  }
 diff --git a/src/main/java/xyz/acrylicstyle/paper/CraftPaperServer.java b/src/main/java/xyz/acrylicstyle/paper/CraftPaperServer.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..53a49f057f34afb3bd87b6d8d3a0bfa2f411c98b
+index 0000000000000000000000000000000000000000..e85bf0e820b53fd395af4913fefe03d594dd943b
 --- /dev/null
 +++ b/src/main/java/xyz/acrylicstyle/paper/CraftPaperServer.java
-@@ -0,0 +1,40 @@
+@@ -0,0 +1,36 @@
 +package xyz.acrylicstyle.paper;
 +
 +import org.bukkit.craftbukkit.inventory.CraftItemStack;
@@ -78,10 +78,6 @@ index 0000000000000000000000000000000000000000..53a49f057f34afb3bd87b6d8d3a0bfa2
 +import xyz.acrylicstyle.paper.nbt.NBTTagCompound;
 +
 +public class CraftPaperServer implements PaperServer {
-+    static {
-+        Paper.setServer(new CraftPaperServer());
-+    }
-+
 +    @Override
 +    public ItemStackUtils itemStack(ItemStack itemStack) {
 +        return new ItemStackUtils(itemStack) {
@@ -111,7 +107,7 @@ index 0000000000000000000000000000000000000000..53a49f057f34afb3bd87b6d8d3a0bfa2
 +}
 diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/CraftNBT.java b/src/main/java/xyz/acrylicstyle/paper/nbt/CraftNBT.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..ec71eea109d4f2dbaf102ffc29cfeb583d7e7567
+index 0000000000000000000000000000000000000000..1d099f62d146d93df6f54f7b69b52aa3583f544e
 --- /dev/null
 +++ b/src/main/java/xyz/acrylicstyle/paper/nbt/CraftNBT.java
 @@ -0,0 +1,108 @@
@@ -182,7 +178,7 @@ index 0000000000000000000000000000000000000000..ec71eea109d4f2dbaf102ffc29cfeb58
 +            return new net.minecraft.server.NBTTagByteArray(((NBTTagByteArray) nbt).getBytes());
 +        } else if (nbt instanceof NBTTagList) {
 +            NBTTagList l = (NBTTagList) nbt;
-+            return new net.minecraft.server.NBTTagList(getNMSList(l), l.getTypeId());
++            return new net.minecraft.server.NBTTagList(getNMSList(l), l.getType());
 +        } else throw new IllegalArgumentException("Unknown type: " + nbt.getClass().getCanonicalName());
 +    }
 +
@@ -219,23 +215,19 @@ index 0000000000000000000000000000000000000000..ec71eea109d4f2dbaf102ffc29cfeb58
 +            return new NBTTagByteArray(((net.minecraft.server.NBTTagByteArray) nbt).getBytes());
 +        } else if (nbt instanceof net.minecraft.server.NBTTagList) {
 +            net.minecraft.server.NBTTagList l = (net.minecraft.server.NBTTagList) nbt;
-+            return new NBTTagList(getBukkitList(l), l.getTypeId());
++            return new NBTTagList(getBukkitList(l), (byte) l.a_());
 +        } else throw new IllegalArgumentException("Unknown type: " + nbt.getClass().getCanonicalName());
 +    }
 +}
 diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/SafeNativeNBT.java b/src/main/java/xyz/acrylicstyle/paper/nbt/SafeNativeNBT.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..195ef5e2459ba8537f0051e5f1858f36b53306ea
+index 0000000000000000000000000000000000000000..ae76de2147e02a6913b9e4fe8092ff5a8f735ab7
 --- /dev/null
 +++ b/src/main/java/xyz/acrylicstyle/paper/nbt/SafeNativeNBT.java
-@@ -0,0 +1,27 @@
+@@ -0,0 +1,23 @@
 +package xyz.acrylicstyle.paper.nbt;
 +
 +public class SafeNativeNBT implements NativeNBT {
-+    static {
-+        NBTNativeAccessor.setNativeNBT(new SafeNativeNBT());
-+    }
-+
 +    @Override
 +    public NBTTagByte createNBTTagByte(byte b) {
 +        return new NBTTagByte(net.minecraft.server.NBTTagByte.a(b).asByte());
