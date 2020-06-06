@@ -2,8 +2,8 @@ From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: acrylic-style <me@acrylicstyle.xyz>
 Date: Thu, 30 Apr 2020 19:24:40 +0900
 Subject: [PATCH] SPIGOT-809 Recipients for join and quit messages.
- https://hub.spigotmc.org/jira/projects/SPIGOT/issues/SPIGOT-809
 
+https://hub.spigotmc.org/jira/projects/SPIGOT/issues/SPIGOT-809
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
 index 5c19733de927a0d4eb3f63d62df986b9aee977e1..202ae1b11688de88dd7b2f732ca1e2e6cd7542a1 100644
