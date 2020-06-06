@@ -6,7 +6,7 @@ Subject: [PATCH] SPIGOT-809 Recipients for join and quit messages.
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index b25b3b48165e5fef4db99c2838de21d4eca502f4..e858eb53b2d502acfe680d432094ff2f390d2eea 100644
+index 5c19733de927a0d4eb3f63d62df986b9aee977e1..202ae1b11688de88dd7b2f732ca1e2e6cd7542a1 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -22,6 +22,8 @@ import org.apache.logging.log4j.Logger;
@@ -64,7 +64,7 @@ index b25b3b48165e5fef4db99c2838de21d4eca502f4..e858eb53b2d502acfe680d432094ff2f
          // CraftBukkit end
          if (this.isExemptPlayer()) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index ada082e67ac8a3e79bab5b360f09c9402f683b86..4c59244b099b7dc18ff3d45bf4d3fed5a534a80b 100644
+index 1830f3c205f149aca6db8ccde591c2569c3df59c..ad07641fb983b9d3838ce3319506a81d374be15d 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -16,6 +16,7 @@ import java.util.Map;
@@ -93,7 +93,7 @@ index ada082e67ac8a3e79bab5b360f09c9402f683b86..4c59244b099b7dc18ff3d45bf4d3fed5
              // Paper end
          }
          // CraftBukkit end
-@@ -456,7 +466,7 @@ public abstract class PlayerList {
+@@ -452,7 +462,7 @@ public abstract class PlayerList {
  
      }
  
@@ -102,7 +102,7 @@ index ada082e67ac8a3e79bab5b360f09c9402f683b86..4c59244b099b7dc18ff3d45bf4d3fed5
          WorldServer worldserver = entityplayer.getWorldServer();
  
          entityplayer.a(StatisticList.LEAVE_GAME);
-@@ -541,7 +551,7 @@ public abstract class PlayerList {
+@@ -537,7 +547,7 @@ public abstract class PlayerList {
          cserver.getScoreboardManager().removePlayer(entityplayer.getBukkitEntity());
          // CraftBukkit end
  

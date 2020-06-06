@@ -54,7 +54,7 @@ index e490866b3f4ac846c5988f5bc564e3902c3786d3..b8631019b36aedb7b54a1e8852b91102
      // Paper start - no-tick view distance
      public final Chunk getSendingChunk() {
 diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-index 302db2ca5149c30dec9fd39d1bf4fd23d53587c7..c5b5aaf4dd087dc87ecef08be4c8170f10e96b54 100644
+index 0bf7ad0db0c7df66e3c3f2063e23926bde6c3cf4..72585eff8986018cf4c26e0c23118c6913cf1705 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
 @@ -88,6 +88,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
