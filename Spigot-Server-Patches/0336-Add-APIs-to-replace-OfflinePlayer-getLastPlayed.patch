@@ -16,7 +16,7 @@ intent to remove) and replace it with two new methods, clearly named and
 documented as to their purpose.
 
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 960e1fd4ad33ffc9d2baa302a407f9ad94d9a7ce..c5b8e76e2c8646a5da6ac640ee1047a1d00b6849 100644
+index ab5e502a293c514bc0a71bb47b921a6a23a3c95a..98d480165ff3446317b4c9358a936cd7276cf908 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -76,6 +76,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
@@ -28,7 +28,7 @@ index 960e1fd4ad33ffc9d2baa302a407f9ad94d9a7ce..c5b8e76e2c8646a5da6ac640ee1047a1
      public boolean queueHealthUpdatePacket = false;
      public net.minecraft.server.PacketPlayOutUpdateHealth queuedHealthUpdatePacket;
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 6b67201852db53fee5e2ee79d41c13f675065f72..e148940ab3721cff27cf791c159c11b9b94191e4 100644
+index 69c2c3871a45052a64202470aa5bcc1feba61f11..707b4523536dd6c3192451982e6e33ea4e263053 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -94,6 +94,7 @@ public abstract class PlayerList {

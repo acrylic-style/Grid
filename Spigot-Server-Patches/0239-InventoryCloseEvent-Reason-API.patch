@@ -88,7 +88,7 @@ index 88692d9eaea57a4d172d537a6cf2a3bffe058d54..f35d23340665ab323732915efc0c0ad7
          this.m();
      }
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 4a0a8479448b5872f356379d6f68d9142d85e175..8eb12e89ea84051281149d96ca82905bc4366ba4 100644
+index 74b9335f538b5fd25a8559a567ca259f9026bf80..b90e52f133f571a95d30cbf6afa0c464b370a3ef 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -2040,7 +2040,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
@@ -101,7 +101,7 @@ index 4a0a8479448b5872f356379d6f68d9142d85e175..8eb12e89ea84051281149d96ca82905b
          this.player.m();
      }
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 1800a6c86b2150b8183acdce3a7f6daa1c9a350b..b69cff40922ba2d1a44c11bcae86f9439130ad96 100644
+index f7a8eb4a9274e6ce4efa6de82031659d543d7aa9..a0c6ade8af5f50ca2e0153cc3dd4bd3b90d727de 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -390,7 +390,7 @@ public abstract class PlayerList {

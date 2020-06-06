@@ -60,7 +60,7 @@ index f1222fcb2bd52b8781d0f92c94e1472fa7b1e493..28f48f22522ef8c3c66381abcf017f08
              if (entityplayer != null) {
                  this.g = LoginListener.EnumProtocolState.DELAY_ACCEPT;
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 1673e5b8f13978cd4a47555b9806d801cbbdf3c8..56bace816f5ea5b8b837df7e7707796f68b76f37 100644
+index 4e0dcc272af6e2eb19ba563d124f2b499bbebd22..a3ecbacef47940be91a04156015d445fe122c418 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -69,6 +69,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
@@ -97,7 +97,7 @@ index 1673e5b8f13978cd4a47555b9806d801cbbdf3c8..56bace816f5ea5b8b837df7e7707796f
          this.minecraftServer.getMethodProfiler().enter("keepAlive");
          // Paper Start - give clients a longer time to respond to pings as per pre 1.12.2 timings
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 40f5d9fa9069a330b6999eefa50015daa4c19217..60af90bf8c376ab8ab61b16ae38886149faa88cc 100644
+index 13cecef83fe518f2669f64fdf992de08e81cf0bf..e7f173eef0adc68f00c06579b7c104481a95c0c8 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -52,11 +52,12 @@ public abstract class PlayerList {
@@ -194,23 +194,7 @@ index 40f5d9fa9069a330b6999eefa50015daa4c19217..60af90bf8c376ab8ab61b16ae3888614
          // CraftBukkit end
  
          entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityMetadata(entityplayer.getId(), entityplayer.datawatcher, true)); // CraftBukkit - BungeeCord#2321, send complete data to self on spawn
-@@ -245,6 +294,7 @@ public abstract class PlayerList {
-         }
- 
-         // Paper start - move vehicle into method so it can be called above - short circuit around that code
-+        ((WorldServer)entityplayer.world).getChunkProvider().playerChunkMap.addEntity(entityplayer); // track entity now
-         onPlayerJoinFinish(entityplayer, worldserver, s1);
-     }
-     private void mountSavedVehicle(EntityPlayer entityplayer, WorldServer worldserver, NBTTagCompound nbttagcompound) {
-@@ -390,6 +440,7 @@ public abstract class PlayerList {
- 
-     protected void savePlayerFile(EntityPlayer entityplayer) {
-         if (!entityplayer.getBukkitEntity().isPersistent()) return; // CraftBukkit
-+        if (!entityplayer.didPlayerJoinEvent) return; // Paper - If we never fired PJE, we disconnected during login. Data has not changed, and additionally, our saved vehicle is not loaded! If we save now, we will lose our vehicle (CraftBukkit bug)
-         this.playerFileData.save(entityplayer);
-         ServerStatisticManager serverstatisticmanager = (ServerStatisticManager) entityplayer.getStatisticManager(); // CraftBukkit
- 
-@@ -414,7 +465,7 @@ public abstract class PlayerList {
+@@ -412,7 +461,7 @@ public abstract class PlayerList {
          org.bukkit.craftbukkit.event.CraftEventFactory.handleInventoryCloseEvent(entityplayer, org.bukkit.event.inventory.InventoryCloseEvent.Reason.DISCONNECT); // Paper
  
          PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent(cserver.getPlayer(entityplayer), "\u00A7e" + entityplayer.getName() + " left the game");
@@ -219,7 +203,7 @@ index 40f5d9fa9069a330b6999eefa50015daa4c19217..60af90bf8c376ab8ab61b16ae3888614
          entityplayer.getBukkitEntity().disconnect(playerQuitEvent.getQuitMessage());
  
          if (server.isMainThread()) entityplayer.playerTick();// SPIGOT-924 // Paper - don't tick during emergency shutdowns (Watchdog)
-@@ -466,6 +517,13 @@ public abstract class PlayerList {
+@@ -464,6 +513,13 @@ public abstract class PlayerList {
              // this.p.remove(uuid);
              // CraftBukkit end
          }
@@ -233,7 +217,7 @@ index 40f5d9fa9069a330b6999eefa50015daa4c19217..60af90bf8c376ab8ab61b16ae3888614
  
          // CraftBukkit start
          //  this.sendAll(new PacketPlayOutPlayerInfo(EnumPlayerInfoAction.REMOVE_PLAYER, new EntityPlayer[]{entityplayer}));
-@@ -483,7 +541,7 @@ public abstract class PlayerList {
+@@ -481,7 +537,7 @@ public abstract class PlayerList {
          cserver.getScoreboardManager().removePlayer(entityplayer.getBukkitEntity());
          // CraftBukkit end
  
@@ -242,7 +226,7 @@ index 40f5d9fa9069a330b6999eefa50015daa4c19217..60af90bf8c376ab8ab61b16ae3888614
      }
  
      // CraftBukkit start - Whole method, SocketAddress to LoginListener, added hostname to signature, return EntityPlayer
-@@ -502,6 +560,13 @@ public abstract class PlayerList {
+@@ -500,6 +556,13 @@ public abstract class PlayerList {
                  list.add(entityplayer);
              }
          }

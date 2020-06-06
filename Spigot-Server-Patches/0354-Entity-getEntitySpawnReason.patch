@@ -59,7 +59,7 @@ index 9368c4afa7bbb336894d73069b3c0858231d1e81..ae0f5e5a71502c432a4dcaa42a3fc9ee
  
          } catch (Throwable throwable) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index faea0b31ddc43f5edabd53756e8b3f796f0c46bf..faecf79341623305a2ae55cb9c4b8844adf0c5bb 100644
+index dcae6ffe465a2d85d08729eee3c0b39649fddb91..094640da6a79165cfa505b6d018dc7e2e57cb38a 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -240,7 +240,7 @@ public abstract class PlayerList {
@@ -72,7 +72,7 @@ index faea0b31ddc43f5edabd53756e8b3f796f0c46bf..faecf79341623305a2ae55cb9c4b8844
              });
  
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index a75034079b0f5a06509f9762593c5e805e35881c..955003d5f830b3a6988bf1b3b4058c28d5d48f77 100644
+index 271a1ef3d0aae7c1d0b373963504e70f2843cd24..0decbee892c532c0188b373728d8458c8cbbc0d9 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
 @@ -1000,6 +1000,7 @@ public class WorldServer extends World {
