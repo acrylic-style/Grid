@@ -12,7 +12,7 @@ to the client, so that it doesn't attempt to calculate them.
 This mitigates the frametime impact to a minimum (but it's still there).
 
 diff --git a/src/main/java/net/minecraft/server/Chunk.java b/src/main/java/net/minecraft/server/Chunk.java
-index fc332dd824ecb4237edbf2974cfe036309d9765c..f22c37be6e779e569db6016b633872fefa20b1a2 100644
+index c80a55ee53eac128c94d74b78c5641854e974750..d7beb47d9e07707e5875c50932dfe4698cb6ad72 100644
 --- a/src/main/java/net/minecraft/server/Chunk.java
 +++ b/src/main/java/net/minecraft/server/Chunk.java
 @@ -277,7 +277,7 @@ public class Chunk implements IChunkAccess {
@@ -25,7 +25,7 @@ index fc332dd824ecb4237edbf2974cfe036309d9765c..f22c37be6e779e569db6016b633872fe
                          Object temp = backingSet[index];
                          if (!(temp instanceof EntityPlayer)) {
 diff --git a/src/main/java/net/minecraft/server/ChunkSection.java b/src/main/java/net/minecraft/server/ChunkSection.java
-index b7b06e082e59f8518be2036637385c7710d524ea..71da9f00b8a969e84414066fb1852cecb9440e14 100644
+index f6df85c6bf27bfa7a16967259a6016c9473201a5..4dcb111c704a495c214827f4ef554fb8e65ca2da 100644
 --- a/src/main/java/net/minecraft/server/ChunkSection.java
 +++ b/src/main/java/net/minecraft/server/ChunkSection.java
 @@ -99,6 +99,7 @@ public class ChunkSection {
@@ -37,10 +37,10 @@ index b7b06e082e59f8518be2036637385c7710d524ea..71da9f00b8a969e84414066fb1852cec
          return chunksection == Chunk.a || chunksection.c();
      }
 diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-index 72585eff8986018cf4c26e0c23118c6913cf1705..5ae8c659a356bc6a7a5390fdac5208eb33075195 100644
+index 68dd9220bb360c75057919fed0598b415b947e4d..0aa14bfca6e1845eb6e9f5bd4e0e36335fa7f532 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-@@ -417,7 +417,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -402,7 +402,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
                      player.needsChunkCenterUpdate = false;
                      player.playerConnection.sendPacket(new PacketPlayOutViewCentre(currPosX, currPosZ));
                  }
@@ -49,7 +49,7 @@ index 72585eff8986018cf4c26e0c23118c6913cf1705..5ae8c659a356bc6a7a5390fdac5208eb
              },
              (EntityPlayer player, int rangeX, int rangeZ, int currPosX, int currPosZ, int prevPosX, int prevPosZ,
               com.destroystokyo.paper.util.misc.PooledLinkedHashSets.PooledObjectLinkedOpenHashSet<EntityPlayer> newState) -> {
-@@ -2052,12 +2052,112 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1921,12 +1921,112 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
  
      }
  

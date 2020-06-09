@@ -8,7 +8,7 @@ Adds a new method to fetch the location of a player's bed without generating any
 getPotentialBedLocation - Gets the last known location of a player's bed. This does not preform any check if the bed is still valid and does not load any chunks.
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java
-index 87bdb91f8ea38905f96d5c59c76f66517b54577f..1b26317e7a51f2cd47f01497fa1574ec7097f2b3 100644
+index a5e9fc90ffae794b9b14468337ce7b091fd0dc35..a2815073bc04dd831fa22da47162031d360683dd 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java
 @@ -143,6 +143,17 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {

@@ -5,7 +5,7 @@ Subject: [PATCH] Add option to disable movement check
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index ca1c2c16d68d760141a809221abd518926e50d0e..d710e98217b4aa52fde6ee5989ade839d6913ffa 100644
+index a8790a8c0c2e5528d0ab9134d5aeadd389d52b9d..373cc4e1032f36c8ceee488e7b02d4105b372635 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -1016,14 +1016,16 @@ public class PlayerConnection implements PacketListenerPlayIn {
