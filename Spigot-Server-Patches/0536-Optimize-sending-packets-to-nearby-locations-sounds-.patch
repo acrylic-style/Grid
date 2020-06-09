@@ -11,10 +11,10 @@ This will drastically cut down on packet sending cost for worlds with
 lots of players in them.
 
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index ec86bd84d55a68fb78b761ae3d79577122c4cca5..1830f3c205f149aca6db8ccde591c2569c3df59c 100644
+index 9869a5a55bd54f9c9d798f14fb78541ffb2bce07..54bce6c43730f15107614b4d8eaa0595e00f4f94 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -1023,11 +1023,30 @@ public abstract class PlayerList {
+@@ -1028,11 +1028,30 @@ public abstract class PlayerList {
              world = (WorldServer) entityhuman.world;
          }
  
@@ -51,7 +51,7 @@ index ec86bd84d55a68fb78b761ae3d79577122c4cca5..1830f3c205f149aca6db8ccde591c256
  
              // CraftBukkit start - Test if player receiving packet can see the source of the packet
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index 9e32e2db10f5faaa3c5f4adc5cbc2c1a2e4d3073..854c97bddb711ed252c2ae8398247641fdfb10be 100644
+index aaf85a1497de98522e3a01d4f81a267c4b0cc087..2c9acffe5a62af43ff4f4ccdb6962929d645e226 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
 @@ -70,6 +70,7 @@ public class WorldServer extends World {

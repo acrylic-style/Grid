@@ -23,10 +23,10 @@ index d4ebcf8f66197299256bd6b65710a1488c90ea41..a3b41ce5fc70948d4804659a472cb622
          }));
  
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index 4612697569fd6e3683b0e58453b61a9a8d077229..5c8a946d5c895fc2622c7df656cc462c58104cf7 100644
+index 9db76eae1649fe2ce0856ff4bdcb15569bf58d93..c3f7717869c86d9ac6395615bceda324aea16b27 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-@@ -679,4 +679,9 @@ public class PaperWorldConfig {
+@@ -677,4 +677,9 @@ public class PaperWorldConfig {
          phantomIgnoreCreative = getBoolean("phantoms-do-not-spawn-on-creative-players", phantomIgnoreCreative);
          phantomOnlyAttackInsomniacs = getBoolean("phantoms-only-attack-insomniacs", phantomOnlyAttackInsomniacs);
      }
@@ -553,10 +553,10 @@ index 74b868d7cec0260a10ca7718f48308f4ec54d56b..f832e7cdfc6741a932787f02754f1452
                          }
                      }
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index e7f173eef0adc68f00c06579b7c104481a95c0c8..ec86bd84d55a68fb78b761ae3d79577122c4cca5 100644
+index e0c3b642cf0be0f61f96cecdc99f4687699e1522..9869a5a55bd54f9c9d798f14fb78541ffb2bce07 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -151,7 +151,7 @@ public abstract class PlayerList {
+@@ -152,7 +152,7 @@ public abstract class PlayerList {
          // CraftBukkit - getType()
          // Spigot - view distance
          networkmanager.queueImmunity = true; // Paper
@@ -565,7 +565,7 @@ index e7f173eef0adc68f00c06579b7c104481a95c0c8..ec86bd84d55a68fb78b761ae3d795771
          entityplayer.getBukkitEntity().sendSupportedChannels(); // CraftBukkit
          playerconnection.sendPacket(new PacketPlayOutCustomPayload(PacketPlayOutCustomPayload.a, (new PacketDataSerializer(Unpooled.buffer())).a(this.getServer().getServerModName())));
          playerconnection.sendPacket(new PacketPlayOutServerDifficulty(worlddata.getDifficulty(), worlddata.isDifficultyLocked()));
-@@ -769,7 +769,7 @@ public abstract class PlayerList {
+@@ -774,7 +774,7 @@ public abstract class PlayerList {
          WorldData worlddata = worldserver.getWorldData();
  
          entityplayer1.playerConnection.sendPacket(new PacketPlayOutRespawn(worldserver.worldProvider.getDimensionManager().getType(),  WorldData.c(worldserver.getWorldData().getSeed()), worldserver.getWorldData().getType(), entityplayer1.playerInteractManager.getGameMode()));
@@ -574,7 +574,7 @@ index e7f173eef0adc68f00c06579b7c104481a95c0c8..ec86bd84d55a68fb78b761ae3d795771
          entityplayer1.spawnIn(worldserver);
          entityplayer1.dead = false;
          entityplayer1.playerConnection.teleport(new Location(worldserver.getWorld(), entityplayer1.locX(), entityplayer1.locY(), entityplayer1.locZ(), entityplayer1.yaw, entityplayer1.pitch));
-@@ -1255,7 +1255,7 @@ public abstract class PlayerList {
+@@ -1260,7 +1260,7 @@ public abstract class PlayerList {
  
      public void a(int i) {
          this.viewDistance = i;
@@ -584,7 +584,7 @@ index e7f173eef0adc68f00c06579b7c104481a95c0c8..ec86bd84d55a68fb78b761ae3d795771
  
          while (iterator.hasNext()) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 9f4268202653f6f0ebed49cd67ae691a8b18ccd2..5535f98ac0ec1668b162cb652e88a122bcadac0c 100644
+index 1c7955d3ae7ddd1c2d924cec20a91202cf090f40..7bd3f789b6055d73f3a6c0628652cca241147887 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -444,8 +444,13 @@ public abstract class World implements GeneratorAccess, AutoCloseable {

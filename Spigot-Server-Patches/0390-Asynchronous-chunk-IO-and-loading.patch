@@ -2935,10 +2935,10 @@ index 2f95174fcc467908808ed3f2dc956bdcafdc3558..134c76065bf382912e6c28d15449db3f
 +//    Paper end
  }
 diff --git a/src/main/java/net/minecraft/server/MCUtil.java b/src/main/java/net/minecraft/server/MCUtil.java
-index 20f54baacebe98435539d4cbef41f182040db2e9..9f8c0e10e42d233a8b74ee5a71fb8fb6ea8e7480 100644
+index ece411feee81f96ae0462cf7643ec450cafad7a7..ea087800eb838371d5da70538091e1148816296e 100644
 --- a/src/main/java/net/minecraft/server/MCUtil.java
 +++ b/src/main/java/net/minecraft/server/MCUtil.java
-@@ -726,4 +726,9 @@ public final class MCUtil {
+@@ -708,4 +708,9 @@ public final class MCUtil {
              out.print(fileData);
          }
      }
@@ -3527,7 +3527,7 @@ index 94b0c54d9d4d77b724087be55ffe6ce464a0bbe7..6552bbf06637b08626cbf0fb352123c3
          return this.m;
      }
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index a5700a955b6d7927228a14128860b49e79e61f03..6a7bdf8c5f38ca4eb578e1104375e5773269330c 100644
+index b26e9720af0c1c6e63ef5df0d128a8e96eee702e..2bdb8ddde37c79e8d5d584f044987865b64ad16e 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -541,6 +541,13 @@ public class PlayerConnection implements PacketListenerPlayIn {
@@ -3933,7 +3933,7 @@ index c999f8c9bf8a59e19b3d6d1b7ad8b5fb6e48b928..1a5ec6152c15a6ece227d4bac00c3b02
  
          HAS_SPACE(VillagePlaceRecord::d), IS_OCCUPIED(VillagePlaceRecord::e), ANY((villageplacerecord) -> {
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index 58018bfcee5396d440b0f022a7aa9ed452e67ec5..f84248ad9f90aaaf02afa35a4147fb11f703fdcb 100644
+index 83585f3ba7ef9e72f3702079a82f62c8b17e4077..83e6c872028107a17de1c08a5f6e8a02d62277ea 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
 @@ -82,6 +82,79 @@ public class WorldServer extends World {
@@ -4015,7 +4015,7 @@ index 58018bfcee5396d440b0f022a7aa9ed452e67ec5..f84248ad9f90aaaf02afa35a4147fb11
 +
      // Add env and gen to constructor
      public WorldServer(MinecraftServer minecraftserver, Executor executor, WorldNBTStorage worldnbtstorage, WorldData worlddata, DimensionManager dimensionmanager, GameProfilerFiller gameprofilerfiller, WorldLoadListener worldloadlistener, org.bukkit.World.Environment env, org.bukkit.generator.ChunkGenerator gen) {
-         super(worlddata, dimensionmanager, (world, worldprovider) -> {
+         super(worlddata, dimensionmanager, executor, (world, worldprovider) -> { // Paper - pass executor down
 @@ -125,6 +198,8 @@ public class WorldServer extends World {
  
          this.mobSpawnerTrader = this.worldProvider.getDimensionManager().getType() == DimensionManager.OVERWORLD ? new MobSpawnerTrader(this) : null; // CraftBukkit - getType()
