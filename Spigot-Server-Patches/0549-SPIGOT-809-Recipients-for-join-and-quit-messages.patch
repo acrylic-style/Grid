@@ -64,18 +64,58 @@ index 5c19733de927a0d4eb3f63d62df986b9aee977e1..202ae1b11688de88dd7b2f732ca1e2e6
          // CraftBukkit end
          if (this.isExemptPlayer()) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 1830f3c205f149aca6db8ccde591c2569c3df59c..ad07641fb983b9d3838ce3319506a81d374be15d 100644
+index 54bce6c43730f15107614b4d8eaa0595e00f4f94..c6a6ab84393c679f7ca23056a9ee68dbff7abaa7 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -16,6 +16,7 @@ import java.util.Map;
+@@ -16,7 +16,7 @@ import java.util.Map;
  import java.util.Optional;
  import java.util.Set;
  import java.util.UUID;
+-import java.util.concurrent.CompletableFuture;
 +import java.util.function.Consumer;
  import javax.annotation.Nullable;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
-@@ -245,7 +246,16 @@ public abstract class PlayerList {
+@@ -171,18 +171,7 @@ public abstract class PlayerList {
+         WorldServer finalWorldserver = worldserver;
+         int chunkX = loc.getBlockX() >> 4;
+         int chunkZ = loc.getBlockZ() >> 4;
+-        final ChunkCoordIntPair pos = new ChunkCoordIntPair(chunkX, chunkZ);
+-        PlayerChunkMap playerChunkMap = finalWorldserver.getChunkProvider().playerChunkMap;
+-        playerChunkMap.chunkDistanceManager.addTicketAtLevel(TicketType.LOGIN, pos, 31, pos.pair());
+-        worldserver.getChunkProvider().tickDistanceManager();
+-        worldserver.getChunkProvider().getChunkAtAsynchronously(chunkX, chunkZ, true, true).thenApply(chunk -> {
+-            PlayerChunk updatingChunk = playerChunkMap.getUpdatingChunk(pos.pair());
+-            if (updatingChunk != null) {
+-                return updatingChunk.getEntityTickingFuture();
+-            } else {
+-                return CompletableFuture.completedFuture(chunk);
+-            }
+-        }).thenAccept(chunk -> {
++        worldserver.getChunkProvider().getTickingChunkAsync(chunkX, chunkZ, (chunk -> { // use ticking - as it has at least 1 neighbours loaded
+             playerconnection.playerJoinReady = () -> {
+                 postChunkLoadJoin(
+                     entityplayer, finalWorldserver, networkmanager, playerconnection,
+@@ -190,7 +179,17 @@ public abstract class PlayerList {
+                 );
+                 //playerChunkMap.chunkDistanceManager.removeTicketAtLevel(TicketType.LOGIN, pos, 31, pos.pair());
+             };
+-        });
++        }));
++        // boost the priorities
++        worldserver.asyncChunkTaskManager.raisePriority(chunkX, chunkZ, com.destroystokyo.paper.io.PrioritizedTaskQueue.HIGHEST_PRIORITY);
++        for (int cx = -1; cx <= 1; cx++) {
++            for (int cz = -1; cz <= 1; cz++) {
++                if (cx == 0 && cz == 0) continue;
++                // we have to directly request it otherwise the task won't be started yet to boost priority
++                worldserver.getChunkProvider().getFullChunkAsync(chunkX + cx, chunkZ + cz, null);
++                worldserver.asyncChunkTaskManager.raisePriority(chunkX + cx, chunkZ + cz, com.destroystokyo.paper.io.PrioritizedTaskQueue.HIGHEST_PRIORITY);
++            }
++        }
+     }
+ 
+     EntityPlayer getActivePlayer(UUID uuid) {
+@@ -248,7 +247,16 @@ public abstract class PlayerList {
  
          if (joinMessage != null && joinMessage.length() > 0) {
              // Paper start - Removed sendAll for loop and broadcasted to console also
@@ -93,7 +133,7 @@ index 1830f3c205f149aca6db8ccde591c2569c3df59c..ad07641fb983b9d3838ce3319506a81d
              // Paper end
          }
          // CraftBukkit end
-@@ -452,7 +462,7 @@ public abstract class PlayerList {
+@@ -457,7 +465,7 @@ public abstract class PlayerList {
  
      }
  
@@ -102,7 +142,7 @@ index 1830f3c205f149aca6db8ccde591c2569c3df59c..ad07641fb983b9d3838ce3319506a81d
          WorldServer worldserver = entityplayer.getWorldServer();
  
          entityplayer.a(StatisticList.LEAVE_GAME);
-@@ -537,7 +547,7 @@ public abstract class PlayerList {
+@@ -542,7 +550,7 @@ public abstract class PlayerList {
          cserver.getScoreboardManager().removePlayer(entityplayer.getBukkitEntity());
          // CraftBukkit end
  
