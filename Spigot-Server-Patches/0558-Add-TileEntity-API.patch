@@ -17,7 +17,7 @@ index a8e64dfdab1e73894144a65c10c15d22f9198d3d..0a25e6d5898a9bb1e2ac2850583006e1
          return this.d(new NBTTagCompound());
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index efaf86eeb9f98eba07d4277c76edbba77a59215e..67e4f27511e92ff1ff903720431b040ea9819d05 100644
+index 557b1fce82928e88796b6b9ce45d6a9b361b908d..f51f7258a76786db147c12fa27b1c021d65ee18f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -43,43 +43,7 @@ import java.util.logging.Level;
@@ -77,7 +77,7 @@ index efaf86eeb9f98eba07d4277c76edbba77a59215e..67e4f27511e92ff1ff903720431b040e
      // Paper end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 314700041068c79898b555538e8f327693cf9898..a3e523719446f17f9faf4d1b26e3d16673c11a7b 100644
+index f4a1be34f08551692c1612cffea04fdcf71f2cd4..95364c940251c856866a330647b0ef907cba6fbe 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -22,78 +22,7 @@ import java.util.UUID;
@@ -160,7 +160,7 @@ index 314700041068c79898b555538e8f327693cf9898..a3e523719446f17f9faf4d1b26e3d166
  import org.apache.commons.lang.Validate;
  import org.bukkit.BlockChangeDelegate;
  import org.bukkit.Bukkit;
-@@ -2533,6 +2462,44 @@ public class CraftWorld implements World {
+@@ -2547,6 +2476,44 @@ public class CraftWorld implements World {
      }
      // Paper end - per player view distance
  
