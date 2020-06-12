@@ -1,0 +1,32 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Fri, 12 Jun 2020 16:49:04 +0900
+Subject: [PATCH] Add VERY_LOWEST EventPriority
+
+Some plugins were using LOWEST priority and some plugins are not able to listen lower than lowest.
+This patch allows plugins to listen VERY_LOWEST priority.
+
+diff --git a/src/main/java/org/bukkit/event/EventPriority.java b/src/main/java/org/bukkit/event/EventPriority.java
+index 61ffa50f2288609cd59c3a75d2ebe81ef735fed9..c2a295c2b5adb7a9732e3b0ece265a75db34042a 100644
+--- a/src/main/java/org/bukkit/event/EventPriority.java
++++ b/src/main/java/org/bukkit/event/EventPriority.java
+@@ -5,8 +5,18 @@ package org.bukkit.event;
+  */
+ public enum EventPriority {
+ 
++    // Paper start
+     /**
+-     * Event call is of very low importance and should be ran first, to allow
++     * Event call is of super low importance and should be ran first, to allow
++     * other plugins to further customize the outcome
++     * <p>
++     * This event is not recommended since this may modify the behavior of
++     * the other plugins and event systems.
++     */
++    VERY_LOWEST(-1),
++    // Paper end
++    /**
++     * Event call is of very low importance and should be ran second, to allow
+      * other plugins to further customise the outcome
+      */
+     LOWEST(0),
