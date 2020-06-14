@@ -475,7 +475,7 @@ index 0000000000000000000000000000000000000000..526278e8f7313b7c75d2bd053d6319bb
 +}
 diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagCompound.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagCompound.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..e85c3a7d46b633ac2f69bb93caf7f403a3113279
+index 0000000000000000000000000000000000000000..20876fee0ee274646a093633993967049c0438c6
 --- /dev/null
 +++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagCompound.java
 @@ -0,0 +1,307 @@
@@ -564,7 +564,7 @@ index 0000000000000000000000000000000000000000..e85c3a7d46b633ac2f69bb93caf7f403
 +     */
 +    public boolean hasKeyOfType(@NotNull String key, int type) {
 +        byte b0 = this.getTypeId(key);
-+        return b0 == type || (type == 99 && Arrays.asList((byte) 1, 2, 3, 4, 5, 6).contains(b0)); // 1-6s are numbers
++        return b0 == type || (type == 99 && Arrays.asList((byte) 1, (byte) 2, (byte) 3, (byte) 4, (byte) 5, (byte) 6).contains(b0)); // 1-6s are numbers
 +    }
 +
 +    public boolean hasKey(@NotNull String key) {
@@ -699,7 +699,7 @@ index 0000000000000000000000000000000000000000..e85c3a7d46b633ac2f69bb93caf7f403
 +    @NotNull
 +    public String getString(@NotNull String key) {
 +        try {
-+            if (this.hasKeyOfType(key, 99)) return this.map.get(key).asString();
++            if (this.hasKeyOfType(key, 8)) return this.map.get(key).asString();
 +        } catch (ClassCastException ignored) {}
 +        return "";
 +    }
@@ -715,7 +715,7 @@ index 0000000000000000000000000000000000000000..e85c3a7d46b633ac2f69bb93caf7f403
 +    @NotNull
 +    public int[] getIntArray(@NotNull String key) {
 +        try {
-+            if (this.hasKeyOfType(key, 7)) return ((NBTTagIntArray) this.map.get(key)).getInts();
++            if (this.hasKeyOfType(key, 11)) return ((NBTTagIntArray) this.map.get(key)).getInts();
 +        } catch (ClassCastException ignored) {}
 +        return new int[0];
 +    }
@@ -723,7 +723,7 @@ index 0000000000000000000000000000000000000000..e85c3a7d46b633ac2f69bb93caf7f403
 +    @NotNull
 +    public long[] getLongArray(@NotNull String key) {
 +        try {
-+            if (this.hasKeyOfType(key, 7)) return ((NBTTagLongArray) this.map.get(key)).getLongs();
++            if (this.hasKeyOfType(key, 12)) return ((NBTTagLongArray) this.map.get(key)).getLongs();
 +        } catch (ClassCastException ignored) {}
 +        return new long[0];
 +    }
