@@ -18,10 +18,10 @@ index 460fda05a62b12db2edcfb7ea8b2a5dd8e4b110d..d01de91a08a6c8ebdb49a80a2416b3fa
  
 diff --git a/src/main/java/xyz/acrylicstyle/paper/command/defaults/PingCommand.java b/src/main/java/xyz/acrylicstyle/paper/command/defaults/PingCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..c85171887559f20e4012292b220d54128a5651fb
+index 0000000000000000000000000000000000000000..795b4de07c9b3c4a41972dc9071f60cb1e048224
 --- /dev/null
 +++ b/src/main/java/xyz/acrylicstyle/paper/command/defaults/PingCommand.java
-@@ -0,0 +1,67 @@
+@@ -0,0 +1,72 @@
 +package xyz.acrylicstyle.paper.command.defaults;
 +
 +import org.bukkit.Bukkit;
@@ -48,9 +48,14 @@ index 0000000000000000000000000000000000000000..c85171887559f20e4012292b220d5412
 +            sender.sendMessage(ChatColor.RED + "You must specify player to get ping.");
 +            return true;
 +        }
++        boolean perm = sender.hasPermission("bukkit.command.ping");
 +        if (args.length == 0) {
 +            Player player = (Player) sender;
 +            sender.sendMessage(ChatColor.GREEN + "Ping: " + getPingMessage(player.spigot().getPing()));
++            return true;
++        }
++        if (!perm) {
++            sender.sendMessage(Bukkit.getPermissionMessage());
 +            return true;
 +        }
 +        String p = args[0];
