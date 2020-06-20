@@ -64,7 +64,7 @@ index 4b0c4da5408e5596fdd2516617b7f977d83fc246..589954f40f235dc480adf382ef7d0ddf
  
          Entity entity1 = this.getShooter();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 5e5d8717baee44768c9171165cad5e8cefafe175..efaf86eeb9f98eba07d4277c76edbba77a59215e 100644
+index 4e64d5b47de5da1318b8266646bc7a353ee7252e..557b1fce82928e88796b6b9ce45d6a9b361b908d 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -201,8 +201,7 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
