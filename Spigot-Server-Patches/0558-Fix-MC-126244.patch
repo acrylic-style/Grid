@@ -47,7 +47,7 @@ index b500ef0b642515d0a9b65dbf10908493282182d2..d8f592b79a55801e93c3357b353fa89f
  
      private static float a(int i, int j, int k, int l) {
 diff --git a/src/main/java/net/minecraft/server/EntityArrow.java b/src/main/java/net/minecraft/server/EntityArrow.java
-index 4b0c4da5408e5596fdd2516617b7f977d83fc246..589954f40f235dc480adf382ef7d0ddf2f422506 100644
+index 7eed0a60ed78864a615f2844a0736a3ef8413ecc..b5eb69b26327e4f796ea1a822c07fe3efdea0dba 100644
 --- a/src/main/java/net/minecraft/server/EntityArrow.java
 +++ b/src/main/java/net/minecraft/server/EntityArrow.java
 @@ -347,8 +347,11 @@ public abstract class EntityArrow extends Entity implements IProjectile {

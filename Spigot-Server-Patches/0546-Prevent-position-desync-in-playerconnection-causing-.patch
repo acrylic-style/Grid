@@ -14,7 +14,7 @@ behaviour, we need to move all of this dangerous logic outside
 of the move call and into an appropriate place in the tick method.
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 7123e197c7ed01afd4fbf7aa0760611373039a13..3e5dea60fd043010506436e700601c0e8ffd8f17 100644
+index 40084641bd53062618d92f80c302e5dcc8fb5609..e8f513099109074998c7686dd6e3b81d592be07b 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -1080,6 +1080,11 @@ public class PlayerConnection implements PacketListenerPlayIn {
