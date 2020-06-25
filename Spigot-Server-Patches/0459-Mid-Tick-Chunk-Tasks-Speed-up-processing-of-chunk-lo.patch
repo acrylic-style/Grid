@@ -30,7 +30,7 @@ In a view distance of 15, chunk loading performance was visually faster on the c
 Flying at high speed in spectator mode was able to keep up with chunk loading (as long as they are already generated)
 
 diff --git a/src/main/java/co/aikar/timings/MinecraftTimings.java b/src/main/java/co/aikar/timings/MinecraftTimings.java
-index 11c5f8e033689f483a64486d2f8c206ca26ff9da..48e1c500695696ee6d2b7ed0ab01590c3623a608 100644
+index a58ef60d9976b3afc50e94364cf474bd2e5fdfd6..dd07223978c9aa648673d96ba7b3db1160d43bbf 100644
 --- a/src/main/java/co/aikar/timings/MinecraftTimings.java
 +++ b/src/main/java/co/aikar/timings/MinecraftTimings.java
 @@ -13,6 +13,7 @@ import java.util.Map;
@@ -56,10 +56,10 @@ index f1b41e16c8ce8323a896339c5d822f8ff7d8f7e6..f8f225e18fa38cad917f52a379233e0a
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/ChunkProviderServer.java b/src/main/java/net/minecraft/server/ChunkProviderServer.java
-index 9d5275c628b3963befdfa60841ef3c3331c8338c..b6146330a55665a0365ff7474f1843766e0c0ce1 100644
+index a1b5e6b90fc93f83186cf3ebf3e158767008c69a..2ef8506f10426b8a5877e30986c105c0d95be774 100644
 --- a/src/main/java/net/minecraft/server/ChunkProviderServer.java
 +++ b/src/main/java/net/minecraft/server/ChunkProviderServer.java
-@@ -699,6 +699,7 @@ public class ChunkProviderServer extends IChunkProvider {
+@@ -689,6 +689,7 @@ public class ChunkProviderServer extends IChunkProvider {
          this.world.getMethodProfiler().enter("purge");
          this.world.timings.doChunkMap.startTiming(); // Spigot
          this.chunkMapDistance.purgeTickets();
@@ -67,7 +67,7 @@ index 9d5275c628b3963befdfa60841ef3c3331c8338c..b6146330a55665a0365ff7474f184376
          this.tickDistanceManager();
          this.world.timings.doChunkMap.stopTiming(); // Spigot
          this.world.getMethodProfiler().exitEnter("chunks");
-@@ -708,6 +709,7 @@ public class ChunkProviderServer extends IChunkProvider {
+@@ -698,6 +699,7 @@ public class ChunkProviderServer extends IChunkProvider {
          this.world.timings.doChunkUnload.startTiming(); // Spigot
          this.world.getMethodProfiler().exitEnter("unload");
          this.playerChunkMap.unloadChunks(booleansupplier);
@@ -75,7 +75,7 @@ index 9d5275c628b3963befdfa60841ef3c3331c8338c..b6146330a55665a0365ff7474f184376
          this.world.timings.doChunkUnload.stopTiming(); // Spigot
          this.world.getMethodProfiler().exit();
          this.clearCache();
-@@ -766,7 +768,7 @@ public class ChunkProviderServer extends IChunkProvider {
+@@ -756,7 +758,7 @@ public class ChunkProviderServer extends IChunkProvider {
                  entityPlayer.playerNaturallySpawnedEvent.callEvent();
              };
              // Paper end
@@ -84,7 +84,7 @@ index 9d5275c628b3963befdfa60841ef3c3331c8338c..b6146330a55665a0365ff7474f184376
                  Optional<Chunk> optional = ((Either) playerchunk.b().getNow(PlayerChunk.UNLOADED_CHUNK)).left();
  
                  if (optional.isPresent()) {
-@@ -849,6 +851,7 @@ public class ChunkProviderServer extends IChunkProvider {
+@@ -839,6 +841,7 @@ public class ChunkProviderServer extends IChunkProvider {
                          this.world.timings.chunkTicks.startTiming(); // Spigot // Paper
                          this.world.a(chunk, k);
                          this.world.timings.chunkTicks.stopTiming(); // Spigot // Paper
@@ -92,7 +92,7 @@ index 9d5275c628b3963befdfa60841ef3c3331c8338c..b6146330a55665a0365ff7474f184376
                      }
                  }
              });
-@@ -990,6 +993,41 @@ public class ChunkProviderServer extends IChunkProvider {
+@@ -980,6 +983,41 @@ public class ChunkProviderServer extends IChunkProvider {
              super.executeTask(runnable);
          }
  
@@ -226,7 +226,7 @@ index 508aa4866e47f3865a8c51f7c8e3b842be216923..11349565e71d97384d3dcab9cdf6ea16
                      // Spigot Start
                      CrashReport crashreport;
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index c1e3c5ad7bbadedf01f7bd9162602398b81005a2..a4a2882d32d0167738f8367209dbfd3ca4f5b953 100644
+index dfc9f4d5738b01e3f80af8f3d25aec51b6e9d8d9..69e6614049e490dc70baf745761c62b173cf693e 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
 @@ -432,6 +432,7 @@ public class WorldServer extends World {

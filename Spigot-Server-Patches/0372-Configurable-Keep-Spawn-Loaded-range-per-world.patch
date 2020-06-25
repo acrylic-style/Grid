@@ -199,10 +199,10 @@ index 55c0b5dc30cff8de5a83a97ae17fec7624cbe3d9..ca0a23be27ee8174204867d463eb89a1
  
      public LongSet getForceLoadedChunks() {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 568eca9d3c499e33290aa8ab8548d9c64c97ce5f..b257ef7583f7bc3b6d31f0be89990603640c5ff7 100644
+index 5ea7b0b25ae837645f690443d674ce7eb48c1692..8f8c18c5a4f483acee0d61a8007577ac8193bef9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -1931,15 +1931,21 @@ public class CraftWorld implements World {
+@@ -1932,15 +1932,21 @@ public class CraftWorld implements World {
  
      @Override
      public void setKeepSpawnInMemory(boolean keepLoaded) {

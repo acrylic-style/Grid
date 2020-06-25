@@ -35,7 +35,7 @@ index c3f7717869c86d9ac6395615bceda324aea16b27..ecacb72b922927f06883b75e7d2cc1f9
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/ChunkMapDistance.java b/src/main/java/net/minecraft/server/ChunkMapDistance.java
-index ff9e164574f1f3d043740ac727faf567122e5b64..cc02ed6b58a219d8f06e4ccc2a51f46c33af98d1 100644
+index f7be94e801e58a39e0efcc813d95bbd613afce03..a013753bdb692e0c29e639adf0bb4d69c95a822d 100644
 --- a/src/main/java/net/minecraft/server/ChunkMapDistance.java
 +++ b/src/main/java/net/minecraft/server/ChunkMapDistance.java
 @@ -176,6 +176,27 @@ public abstract class ChunkMapDistance {

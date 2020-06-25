@@ -57,7 +57,7 @@ index b0740965a42a3931807fab88ab63077175b1c3b7..6b1a914d2f57182da0279cf4d2f9751d
              packetdataserializer.a(this.c);
              packetdataserializer.a(this.d);
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index c0c774d17b81109eaaea2ad726629eca902cfd6c..0f09cacf6d67dab5bc7962f19fcf3eba85ada4ff 100644
+index 87c854d052d32a10ba6f1abc317db083e8f079d4..36000aaeb34c9b5eb300c4c21d7d7ea7eb3d1e97 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -72,6 +72,7 @@ public abstract class PlayerList {
@@ -83,7 +83,7 @@ index c0c774d17b81109eaaea2ad726629eca902cfd6c..0f09cacf6d67dab5bc7962f19fcf3eba
          PlayerList.LOGGER.info("{}[{}] logged in with entity id {} at ([{}]{}, {}, {})", entityplayer.getDisplayName().getString(), s1, entityplayer.getId(), entityplayer.world.worldData.getName(), entityplayer.locX(), entityplayer.locY(), entityplayer.locZ());
      }
 @@ -392,6 +400,16 @@ public abstract class PlayerList {
-         entityplayer.playerTick(); // SPIGOT-924
+         entityplayer.playerTick();// SPIGOT-924
          // CraftBukkit end
  
 +        // Paper start - Remove from collideRule team if needed

@@ -11,10 +11,10 @@ This will drastically cut down on packet sending cost for worlds with
 lots of players in them.
 
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index f133e7baf958b031819c2c72ccd21c52ba9a683d..ab8247eb790be2084be7544f72e5b6661151905d 100644
+index 9b4abe65669501c769cdbba10e1a0b9419ebaba0..2dfbe3f900a70f13e45fa9f888d4410e58717cd6 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -1031,11 +1031,30 @@ public abstract class PlayerList {
+@@ -1028,11 +1028,30 @@ public abstract class PlayerList {
              world = (WorldServer) entityhuman.world;
          }
  

@@ -33,7 +33,7 @@ index 15d62d0ccba6b3030e4482cdf78e5df91d68c504..b6f4400df3d8ec7e06a996de54f8cabb
 +++ b/src/main/java/com/destroystokyo/paper/PaperSkinParts.java
 @@ -1,4 +1,74 @@
  package com.destroystokyo.paper;
-
+ 
 -public class PaperSkinParts {
 +import com.google.common.base.Objects;
 +
@@ -125,7 +125,7 @@ index 49fe2d1a0376e5aa8a5ec00d010e6c834633e7b7..a87aa07b17205b52e85f7d082fa4d516
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -2,6 +2,7 @@ package net.minecraft.server;
-
+ 
  import com.destroystokyo.paper.event.entity.PlayerNaturallySpawnCreaturesEvent;
  import com.google.common.collect.Lists;
 +import com.destroystokyo.paper.event.player.PlayerClientOptionsChangeEvent; // Paper
@@ -151,7 +151,7 @@ index 49fe2d1a0376e5aa8a5ec00d010e6c834633e7b7..a87aa07b17205b52e85f7d082fa4d516
      public PlayerNaturallySpawnCreaturesEvent playerNaturallySpawnedEvent; // Paper
 @@ -1573,6 +1575,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
      }
-
+ 
      public void a(PacketPlayInSettings packetplayinsettings) {
 +        new PlayerClientOptionsChangeEvent(getBukkitEntity(), packetplayinsettings.getLocale(), packetplayinsettings.viewDistance, com.destroystokyo.paper.ClientOption.ChatVisibility.valueOf(packetplayinsettings.getChatVisibility().name()), packetplayinsettings.hasChatColorsEnabled(), new com.destroystokyo.paper.PaperSkinParts(packetplayinsettings.getSkinParts()), packetplayinsettings.getMainHand() == EnumMainHand.LEFT ? MainHand.LEFT : MainHand.RIGHT).callEvent(); // Paper - settings event
          // CraftBukkit start
@@ -164,22 +164,22 @@ index 8faebf9efed7c3529b151fddf8246e8c77a8b693..4da637138190c9b749d986ac32dddc05
 @@ -37,18 +37,22 @@ public class PacketPlayInSettings implements Packet<PacketListenerPlayIn> {
          packetlistenerplayin.a(this);
      }
-
+ 
 +    public String getLocale() { return b(); } // Paper - OBFHELPER
      public String b() {
          return this.a;
      }
-
+ 
 +    public EnumChatVisibility getChatVisibility() { return d(); } // Paper - OBFHELPER
      public EnumChatVisibility d() {
          return this.c;
      }
-
+ 
 +    public boolean hasChatColorsEnabled() { return e(); } // Paper - OBFHELPER
      public boolean e() {
          return this.d;
      }
-
+ 
 +    public int getSkinParts() { return f(); } // Paper - OBFHELPER
      public int f() {
          return this.e;
@@ -223,7 +223,7 @@ index ba97c48c937051adc0baa1e9acbc911575ea58d0..13cecef83fe518f2669f64fdf992de08
  
          entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityMetadata(entityplayer.getId(), entityplayer.datawatcher, true)); // CraftBukkit - BungeeCord#2321, send complete data to self on spawn
 @@ -235,7 +243,11 @@ public abstract class PlayerList {
-
+ 
              playerconnection.sendPacket(new PacketPlayOutEntityEffect(entityplayer.getId(), mobeffect));
          }
 -
@@ -253,7 +253,7 @@ index 6672feaf5198b89969796185a2fc110308678eb0..dcbda5b35ab4d44e6b1d6c34bb8763a7
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -1,5 +1,8 @@
  package org.bukkit.craftbukkit.entity;
-
+ 
 +import com.destroystokyo.paper.ClientOption.ChatVisibility;
 +import com.destroystokyo.paper.PaperSkinParts;
 +import com.destroystokyo.paper.ClientOption;
@@ -291,5 +291,5 @@ index 6672feaf5198b89969796185a2fc110308678eb0..dcbda5b35ab4d44e6b1d6c34bb8763a7
 +        throw new RuntimeException("Unknown settings type");
 +    }
      // Paper end
-
+ 
      // Spigot start

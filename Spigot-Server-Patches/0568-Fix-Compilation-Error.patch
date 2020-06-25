@@ -4,6 +4,63 @@ Date: Thu, 11 Jun 2020 23:52:26 +0900
 Subject: [PATCH] Fix Compilation Error
 
 
+diff --git a/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java b/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java
+index f98f4d55b14a59e06fb17a7f7500a2f98cba58a5..5f2acef8e40be03ee910b420f0fb8e876c4f245f 100644
+--- a/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java
++++ b/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java
+@@ -134,18 +134,22 @@ public class CraftPlayerProfile implements PlayerProfile {
+ 
+     @Override
+     public boolean completeFromCache() {
+-        return completeFromCache(false);
++        MinecraftServer server = MinecraftServer.getServer();
++        return completeFromCache(false, server.getOnlineMode() || (SpigotConfig.bungee && PaperConfig.bungeeOnlineMode));
++    }
++
++    public boolean completeFromCache(boolean onlineMode) {
++        return complete(false, onlineMode);
+     }
+ 
+-    public boolean completeFromCache(boolean lookupName) {
++    public boolean completeFromCache(boolean lookupUUID, boolean onlineMode) {
+         MinecraftServer server = MinecraftServer.getServer();
+         String name = profile.getName();
+         UserCache userCache = server.getUserCache();
+         if (profile.getId() == null) {
+             final GameProfile profile;
+-            boolean isOnlineMode = server.getOnlineMode() || (SpigotConfig.bungee && PaperConfig.bungeeOnlineMode);
+-            if (isOnlineMode) {
+-                profile = lookupName ? userCache.getProfile(name) : userCache.getProfileIfCached(name);
++            if (onlineMode) {
++                profile = lookupUUID ? userCache.getProfile(name) : userCache.getProfileIfCached(name);
+             } else {
+                 // Make an OfflinePlayer using an offline mode UUID since the name has no profile
+                 profile = new GameProfile(UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(Charsets.UTF_8)), name);
+@@ -170,17 +174,20 @@ public class CraftPlayerProfile implements PlayerProfile {
+ 
+     public boolean complete(boolean textures) {
+         MinecraftServer server = MinecraftServer.getServer();
++        return complete(textures, server.getOnlineMode() || (SpigotConfig.bungee && PaperConfig.bungeeOnlineMode));
++    }
++    public boolean complete(boolean textures, boolean onlineMode) {
++        MinecraftServer server = MinecraftServer.getServer();
+ 
+-        boolean isOnlineMode = server.getOnlineMode() || (SpigotConfig.bungee && PaperConfig.bungeeOnlineMode);
+-        boolean isCompleteFromCache = this.completeFromCache(true);
+-        if (isOnlineMode && (!isCompleteFromCache || textures && !hasTextures())) {
++        boolean isCompleteFromCache = this.completeFromCache(false, onlineMode);
++        if (onlineMode && (!isCompleteFromCache || textures && !hasTextures())) {
+             GameProfile result = server.getSessionService().fillProfileProperties(profile, true);
+             if (result != null) {
+                 copyProfileProperties(result, this.profile, true);
+             }
+             server.getUserCache().saveProfile(this.profile);
+         }
+-        return profile.isComplete() && (!isOnlineMode || !textures || hasTextures());
++        return profile.isComplete() && (!onlineMode || !textures || hasTextures());
+     }
+ 
+     private static void copyProfileProperties(GameProfile source, GameProfile target) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
 index fdc78d5707679272ac4d9399986baec428d615d2..3c5e8026b80de78f05292ffbb9140473cab90c56 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java

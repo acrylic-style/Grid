@@ -42,10 +42,10 @@ index 962f425bbb7165740e77664dc543f976ef3d9c4a..dd3857bb6a002d8432ecbc6c6b52a39e
      private long inhabitedTime;
      @Nullable
 diff --git a/src/main/java/net/minecraft/server/ChunkProviderServer.java b/src/main/java/net/minecraft/server/ChunkProviderServer.java
-index 8a8fb6acaabc5fc179a23ce3e23ddb54e1ee23a4..7b855ec2914a8a31ce0ade0f7ad085dd04f71478 100644
+index e6d08756f76360b29b29f18305e5ec84d09f2d54..6713b7667ae4fe3f1f555a71321832b4a9492162 100644
 --- a/src/main/java/net/minecraft/server/ChunkProviderServer.java
 +++ b/src/main/java/net/minecraft/server/ChunkProviderServer.java
-@@ -525,6 +525,15 @@ public class ChunkProviderServer extends IChunkProvider {
+@@ -515,6 +515,15 @@ public class ChunkProviderServer extends IChunkProvider {
          } // Paper - Timings
      }
  

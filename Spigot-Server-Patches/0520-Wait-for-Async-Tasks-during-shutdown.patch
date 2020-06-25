@@ -22,11 +22,11 @@ index 2c9ae5c46a39639fd9f842df23993a47b31c8585..4ab6579032043f570c20befa7fef8931
          // CraftBukkit end
          if (this.getServerConnection() != null) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index c2b7cb36052455eef2100a1924dc76a5921fa858..894917c8891a951edb251f019529d0f7bec7037d 100644
+index 0522ea3653eccb5e88b28ceab7f90000d5086ced..5e5d8717baee44768c9171165cad5e8cefafe175 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -895,6 +895,35 @@ public final class CraftServer implements Server {
-         org.spigotmc.WatchdogThread.hasStarted = true; // Paper - Disable watchdog early timeout on reload
+@@ -900,6 +900,35 @@ public final class CraftServer implements Server {
+         getPluginManager().callEvent(new ServerReloadedEvent()); // Paper - Add simple event to avoid bugs
      }
  
 +    // Paper start

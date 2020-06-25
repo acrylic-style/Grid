@@ -9,7 +9,7 @@ their position to the ground/exit location when entering the bed, resulting in
 the server believing they're still in the air.
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 6dd4303c1c211ac4b0bb542ea96cc150581bf8c1..08e087d952edfecd73ad698684b71c09dabbac9e 100644
+index a3ecbacef47940be91a04156015d445fe122c418..6d9b94d0fc631aa94d570e7cdbb5c5bc63fd3b95 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -160,7 +160,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
