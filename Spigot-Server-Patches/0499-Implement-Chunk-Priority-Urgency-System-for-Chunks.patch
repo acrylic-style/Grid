@@ -1216,10 +1216,10 @@ index d7b9d9fd3a3b607278a3d72b0b306b0be2aa30ad..6fd852db6bcfbfbf84ec2acf6d23b08a
      public static <T> TicketType<T> a(String s, Comparator<T> comparator) {
          return new TicketType<>(s, comparator, 0L);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 8c50c660215f091659f8a46dac03b87d790293d9..090b2151949f303cd2b621e636eb63080d4c4c4b 100644
+index d5154daf8261d3e6754588b2e5b4ed2ccd9e650b..17f5dc3296d9e7622c43788dcd3cbd086dc44772 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2490,6 +2490,10 @@ public class CraftWorld implements World {
+@@ -2515,6 +2515,10 @@ public class CraftWorld implements World {
              return future;
          }
  
@@ -1231,7 +1231,7 @@ index 8c50c660215f091659f8a46dac03b87d790293d9..090b2151949f303cd2b621e636eb6308
              net.minecraft.server.Chunk chunk = (net.minecraft.server.Chunk) either.left().orElse(null);
              return CompletableFuture.completedFuture(chunk == null ? null : chunk.getBukkitChunk());
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 7dcba3ee35f08eaddc6a20801e8abd8965d1d4fd..9cadf43916d57c5ec149e1680301dee82d6a7f29 100644
+index 3ca45a6099c3012a4f581ad44281792f5b38f849..b54d719f71808469500f98762bf40acc22483f05 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -748,6 +748,14 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
