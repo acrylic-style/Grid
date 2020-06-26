@@ -5,7 +5,7 @@ Subject: [PATCH] Add TileEntity API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index a9c10228eeeaac89361c695a5ab90161b6358ca1..b776b78b615c381326c70580e7cb77a3ff65c7e2 100644
+index 329e2dd1c057788d6bb5a1adc7ee9282820e927d..36858876feaf39c041ac8846150fd63675307847 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -50,6 +50,8 @@ import org.bukkit.util.CachedServerIcon;
@@ -17,7 +17,7 @@ index a9c10228eeeaac89361c695a5ab90161b6358ca1..b776b78b615c381326c70580e7cb77a3
  
  /**
   * Represents the Bukkit core, for version and Server singleton handling
-@@ -1711,6 +1713,13 @@ public final class Bukkit {
+@@ -1743,6 +1745,13 @@ public final class Bukkit {
      public static com.destroystokyo.paper.entity.ai.MobGoals getMobGoals() {
          return server.getMobGoals();
      }
@@ -32,7 +32,7 @@ index a9c10228eeeaac89361c695a5ab90161b6358ca1..b776b78b615c381326c70580e7cb77a3
  
      @NotNull
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index cc06492f46ba5776221cd2614c1dcd8f33cc8faf..c5ece00654c1be8d878a577e6d9a90cf495cf467 100644
+index b464cc1a70aca3450a5de84a657a1e069a1a8ab6..3df8f8f02fcbe4d5bb0f16eca2d4ba70f820672e 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -51,6 +51,8 @@ import org.bukkit.util.CachedServerIcon;
@@ -44,7 +44,7 @@ index cc06492f46ba5776221cd2614c1dcd8f33cc8faf..c5ece00654c1be8d878a577e6d9a90cf
  
  /**
   * Represents a server implementation.
-@@ -1495,5 +1497,12 @@ public interface Server extends PluginMessageRecipient {
+@@ -1523,5 +1525,12 @@ public interface Server extends PluginMessageRecipient {
       */
      @NotNull
      com.destroystokyo.paper.entity.ai.MobGoals getMobGoals();
@@ -58,7 +58,7 @@ index cc06492f46ba5776221cd2614c1dcd8f33cc8faf..c5ece00654c1be8d878a577e6d9a90cf
      // Paper end
  }
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 920f3eb82f1492bd59896e03b65a4df2e46c854d..8309e86ad8071eeda9f00bd2ddaaab761912975e 100644
+index 75c9225bd07b4c4b6dcd702c52294a7637eb6884..cf480d1138c67fd336538b6501beadff4c17ad4b 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
 @@ -39,6 +39,7 @@ import org.bukkit.util.Vector;
@@ -69,7 +69,7 @@ index 920f3eb82f1492bd59896e03b65a4df2e46c854d..8309e86ad8071eeda9f00bd2ddaaab76
  
  /**
   * Represents a world, which may contain entities, chunks and blocks
-@@ -3401,6 +3402,71 @@ public interface World extends PluginMessageRecipient, Metadatable {
+@@ -3465,6 +3466,71 @@ public interface World extends PluginMessageRecipient, Metadatable {
      @Nullable
      public DragonBattle getEnderDragonBattle();
  

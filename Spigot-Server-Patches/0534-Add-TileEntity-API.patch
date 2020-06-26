@@ -17,7 +17,7 @@ index 67fda8bd5a0ad6fea2df0066c61e006c8a49980c..9954120f1fbda5e043962bcc10bfdc98
          MinecraftKey minecraftkey = TileEntityTypes.a(this.getTileType());
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 60da8eb2199ad0ab8566e411c9308eab8d5e599d..01a7f4f82f34acde9f98b6b4d4920d61bce86816 100644
+index 643965d4d4d9f3196c5dca4e6318d79c3bf7c4a8..1f6c0ad4dc14c2deabc238f57e9378da44043d0c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -225,7 +225,9 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
@@ -30,7 +30,7 @@ index 60da8eb2199ad0ab8566e411c9308eab8d5e599d..01a7f4f82f34acde9f98b6b4d4920d61
  
  import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
-@@ -2324,5 +2326,10 @@ public final class CraftServer implements Server {
+@@ -2343,5 +2345,10 @@ public final class CraftServer implements Server {
      public com.destroystokyo.paper.entity.ai.MobGoals getMobGoals() {
          return mobGoals;
      }
@@ -42,7 +42,7 @@ index 60da8eb2199ad0ab8566e411c9308eab8d5e599d..01a7f4f82f34acde9f98b6b4d4920d61
      // Paper end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index e33f0dce93f49e785111ebffe8a3aaf9b0bc9488..03be674f7787ca58e7a3e9ece91ee8a78c089f72 100644
+index 3d09c9a3344773fb628d0d9c12e290b9fd712cd0..423f151ab807766b554c93cb083a32ee6abeae92 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -89,6 +89,7 @@ import net.minecraft.server.SoundCategory;
@@ -53,7 +53,7 @@ index e33f0dce93f49e785111ebffe8a3aaf9b0bc9488..03be674f7787ca58e7a3e9ece91ee8a7
  import net.minecraft.server.Unit;
  import net.minecraft.server.Vec3D;
  import net.minecraft.server.WorldGenerator;
-@@ -2553,6 +2554,44 @@ public class CraftWorld implements World {
+@@ -2578,6 +2579,44 @@ public class CraftWorld implements World {
      }
      // Paper end - per player view distance
  
