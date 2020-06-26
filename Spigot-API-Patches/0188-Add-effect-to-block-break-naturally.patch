@@ -5,10 +5,10 @@ Subject: [PATCH] Add effect to block break naturally
 
 
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index 9713867950572fdc8c0f8798afcb37712a6a4e85..1815d74c2c8745ade68bd32e1c2bb040772a7f1c 100644
+index 596f1d68b69a2ba3976398d0045379f047541f40..a6fe268b28591e7e964741094e7f639d6c23b52b 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
-@@ -459,6 +459,18 @@ public interface Block extends Metadatable {
+@@ -460,6 +460,18 @@ public interface Block extends Metadatable {
       */
      boolean breakNaturally();
  

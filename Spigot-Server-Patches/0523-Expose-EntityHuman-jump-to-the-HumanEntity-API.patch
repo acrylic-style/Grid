@@ -5,10 +5,10 @@ Subject: [PATCH] Expose EntityHuman#jump to the HumanEntity API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java
-index a2815073bc04dd831fa22da47162031d360683dd..1b26317e7a51f2cd47f01497fa1574ec7097f2b3 100644
+index 7c22a24d0b50f0a8f4ccfef87f7f77028c3188c6..210a6105bdb0d74a67240456a1448c74521ede0b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java
-@@ -646,4 +646,11 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
+@@ -619,4 +619,11 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
          getHandle().openSign(teSign);
      }
      // Paper end

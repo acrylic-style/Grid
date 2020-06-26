@@ -1,0 +1,226 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Sun, 24 May 2020 01:25:41 +0900
+Subject: [PATCH] Add TileEntity API
+
+
+diff --git a/src/main/java/net/minecraft/server/TileEntity.java b/src/main/java/net/minecraft/server/TileEntity.java
+index 67fda8bd5a0ad6fea2df0066c61e006c8a49980c..9954120f1fbda5e043962bcc10bfdc98d8dda0e1 100644
+--- a/src/main/java/net/minecraft/server/TileEntity.java
++++ b/src/main/java/net/minecraft/server/TileEntity.java
+@@ -95,6 +95,7 @@ public abstract class TileEntity implements KeyedObject { // Paper
+         return this.b(nbttagcompound);
+     }
+ 
++    public NBTTagCompound save() { return b(); } // Paper - OBFHELPER
+     private NBTTagCompound b(NBTTagCompound nbttagcompound) {
+         MinecraftKey minecraftkey = TileEntityTypes.a(this.getTileType());
+ 
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 60da8eb2199ad0ab8566e411c9308eab8d5e599d..01a7f4f82f34acde9f98b6b4d4920d61bce86816 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -225,7 +225,9 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
+ import org.yaml.snakeyaml.error.MarkedYAMLException;
+ 
+ import net.md_5.bungee.api.chat.BaseComponent; // Spigot
++import xyz.acrylicstyle.paper.block.TileEntity;
+ import xyz.acrylicstyle.paper.event.server.ServerReloadedEvent;
++import xyz.acrylicstyle.paper.nbt.NBTTagCompound;
+ 
+ import javax.annotation.Nullable; // Paper
+ import javax.annotation.Nonnull; // Paper
+@@ -2324,5 +2326,10 @@ public final class CraftServer implements Server {
+     public com.destroystokyo.paper.entity.ai.MobGoals getMobGoals() {
+         return mobGoals;
+     }
++
++    @Override
++    public xyz.acrylicstyle.paper.block.TileEntity createTileEntity(BlockData blockData, xyz.acrylicstyle.paper.nbt.NBTTagCompound nbtTagCompound) {
++        return new xyz.acrylicstyle.paper.block.CraftTileEntity(net.minecraft.server.TileEntity.create(((CraftBlockData) blockData).getState(), xyz.acrylicstyle.paper.nbt.CraftNBT.asNMSCompound(nbtTagCompound)));
++    }
+     // Paper end
+ }
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+index e33f0dce93f49e785111ebffe8a3aaf9b0bc9488..03be674f7787ca58e7a3e9ece91ee8a78c089f72 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+@@ -89,6 +89,7 @@ import net.minecraft.server.SoundCategory;
+ import net.minecraft.server.StructureGenerator;
+ import net.minecraft.server.Ticket;
+ import net.minecraft.server.TicketType;
++import net.minecraft.server.TileEntityContainer;
+ import net.minecraft.server.Unit;
+ import net.minecraft.server.Vec3D;
+ import net.minecraft.server.WorldGenerator;
+@@ -2553,6 +2554,44 @@ public class CraftWorld implements World {
+     }
+     // Paper end - per player view distance
+ 
++    // Paper start - TileEntity API
++    @Override
++    public xyz.acrylicstyle.paper.block.TileEntity getTileEntity(Location location) {
++        return getTileEntity(location.getBlockX(), location.getBlockY(), location.getBlockZ());
++    }
++
++    @Override
++    public xyz.acrylicstyle.paper.block.TileEntity getTileEntity(int x, int y, int z) {
++        net.minecraft.server.TileEntity te = getHandle().getTileEntity(new BlockPosition(x, y, z));
++        if (te == null) return null;
++        if (te instanceof TileEntityContainer) {
++            return new xyz.acrylicstyle.paper.block.CraftTileEntityContainer((TileEntityContainer) te);
++        } else {
++            return new xyz.acrylicstyle.paper.block.CraftTileEntity(te);
++        }
++    }
++
++    @Override
++    public void removeTileEntity(Location location) {
++        removeTileEntity(location.getBlockX(), location.getBlockY(), location.getBlockZ());
++    }
++
++    @Override
++    public void removeTileEntity(int x, int y, int z) {
++        getHandle().removeTileEntity(new BlockPosition(x, y, z));
++    }
++
++    @Override
++    public void setTileEntity(Location location, xyz.acrylicstyle.paper.block.TileEntity tileEntity) {
++        setTileEntity(location.getBlockX(), location.getBlockY(), location.getBlockZ(), tileEntity);
++    }
++
++    @Override
++    public void setTileEntity(int x, int y, int z, xyz.acrylicstyle.paper.block.TileEntity tileEntity) {
++        getHandle().setTileEntity(new BlockPosition(x, y, z), ((xyz.acrylicstyle.paper.block.CraftTileEntity) tileEntity).getHandle());
++    }
++    // Paper end - TileEntity API
++
+     // Spigot start
+     private final Spigot spigot = new Spigot()
+     {
+diff --git a/src/main/java/xyz/acrylicstyle/paper/block/CraftTileEntity.java b/src/main/java/xyz/acrylicstyle/paper/block/CraftTileEntity.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..4699f003c7d1dd3223651de214aab2a55f592b1c
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/block/CraftTileEntity.java
+@@ -0,0 +1,71 @@
++package xyz.acrylicstyle.paper.block;
++
++import net.minecraft.server.BlockPosition;
++import org.bukkit.Location;
++import org.bukkit.World;
++import org.bukkit.block.Block;
++import org.bukkit.inventory.InventoryHolder;
++import xyz.acrylicstyle.paper.nbt.CraftNBT;
++import xyz.acrylicstyle.paper.nbt.NBTTagCompound;
++
++public class CraftTileEntity implements TileEntity {
++    net.minecraft.server.TileEntity handle;
++
++    public CraftTileEntity(net.minecraft.server.TileEntity handle) {
++        this.handle = handle;
++    }
++
++    public net.minecraft.server.TileEntity getHandle() {
++        return handle;
++    }
++
++    public void setHandle(net.minecraft.server.TileEntity handle) {
++        this.handle = handle;
++    }
++
++    @Override
++    public World getWorld() {
++        return handle.getWorld() == null ? null : handle.getWorld().getWorld();
++    }
++
++    @Override
++    public Location getLocation() {
++        BlockPosition p = handle.getPosition();
++        return new Location(handle.getWorld() == null ? null : handle.getWorld().getWorld(), p.getX(), p.getY(), p.getZ());
++    }
++
++    @Override
++    public void load(NBTTagCompound nbtTagCompound) {
++        handle.load(handle.getBlock(), CraftNBT.asNMSCompound(nbtTagCompound));
++    }
++
++    @Override
++    public NBTTagCompound save(NBTTagCompound nbtTagCompound) {
++        return CraftNBT.asBukkitCompound(handle.save(CraftNBT.asNMSCompound(nbtTagCompound)));
++    }
++
++    @Override
++    public void update() {
++        handle.update();
++    }
++
++    @Override
++    public Block getBlock() {
++        return getLocation().getBlock();
++    }
++
++    @Override
++    public NBTTagCompound save() {
++        return CraftNBT.asBukkitCompound(handle.save());
++    }
++
++    @Override
++    public boolean isRemoved() {
++        return handle.isRemoved();
++    }
++
++    @Override
++    public InventoryHolder getOwner() {
++        return handle.getOwner();
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/block/CraftTileEntityContainer.java b/src/main/java/xyz/acrylicstyle/paper/block/CraftTileEntityContainer.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..72cc9439d7cc03152d665764e7d9ea8fbd6b67da
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/block/CraftTileEntityContainer.java
+@@ -0,0 +1,43 @@
++package xyz.acrylicstyle.paper.block;
++
++import net.minecraft.server.ChatComponentText;
++import org.bukkit.Location;
++
++public class CraftTileEntityContainer extends CraftTileEntity implements TileEntityContainer {
++    net.minecraft.server.TileEntityContainer handle;
++
++    public CraftTileEntityContainer(net.minecraft.server.TileEntityContainer handle) {
++        super(handle);
++        this.handle = handle;
++    }
++
++    public void setHandle(net.minecraft.server.TileEntityContainer handle) {
++        super.setHandle(handle);
++        this.handle = handle;
++    }
++
++    @Override
++    public net.minecraft.server.TileEntityContainer getHandle() {
++        return handle;
++    }
++
++    @Override
++    public String getDisplayName() {
++        return handle.getDisplayName().getText();
++    }
++
++    @Override
++    public String getCustomName() {
++        return handle.getCustomName() == null ? null : handle.getCustomName().getText();
++    }
++
++    @Override
++    public void setCustomName(String name) {
++        handle.setCustomName(new ChatComponentText(name));
++    }
++
++    @Override
++    public Location getLocation() {
++        return handle.getLocation();
++    }
++}

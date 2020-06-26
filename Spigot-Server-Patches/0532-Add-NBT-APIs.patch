@@ -5,20 +5,20 @@ Subject: [PATCH] Add NBT APIs
 
 
 diff --git a/src/main/java/net/minecraft/server/NBTTagCompound.java b/src/main/java/net/minecraft/server/NBTTagCompound.java
-index 02a2ed1baa3f82d302432b7bc627f3179751f886..65f9b678eb215844f61b54fc06f1bdcb054ae3af 100644
+index f608b35502890650adfc1df35e0794471f57ecbc..c39b7c9cba7a1a8c9c6ed1a4ebb78c964f1aab9a 100644
 --- a/src/main/java/net/minecraft/server/NBTTagCompound.java
 +++ b/src/main/java/net/minecraft/server/NBTTagCompound.java
-@@ -62,7 +62,7 @@ public class NBTTagCompound implements NBTBase {
+@@ -72,7 +72,7 @@ public class NBTTagCompound implements NBTBase {
      };
      public final Map<String, NBTBase> map; // Paper
  
--    private NBTTagCompound(Map<String, NBTBase> map) {
-+    public NBTTagCompound(Map<String, NBTBase> map) { // Paper - private -> public
+-    protected NBTTagCompound(Map<String, NBTBase> map) {
++    public NBTTagCompound(Map<String, NBTBase> map) { // Paper - protected -> public
          this.map = map;
      }
  
 diff --git a/src/main/java/net/minecraft/server/NBTTagList.java b/src/main/java/net/minecraft/server/NBTTagList.java
-index d778eac45de775cf4058621fadb55b1b4e1f3457..9dd57e67f863a5cd8ea8d7ad4734756b47f8c0e8 100644
+index ad4807e0bdd6409bd798f995da8f43cec1d0b385..4592cb3b3f0999a9dbac9ff20af530054c3062d7 100644
 --- a/src/main/java/net/minecraft/server/NBTTagList.java
 +++ b/src/main/java/net/minecraft/server/NBTTagList.java
 @@ -55,7 +55,7 @@ public class NBTTagList extends NBTList<NBTBase> {
@@ -31,10 +31,10 @@ index d778eac45de775cf4058621fadb55b1b4e1f3457..9dd57e67f863a5cd8ea8d7ad4734756b
          this.type = b0;
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index ff60568ce4320e6ebfa50489a564538b0f57da82..def85e7af582f985dbaf06d68f6406b674c09b5e 100644
+index 821417610fdb23791bd83e263977026b9d09e31a..ab6f81e403b93a84557ec85c17f843d14249cc3e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -165,6 +165,7 @@ import org.bukkit.plugin.Plugin;
+@@ -168,6 +168,7 @@ import org.bukkit.plugin.Plugin;
  import org.bukkit.util.BoundingBox;
  import org.bukkit.util.NumberConversions;
  import org.bukkit.util.Vector;
@@ -42,7 +42,7 @@ index ff60568ce4320e6ebfa50489a564538b0f57da82..def85e7af582f985dbaf06d68f6406b6
  
  public abstract class CraftEntity implements org.bukkit.entity.Entity {
      private static PermissibleBase perm;
-@@ -1058,5 +1059,20 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -1065,5 +1066,20 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
      public org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason getEntitySpawnReason() {
          return getHandle().spawnReason;
      }
@@ -59,7 +59,7 @@ index ff60568ce4320e6ebfa50489a564538b0f57da82..def85e7af582f985dbaf06d68f6406b6
 +
 +    @Override
 +    public void load(xyz.acrylicstyle.paper.nbt.NBTTagCompound nbtTagCompound) {
-+        getHandle().f(CraftNBT.asNMSCompound(nbtTagCompound));
++        getHandle().load(CraftNBT.asNMSCompound(nbtTagCompound));
 +    }
      // Paper end
  }
@@ -107,7 +107,7 @@ index 0000000000000000000000000000000000000000..e85bf0e820b53fd395af4913fefe03d5
 +}
 diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/CraftNBT.java b/src/main/java/xyz/acrylicstyle/paper/nbt/CraftNBT.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..1d099f62d146d93df6f54f7b69b52aa3583f544e
+index 0000000000000000000000000000000000000000..66ec1bb750d722e3bd56a454ddfeea7ba33bf17e
 --- /dev/null
 +++ b/src/main/java/xyz/acrylicstyle/paper/nbt/CraftNBT.java
 @@ -0,0 +1,108 @@
@@ -215,8 +215,8 @@ index 0000000000000000000000000000000000000000..1d099f62d146d93df6f54f7b69b52aa3
 +            return new NBTTagByteArray(((net.minecraft.server.NBTTagByteArray) nbt).getBytes());
 +        } else if (nbt instanceof net.minecraft.server.NBTTagList) {
 +            net.minecraft.server.NBTTagList l = (net.minecraft.server.NBTTagList) nbt;
-+            return new NBTTagList(getBukkitList(l), (byte) l.a_());
-+        } else throw new IllegalArgumentException("Unknown type: " + nbt.getClass().getCanonicalName());
++            return new NBTTagList(getBukkitList(l), l.d_());
++        } else throw new IllegalArgumentException("Unknown type: " + nbt.getClass().getCanonicalName() + ", this is a bug");
 +    }
 +}
 diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/SafeNativeNBT.java b/src/main/java/xyz/acrylicstyle/paper/nbt/SafeNativeNBT.java

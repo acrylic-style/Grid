@@ -5,10 +5,10 @@ Subject: [PATCH] World view distance api
 
 
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 143fcbcdbfad551cd4392f54cf189fe3bee41706..ec719d5c0741f3489884709169fee93ef02244bb 100644
+index 97cb157e8f50ae17d388eb16d9aa96f93002e279..920f3eb82f1492bd59896e03b65a4df2e46c854d 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
-@@ -3279,6 +3279,34 @@ public interface World extends PluginMessageRecipient, Metadatable {
+@@ -3308,6 +3308,34 @@ public interface World extends PluginMessageRecipient, Metadatable {
      int getViewDistance();
      // Spigot end
  

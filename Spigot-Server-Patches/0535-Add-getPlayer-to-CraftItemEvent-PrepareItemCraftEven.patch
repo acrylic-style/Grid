@@ -7,7 +7,7 @@ It was possible to add #getPlayer on these events but there wasn't. Now we have 
 Please note that this doesn't break dependencies.
 
 diff --git a/src/main/java/net/minecraft/server/ContainerWorkbench.java b/src/main/java/net/minecraft/server/ContainerWorkbench.java
-index 8ffaba58fb13a33c023d71fdb88a29f98b0d1cea..fcc8bc5072fcf7c729aba3a7315d73ed7ea80acc 100644
+index 0700af8f1141eab1a996c5aea78c1aaa19484514..b6f1908235a1351963ce9b83b6d0aa6bb51e030f 100644
 --- a/src/main/java/net/minecraft/server/ContainerWorkbench.java
 +++ b/src/main/java/net/minecraft/server/ContainerWorkbench.java
 @@ -67,7 +67,7 @@ public class ContainerWorkbench extends ContainerRecipeBook<InventoryCrafting> {
@@ -20,10 +20,10 @@ index 8ffaba58fb13a33c023d71fdb88a29f98b0d1cea..fcc8bc5072fcf7c729aba3a7315d73ed
              inventorycraftresult.setItem(0, itemstack);
              entityplayer.playerConnection.sendPacket(new PacketPlayOutSetSlot(i, 0, itemstack));
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 67eeea7d863d81ac6f050da7d53f14377dfa25fe..372ecbefdaaa6b2d02c8c7cf9b2827cf52e6324b 100644
+index 258dd4288f5c76810de6f24698b03e472ac45e38..628cf49569185e0e4aea59089ca80305f0586d92 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
-@@ -2370,9 +2370,9 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -2423,9 +2423,9 @@ public class PlayerConnection implements PacketListenerPlayIn {
                          org.bukkit.inventory.Recipe recipe = ((CraftingInventory) top).getRecipe();
                          if (recipe != null) {
                              if (click == ClickType.NUMBER_KEY) {
@@ -36,10 +36,10 @@ index 67eeea7d863d81ac6f050da7d53f14377dfa25fe..372ecbefdaaa6b2d02c8c7cf9b2827cf
                          }
                      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 5a44c581dee1bcc1a8d354e20f22b0d803b0955d..ef46f68806982b3bf3d7e5210ac3a0a08a93efeb 100644
+index c479d00a4d3f739492f852c6f64ea83c3c75fbc0..51d5bb55ca7b9c9154ee70f5432de0ec205b80b2 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1225,11 +1225,11 @@ public class CraftEventFactory {
+@@ -1235,11 +1235,11 @@ public class CraftEventFactory {
          return container;
      }
  

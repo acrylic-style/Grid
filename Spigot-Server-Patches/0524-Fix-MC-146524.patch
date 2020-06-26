@@ -5,7 +5,7 @@ Subject: [PATCH] Fix MC-146524
 
 
 diff --git a/src/main/java/net/minecraft/server/PathfinderGoalNearestAttackableTarget.java b/src/main/java/net/minecraft/server/PathfinderGoalNearestAttackableTarget.java
-index b85e67a85d16934c2158621b58701df403a42ff3..7315130dfae181fe1dd1b48bd4996e0285c6bae9 100644
+index c0721c7fe479c8f753b8f48197a70dcd1ecfef5f..644bdb876ca04b7549a363e24222ddb777a67dbe 100644
 --- a/src/main/java/net/minecraft/server/PathfinderGoalNearestAttackableTarget.java
 +++ b/src/main/java/net/minecraft/server/PathfinderGoalNearestAttackableTarget.java
 @@ -16,7 +16,14 @@ public class PathfinderGoalNearestAttackableTarget<T extends EntityLiving> exten

@@ -5,11 +5,11 @@ Subject: [PATCH] add CraftEventFactory methods
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index ce8d7877adcc4635ebf2f5743c8b02aa95691102..4ee3f2c35988d98b2c2d7f7a79ddead591b0ca3c 100644
+index d4b77d70bfc91339346689ad58f585856633007b..30018d4ff775db1b9a574162cea6696242253e61 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -214,6 +214,8 @@ import org.bukkit.inventory.meta.BookMeta;
- import org.bukkit.potion.PotionEffect;
+@@ -216,6 +216,8 @@ import org.bukkit.potion.PotionEffect;
+ import org.bukkit.projectiles.ProjectileSource;
  
  import org.bukkit.event.entity.SpawnerSpawnEvent; // Spigot
 +import xyz.acrylicstyle.paper.event.server.PluginSendActionBarEvent;
@@ -17,7 +17,7 @@ index ce8d7877adcc4635ebf2f5743c8b02aa95691102..4ee3f2c35988d98b2c2d7f7a79ddead5
  
  public class CraftEventFactory {
      public static final DamageSource MELTING = CraftDamageSource.copyOf(DamageSource.BURN);
-@@ -1714,4 +1716,18 @@ public class CraftEventFactory {
+@@ -1733,4 +1735,18 @@ public class CraftEventFactory {
          Bukkit.getPluginManager().callEvent(event);
          return event;
      }

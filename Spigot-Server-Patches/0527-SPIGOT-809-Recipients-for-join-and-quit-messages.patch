@@ -6,45 +6,29 @@ Subject: [PATCH] SPIGOT-809 Recipients for join and quit messages.
 https://hub.spigotmc.org/jira/projects/SPIGOT/issues/SPIGOT-809
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index e8f513099109074998c7686dd6e3b81d592be07b..14b875437973a1fc3406c4740410c4061ae490ec 100644
+index eeb870107031b38e25b5fb85ea731a7db1d6c2d1..c2f074d9559460961b38d1a224beff7c3bfc4d1e 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
-@@ -22,6 +22,8 @@ import org.apache.logging.log4j.Logger;
- // CraftBukkit start
- import java.util.concurrent.ExecutionException;
- import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
+@@ -12,6 +12,7 @@ import java.util.Collections;
+ import java.util.Iterator;
+ import java.util.Optional;
+ import java.util.Set;
 +import java.util.function.Consumer;
-+
- import org.bukkit.Location;
- import org.bukkit.craftbukkit.entity.CraftPlayer;
- import org.bukkit.craftbukkit.event.CraftEventFactory;
-@@ -40,21 +42,7 @@ import org.bukkit.event.inventory.InventoryAction;
- import org.bukkit.event.inventory.InventoryClickEvent;
- import org.bukkit.event.inventory.InventoryCreativeEvent;
- import org.bukkit.event.inventory.InventoryType.SlotType;
--import org.bukkit.event.player.AsyncPlayerChatEvent;
--import org.bukkit.event.player.PlayerAnimationEvent;
--import org.bukkit.event.player.PlayerChatEvent;
--import org.bukkit.event.player.PlayerCommandPreprocessEvent;
--import org.bukkit.event.player.PlayerInteractAtEntityEvent;
--import org.bukkit.event.player.PlayerInteractEntityEvent;
--import org.bukkit.event.player.PlayerItemHeldEvent;
--import org.bukkit.event.player.PlayerKickEvent;
--import org.bukkit.event.player.PlayerMoveEvent;
--import org.bukkit.event.player.PlayerResourcePackStatusEvent;
--import org.bukkit.event.player.PlayerSwapHandItemsEvent;
--import org.bukkit.event.player.PlayerTeleportEvent;
--import org.bukkit.event.player.PlayerToggleFlightEvent;
--import org.bukkit.event.player.PlayerToggleSneakEvent;
--import org.bukkit.event.player.PlayerToggleSprintEvent;
-+import org.bukkit.event.player.*;
- import org.bukkit.inventory.CraftingInventory;
- import org.bukkit.inventory.EquipmentSlot;
- import org.bukkit.inventory.InventoryView;
-@@ -1544,9 +1532,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
+ import java.util.stream.Stream;
+ import javax.annotation.Nullable;
+ import org.apache.commons.lang3.StringEscapeUtils;
+@@ -49,6 +50,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
+ import org.bukkit.event.player.PlayerItemHeldEvent;
+ import org.bukkit.event.player.PlayerKickEvent;
+ import org.bukkit.event.player.PlayerMoveEvent;
++import org.bukkit.event.player.PlayerQuitEvent;
+ import org.bukkit.event.player.PlayerResourcePackStatusEvent;
+ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
+ import org.bukkit.event.player.PlayerTeleportEvent;
+@@ -1586,9 +1588,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
          */
  
-         this.player.n();
+         this.player.p();
 -        String quitMessage = this.minecraftServer.getPlayerList().disconnect(this.player);
 -        if ((quitMessage != null) && (quitMessage.length() > 0)) {
 -            this.minecraftServer.getPlayerList().sendMessage(CraftChatMessage.fromString(quitMessage));
@@ -64,23 +48,46 @@ index e8f513099109074998c7686dd6e3b81d592be07b..14b875437973a1fc3406c4740410c406
          // CraftBukkit end
          if (this.isExemptPlayer()) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 2dfbe3f900a70f13e45fa9f888d4410e58717cd6..fdc78d5707679272ac4d9399986baec428d615d2 100644
+index 9f4d9ee0100bca5f62f6a3778257e4da97ca2d28..bf1e91b46141a0496d685d6d3559c10e37cf626e 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -171,6 +171,7 @@ public abstract class PlayerList {
-         WorldServer finalWorldserver = worldserver;
+@@ -19,6 +19,7 @@ import java.util.Optional;
+ import java.util.Set;
+ import java.util.UUID;
+ import java.util.concurrent.CompletableFuture;
++import java.util.function.Consumer;
+ import javax.annotation.Nullable;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+@@ -196,25 +197,37 @@ public abstract class PlayerList {
+         WorldServer finalWorldserver1 = worldserver1;
          int chunkX = loc.getBlockX() >> 4;
          int chunkZ = loc.getBlockZ() >> 4;
++        WorldServer finalWorldserver2 = worldserver;
 +        worldserver.getChunkProvider().getTickingChunkAsync(chunkX, chunkZ, (chunk -> { // use ticking - as it has at least 1 neighbours loaded
          final ChunkCoordIntPair pos = new ChunkCoordIntPair(chunkX, chunkZ);
          PlayerChunkMap playerChunkMap = finalWorldserver.getChunkProvider().playerChunkMap;
          playerChunkMap.chunkDistanceManager.addTicketAtLevel(TicketType.LOGIN, pos, 31, pos.pair());
-@@ -189,7 +190,17 @@ public abstract class PlayerList {
+-        worldserver.getChunkProvider().markAreaHighPriority(pos, 28, 3);
+-        worldserver.getChunkProvider().getChunkAtAsynchronously(chunkX, chunkZ, true, false).thenApply(chunk -> {
++        finalWorldserver2.getChunkProvider().markAreaHighPriority(pos, 28, 3);
++        finalWorldserver2.getChunkProvider().getChunkAtAsynchronously(chunkX, chunkZ, true, false).thenApply(chunk2 -> {
+             PlayerChunk updatingChunk = playerChunkMap.getUpdatingChunk(pos.pair());
+             if (updatingChunk != null) {
+                 return updatingChunk.getEntityTickingFuture();
+             } else {
+                 return CompletableFuture.completedFuture(chunk);
+             }
+-        }).thenAccept(chunk -> {
++        }).thenAccept(chunk3 -> { // Paper - compile fix
+             playerconnection.playerJoinReady = () -> {
+                 postChunkLoadJoin(
+                     entityplayer, finalWorldserver, finalWorldserver1, networkmanager, playerconnection,
                      nbttagcompound, networkmanager.getSocketAddress().toString(), lastKnownName
                  );
              };
 -        });
-+        }));
++        });})); // Paper - patch fix
 +        // boost the priorities
 +        worldserver.asyncChunkTaskManager.raisePriority(chunkX, chunkZ, com.destroystokyo.paper.io.PrioritizedTaskQueue.HIGHEST_PRIORITY);
 +        for (int cx = -1; cx <= 1; cx++) {
@@ -94,14 +101,14 @@ index 2dfbe3f900a70f13e45fa9f888d4410e58717cd6..fdc78d5707679272ac4d9399986baec4
      }
  
      EntityPlayer getActivePlayer(UUID uuid) {
-@@ -247,7 +258,16 @@ public abstract class PlayerList {
+@@ -272,7 +285,16 @@ public abstract class PlayerList {
  
          if (joinMessage != null && joinMessage.length() > 0) {
              // Paper start - Removed sendAll for loop and broadcasted to console also
 -            server.getPlayerList().sendMessage(CraftChatMessage.fromString(joinMessage));
 +            // Paper start - Recipients for join and quit messages. (SPIGOT-809)
 +            IChatBaseComponent[] chatMessage = CraftChatMessage.fromString(joinMessage);
-+            server.sendMessage(chatmessage);
++            server.sendMessage(chatmessage, SystemUtils.getNullUUID());
 +            playerJoinEvent.getRecipients().forEach(new Consumer<Player>() {
 +                @Override
 +                public void accept(Player player) {
@@ -112,7 +119,7 @@ index 2dfbe3f900a70f13e45fa9f888d4410e58717cd6..fdc78d5707679272ac4d9399986baec4
              // Paper end
          }
          // CraftBukkit end
-@@ -456,7 +476,7 @@ public abstract class PlayerList {
+@@ -489,7 +511,7 @@ public abstract class PlayerList {
  
      }
  
@@ -121,12 +128,12 @@ index 2dfbe3f900a70f13e45fa9f888d4410e58717cd6..fdc78d5707679272ac4d9399986baec4
          WorldServer worldserver = entityplayer.getWorldServer();
  
          entityplayer.a(StatisticList.LEAVE_GAME);
-@@ -541,7 +561,7 @@ public abstract class PlayerList {
+@@ -575,7 +597,7 @@ public abstract class PlayerList {
          cserver.getScoreboardManager().removePlayer(entityplayer.getBukkitEntity());
          // CraftBukkit end
  
 -        return entityplayer.didPlayerJoinEvent ? playerQuitEvent.getQuitMessage() : null; // CraftBukkit // Paper - don't print quit if we never printed join
-+        return playerQuitEvent; // CraftBukkit // Paper - don't print quit if we never printed join
++        return playerQuitEvent; // CraftBukkit // Paper - don't print quit if we never printed join // Paper - return PlayerQuitEvent
      }
  
      // CraftBukkit start - Whole method, SocketAddress to LoginListener, added hostname to signature, return EntityPlayer

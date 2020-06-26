@@ -5,10 +5,10 @@ Subject: [PATCH] Add PluginSendMessageEvent API
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index dcbda5b35ab4d44e6b1d6c34bb8763a7dd08e629..5947314af6ebb448254e10e140eb2ecbe7e6ef86 100644
+index 0321b54f3defc983f1ebe47bf2888cbba39d102c..7dcba3ee35f08eaddc6a20801e8abd8965d1d4fd 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -125,6 +125,7 @@ import org.bukkit.plugin.messaging.StandardMessenger;
+@@ -128,6 +128,7 @@ import org.bukkit.plugin.messaging.StandardMessenger;
  import org.bukkit.scoreboard.Scoreboard;
  
  import net.md_5.bungee.api.chat.BaseComponent; // Spigot
@@ -16,11 +16,10 @@ index dcbda5b35ab4d44e6b1d6c34bb8763a7dd08e629..5947314af6ebb448254e10e140eb2ecb
  
  @DelegateDeserialization(CraftOfflinePlayer.class)
  public class CraftPlayer extends CraftHumanEntity implements Player {
-@@ -217,8 +218,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
-     @Override
+@@ -221,7 +222,12 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
      public void sendRawMessage(String message) {
          if (getHandle().playerConnection == null) return;
--
+ 
 -        for (IChatBaseComponent component : CraftChatMessage.fromString(message)) {
 +        // Paper start - implement PluginSendStringMessageEvent
 +        PluginSendMessageEvent event = new PluginSendMessageEvent(this, message);
@@ -28,6 +27,6 @@ index dcbda5b35ab4d44e6b1d6c34bb8763a7dd08e629..5947314af6ebb448254e10e140eb2ecb
 +        if (event.isCancelled()) return;
 +        // Paper end
 +        for (IChatBaseComponent component : CraftChatMessage.fromString(event.getMessage())) {
-             getHandle().playerConnection.sendPacket(new PacketPlayOutChat(component));
+             getHandle().playerConnection.sendPacket(new PacketPlayOutChat(component, ChatMessageType.CHAT, SystemUtils.b));
          }
      }

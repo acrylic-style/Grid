@@ -44,7 +44,7 @@ index 7c1e50e57cdb62364369455ca21b41456e8a010f..94005471723187cba438670a7e523639
          printSaveWarning = false;
          console.autosavePeriod = configuration.getInt("ticks-per.autosave");
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 5ae74d0856f7fb4a7ee35e5d778d78fecaf99730..7096886c20e870061587860a663a184b21650246 100644
+index 090b2151949f303cd2b621e636eb63080d4c4c4b..e33f0dce93f49e785111ebffe8a3aaf9b0bc9488 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -400,9 +400,22 @@ public class CraftWorld implements World {
@@ -71,16 +71,16 @@ index 5ae74d0856f7fb4a7ee35e5d778d78fecaf99730..7096886c20e870061587860a663a184b
      @Override
      public Chunk getChunkAt(Block block) {
          Preconditions.checkArgument(block != null, "null block");
-@@ -476,7 +489,7 @@ public class CraftWorld implements World {
-     public boolean unloadChunkRequest(int x, int z) {
+@@ -477,7 +490,7 @@ public class CraftWorld implements World {
          org.spigotmc.AsyncCatcher.catchOp("chunk unload"); // Spigot
-         if (isChunkLoaded(x, z)) {
--            world.getChunkProvider().removeTicket(TicketType.PLUGIN, new ChunkCoordIntPair(x, z), 1, Unit.INSTANCE);
+         net.minecraft.server.IChunkAccess chunk = world.getChunkProvider().getChunkAtIfLoadedImmediately(x, z); // Paper
+         if (chunk != null) {
+-            world.getChunkProvider().removeTicket(TicketType.PLUGIN, chunk.getPos(), 1, Unit.INSTANCE);
 +            world.getChunkProvider().removeTicket(TicketType.PLUGIN, new ChunkCoordIntPair(x, z), 0, Unit.INSTANCE); // Paper
          }
  
          return true;
-@@ -553,10 +566,12 @@ public class CraftWorld implements World {
+@@ -557,10 +570,12 @@ public class CraftWorld implements World {
          org.spigotmc.AsyncCatcher.catchOp("chunk load"); // Spigot
          // Paper start - Optimize this method
          ChunkCoordIntPair chunkPos = new ChunkCoordIntPair(x, z);
@@ -94,7 +94,7 @@ index 5ae74d0856f7fb4a7ee35e5d778d78fecaf99730..7096886c20e870061587860a663a184b
              if (immediate == null) {
                  immediate = world.getChunkProvider().playerChunkMap.getUnloadingChunk(x, z);
              }
-@@ -564,7 +579,7 @@ public class CraftWorld implements World {
+@@ -568,7 +583,7 @@ public class CraftWorld implements World {
                  if (!(immediate instanceof ProtoChunkExtension) && !(immediate instanceof net.minecraft.server.Chunk)) {
                      return false; // not full status
                  }
@@ -103,7 +103,7 @@ index 5ae74d0856f7fb4a7ee35e5d778d78fecaf99730..7096886c20e870061587860a663a184b
                  world.getChunkAt(x, z); // make sure we're at ticket level 32 or lower
                  return true;
              }
-@@ -591,7 +606,7 @@ public class CraftWorld implements World {
+@@ -595,7 +610,7 @@ public class CraftWorld implements World {
              // we do this so we do not re-read the chunk data on disk
          }
  
@@ -112,7 +112,7 @@ index 5ae74d0856f7fb4a7ee35e5d778d78fecaf99730..7096886c20e870061587860a663a184b
          world.getChunkProvider().getChunkAt(x, z, ChunkStatus.FULL, true);
          return true;
          // Paper end
-@@ -2492,6 +2507,7 @@ public class CraftWorld implements World {
+@@ -2496,6 +2511,7 @@ public class CraftWorld implements World {
          }
          return this.world.getChunkProvider().getChunkAtAsynchronously(x, z, gen, urgent).thenComposeAsync((either) -> {
              net.minecraft.server.Chunk chunk = (net.minecraft.server.Chunk) either.left().orElse(null);

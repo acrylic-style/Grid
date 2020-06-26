@@ -5,7 +5,7 @@ Subject: [PATCH] Add TileEntity API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index a9c10228eeeaac89361c695a5ab90161b6358ca1..909cfacb7ae2356f1000a1dac348e805ebada413 100644
+index a9c10228eeeaac89361c695a5ab90161b6358ca1..b776b78b615c381326c70580e7cb77a3ff65c7e2 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -50,6 +50,8 @@ import org.bukkit.util.CachedServerIcon;
@@ -27,12 +27,12 @@ index a9c10228eeeaac89361c695a5ab90161b6358ca1..909cfacb7ae2356f1000a1dac348e805
 +     * @return TileEntity if created, null otherwise
 +     */
 +    @Nullable
-+    public static TileEntity createTileEntity(@NotNull NBTTagCompound nbtTagCompound) { return server.createTileEntity(nbtTagCompound); }
++    public static TileEntity createTileEntity(@NotNull BlockData blockData, @NotNull NBTTagCompound nbtTagCompound) { return server.createTileEntity(blockData, nbtTagCompound); }
      // Paper end
  
      @NotNull
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index cc06492f46ba5776221cd2614c1dcd8f33cc8faf..d2bc0e75b1a7edaab9e90473f72dbc84361c8d69 100644
+index cc06492f46ba5776221cd2614c1dcd8f33cc8faf..c5ece00654c1be8d878a577e6d9a90cf495cf467 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -51,6 +51,8 @@ import org.bukkit.util.CachedServerIcon;
@@ -54,11 +54,11 @@ index cc06492f46ba5776221cd2614c1dcd8f33cc8faf..d2bc0e75b1a7edaab9e90473f72dbc84
 +     * @return TileEntity if created, null otherwise
 +     */
 +    @Nullable
-+    TileEntity createTileEntity(@NotNull NBTTagCompound nbtTagCompound);
++    TileEntity createTileEntity(@NotNull BlockData blockData, @NotNull NBTTagCompound nbtTagCompound);
      // Paper end
  }
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 9518da825ed752c5a477ca9132de50f923f9192d..3a83ae225734e5e82da7241f9a21994078831c34 100644
+index 920f3eb82f1492bd59896e03b65a4df2e46c854d..8309e86ad8071eeda9f00bd2ddaaab761912975e 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
 @@ -39,6 +39,7 @@ import org.bukkit.util.Vector;
@@ -69,7 +69,7 @@ index 9518da825ed752c5a477ca9132de50f923f9192d..3a83ae225734e5e82da7241f9a219940
  
  /**
   * Represents a world, which may contain entities, chunks and blocks
-@@ -3397,6 +3398,71 @@ public interface World extends PluginMessageRecipient, Metadatable {
+@@ -3401,6 +3402,71 @@ public interface World extends PluginMessageRecipient, Metadatable {
      @Nullable
      public DragonBattle getEnderDragonBattle();
  
@@ -143,16 +143,17 @@ index 9518da825ed752c5a477ca9132de50f923f9192d..3a83ae225734e5e82da7241f9a219940
       */
 diff --git a/src/main/java/xyz/acrylicstyle/paper/block/TileEntity.java b/src/main/java/xyz/acrylicstyle/paper/block/TileEntity.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..0eb69c80f88a7ce86df3ecfc7ed227f3531a7b4f
+index 0000000000000000000000000000000000000000..84e1c9bdaeb984d8405b0ba447c99309f4f3df0e
 --- /dev/null
 +++ b/src/main/java/xyz/acrylicstyle/paper/block/TileEntity.java
-@@ -0,0 +1,78 @@
+@@ -0,0 +1,79 @@
 +package xyz.acrylicstyle.paper.block;
 +
 +import org.bukkit.Bukkit;
 +import org.bukkit.Location;
 +import org.bukkit.World;
 +import org.bukkit.block.Block;
++import org.bukkit.block.data.BlockData;
 +import org.bukkit.inventory.InventoryHolder;
 +import org.jetbrains.annotations.NotNull;
 +import org.jetbrains.annotations.Nullable;
@@ -196,7 +197,7 @@ index 0000000000000000000000000000000000000000..0eb69c80f88a7ce86df3ecfc7ed227f3
 +     * @return TileEntity if created, null otherwise
 +     */
 +    @Nullable
-+    static TileEntity create(@NotNull NBTTagCompound nbtTagCompound) { return Bukkit.createTileEntity(nbtTagCompound); }
++    static TileEntity create(@NotNull BlockData blockData, @NotNull NBTTagCompound nbtTagCompound) { return Bukkit.createTileEntity(blockData, nbtTagCompound); }
 +
 +    /**
 +     * Forces TileEntity to update its data.
