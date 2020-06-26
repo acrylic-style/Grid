@@ -1,0 +1,33 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Alfie Cleveland <alfeh@me.com>
+Date: Tue, 27 Dec 2016 01:57:57 +0000
+Subject: [PATCH] Properly fix item duplication bug
+
+Credit to prplz for figuring out the real issue
+
+diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
+index 8d190606262352254bc3cf65515d74baa49ffaeb..2fa8c3e2491ff5947a99374c0678694d833bf659 100644
+--- a/src/main/java/net/minecraft/server/EntityPlayer.java
++++ b/src/main/java/net/minecraft/server/EntityPlayer.java
+@@ -1935,7 +1935,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+ 
+     @Override
+     protected boolean isFrozen() {
+-        return super.isFrozen() || !getBukkitEntity().isOnline();
++        return super.isFrozen() || (this.playerConnection != null && this.playerConnection.isDisconnected()); // Paper
+     }
+ 
+     @Override
+diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
+index 4c59b6beb0db3fd9d42e2f53519c40f211ef8bfb..f802bcb386b67e6c59aee68d6bfa507461f522cf 100644
+--- a/src/main/java/net/minecraft/server/PlayerConnection.java
++++ b/src/main/java/net/minecraft/server/PlayerConnection.java
+@@ -2568,7 +2568,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
+     }
+ 
+     public final boolean isDisconnected() {
+-        return !this.player.joining && !this.networkManager.isConnected();
++        return (!this.player.joining && !this.networkManager.isConnected()) || this.processedDisconnect; // Paper
+     }
+     // CraftBukkit end
+ 

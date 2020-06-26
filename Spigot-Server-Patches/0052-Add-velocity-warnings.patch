@@ -5,10 +5,10 @@ Subject: [PATCH] Add velocity warnings
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 1cf8fd93a45fb76fc1638c7fd8751314d4c813e3..d5311eb017fa093c3068e7ea0c24026822b9d638 100644
+index 8091c4538a97fbc8f2495183ef952aecde659342..af17df4810ef30eba640028dd0b2047ed387eff0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -234,6 +234,7 @@ public final class CraftServer implements Server {
+@@ -259,6 +259,7 @@ public final class CraftServer implements Server {
      public boolean ignoreVanillaPermissions = false;
      private final List<CraftPlayer> playerView;
      public int reloadCount;
@@ -17,10 +17,10 @@ index 1cf8fd93a45fb76fc1638c7fd8751314d4c813e3..d5311eb017fa093c3068e7ea0c240268
      static {
          ConfigurationSerialization.registerClass(CraftOfflinePlayer.class);
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 5625e5bda20578d7653439c47eee4671603f7b5b..1d02e9acb94c972f3dc178a15ed0963a9c80539e 100644
+index 19669d7354d8cfa723e614ac3b471e703ee7feee..613081685e233074728366b9ff16642c04774c91 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-@@ -409,10 +409,41 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+@@ -416,10 +416,41 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
      public void setVelocity(Vector velocity) {
          Preconditions.checkArgument(velocity != null, "velocity");
          velocity.checkFinite();

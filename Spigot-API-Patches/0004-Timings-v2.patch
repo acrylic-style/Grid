@@ -3358,10 +3358,10 @@ index 2a145d851ce30360aa39549745bd87590c034584..00000000000000000000000000000000
 -    // Spigot end
 -}
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 92bafd6365313390326ea12fb815c62463f4d0fc..bfbe775fcd631b12975c0aaae8c82156b81c9614 100644
+index 87e23bd62037694ddfa3bfe0a0fd5f61af6e0ac2..2e68724b5c0c44a83189ca23b2435778ed775ccb 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1329,6 +1329,11 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -1355,6 +1355,11 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
          public void sendMessage(@NotNull net.md_5.bungee.api.ChatMessageType position, @NotNull net.md_5.bungee.api.chat.BaseComponent... components) {
              throw new UnsupportedOperationException("Not supported yet.");
          }
@@ -3374,7 +3374,7 @@ index 92bafd6365313390326ea12fb815c62463f4d0fc..bfbe775fcd631b12975c0aaae8c82156
  
      @NotNull
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index ec77d7be69a8213c91d05bd3beabdd4fc664afa4..c548911c4b4fad495e4b321ea47455ec65c68255 100644
+index 62d0017362204070465c8ff72e5c2ca07501f558..745eaa8f2f2ff83536301db8ca47a8af30df7a73 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 @@ -358,7 +358,6 @@ public final class SimplePluginManager implements PluginManager {
@@ -3434,7 +3434,7 @@ index ec77d7be69a8213c91d05bd3beabdd4fc664afa4..c548911c4b4fad495e4b321ea47455ec
      }
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index df8a5dcbe3345abf7be53d7ebb81d13b33c86511..50a51394f71579b71c3875e4dc8c71abc23ae246 100644
+index 7b9ad3834c9c81220c74a16f1e66fb4da512e9f6..b6d739ca8ad8ebd4b1be7ebd129f9a7ae16b2a2a 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -53,7 +53,6 @@ public final class JavaPluginLoader implements PluginLoader {

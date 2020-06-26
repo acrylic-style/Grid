@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable Player Collision
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index d500cd75a9229584a70bbdbda6de9bce67b836e8..e4f0db64c061af684c28f50f0a37fbca693af7be 100644
+index 7d726757d1083011a09c9f2ca37c33a81360e964..3d9a98936cfe933fd71fb82f07e1ba54d5d35800 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-@@ -223,4 +223,9 @@ public class PaperConfig {
+@@ -224,4 +224,9 @@ public class PaperConfig {
      private static void regionFileCacheSize() {
          regionFileCacheSize = Math.max(getInt("settings.region-file-cache-size", 256), 4);
      }
@@ -19,10 +19,10 @@ index d500cd75a9229584a70bbdbda6de9bce67b836e8..e4f0db64c061af684c28f50f0a37fbca
 +    }
  }
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 4c7df81217c10d92d05e619ad760bc5d9a6a79cf..bd14edb06f7ce2560b600845df284e6c6860d699 100644
+index 5f89477c664662447c1aafbf734a15aee0084f17..26a796513e66d1593d2d7e47062b26bfe07796e9 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -454,6 +454,20 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -436,6 +436,20 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
              this.server.getPluginManager().callEvent(new org.bukkit.event.world.WorldLoadEvent(worldserver.getWorld()));
          }
  
@@ -44,10 +44,10 @@ index 4c7df81217c10d92d05e619ad760bc5d9a6a79cf..bd14edb06f7ce2560b600845df284e6c
          this.server.getPluginManager().callEvent(new ServerLoadEvent(ServerLoadEvent.LoadType.STARTUP));
          this.serverConnection.acceptConnections();
 diff --git a/src/main/java/net/minecraft/server/PacketPlayOutScoreboardTeam.java b/src/main/java/net/minecraft/server/PacketPlayOutScoreboardTeam.java
-index b0740965a42a3931807fab88ab63077175b1c3b7..6b1a914d2f57182da0279cf4d2f9751dd9b16267 100644
+index d1581c9d9838797eb425020d21bd0fba432e5652..99dc43159f240135957aee35f6129f19419c6c25 100644
 --- a/src/main/java/net/minecraft/server/PacketPlayOutScoreboardTeam.java
 +++ b/src/main/java/net/minecraft/server/PacketPlayOutScoreboardTeam.java
-@@ -96,7 +96,7 @@ public class PacketPlayOutScoreboardTeam implements Packet<PacketListenerPlayOut
+@@ -105,7 +105,7 @@ public class PacketPlayOutScoreboardTeam implements Packet<PacketListenerPlayOut
              packetdataserializer.a(this.b);
              packetdataserializer.writeByte(this.j);
              packetdataserializer.a(this.e);
@@ -57,38 +57,38 @@ index b0740965a42a3931807fab88ab63077175b1c3b7..6b1a914d2f57182da0279cf4d2f9751d
              packetdataserializer.a(this.c);
              packetdataserializer.a(this.d);
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 87c854d052d32a10ba6f1abc317db083e8f079d4..36000aaeb34c9b5eb300c4c21d7d7ea7eb3d1e97 100644
+index 42e7394326237fcb466ac9727b5ac732518cf1b9..5ed9122da69b8253c71744700ee9892a6326c8d9 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -72,6 +72,7 @@ public abstract class PlayerList {
+@@ -75,6 +75,7 @@ public abstract class PlayerList {
      // CraftBukkit start
      private CraftServer cserver;
      private final Map<String,EntityPlayer> playersByName = new java.util.HashMap<>();
 +    @Nullable String collideRuleTeamName; // Paper - Team name used for collideRule
  
-     public PlayerList(MinecraftServer minecraftserver, int i) {
+     public PlayerList(MinecraftServer minecraftserver, IRegistryCustom.Dimension iregistrycustom_dimension, WorldNBTStorage worldnbtstorage, int i) {
          this.cserver = minecraftserver.server = new CraftServer((DedicatedServer) minecraftserver, this);
-@@ -274,6 +275,13 @@ public abstract class PlayerList {
+@@ -304,6 +305,13 @@ public abstract class PlayerList {
          }
  
          entityplayer.syncInventory();
 +        // Paper start - Add to collideRule team if needed
-+        final Scoreboard scoreboard = this.getServer().getWorldServer(DimensionManager.OVERWORLD).getScoreboard();
++        final Scoreboard scoreboard = this.getServer().getWorldServer(World.OVERWORLD).getScoreboard();
 +        final ScoreboardTeam collideRuleTeam = scoreboard.getTeam(collideRuleTeamName);
 +        if (this.collideRuleTeamName != null && collideRuleTeam != null && entityplayer.getScoreboardTeam() == null) {
 +            scoreboard.addPlayerToTeam(entityplayer.getName(), collideRuleTeam);
 +        }
 +        // Paper end
          // CraftBukkit - Moved from above, added world
-         PlayerList.LOGGER.info("{}[{}] logged in with entity id {} at ([{}]{}, {}, {})", entityplayer.getDisplayName().getString(), s1, entityplayer.getId(), entityplayer.world.worldData.getName(), entityplayer.locX(), entityplayer.locY(), entityplayer.locZ());
+         PlayerList.LOGGER.info("{}[{}] logged in with entity id {} at ([{}]{}, {}, {})", entityplayer.getDisplayName().getString(), s1, entityplayer.getId(), worldserver1.worldDataServer.getName(), entityplayer.locX(), entityplayer.locY(), entityplayer.locZ());
      }
-@@ -392,6 +400,16 @@ public abstract class PlayerList {
-         entityplayer.playerTick();// SPIGOT-924
+@@ -421,6 +429,16 @@ public abstract class PlayerList {
+         entityplayer.playerTick(); // SPIGOT-924
          // CraftBukkit end
  
 +        // Paper start - Remove from collideRule team if needed
 +        if (this.collideRuleTeamName != null) {
-+            final Scoreboard scoreBoard = this.server.getWorldServer(DimensionManager.OVERWORLD).getScoreboard();
++            final Scoreboard scoreBoard = this.server.getWorldServer(World.OVERWORLD).getScoreboard();
 +            final ScoreboardTeam team = scoreBoard.getTeam(this.collideRuleTeamName);
 +            if (entityplayer.getScoreboardTeam() == team && team != null) {
 +                scoreBoard.removePlayerFromTeam(entityplayer.getName(), team);
@@ -99,13 +99,13 @@ index 87c854d052d32a10ba6f1abc317db083e8f079d4..36000aaeb34c9b5eb300c4c21d7d7ea7
          this.savePlayerFile(entityplayer);
          if (entityplayer.isPassenger()) {
              Entity entity = entityplayer.getRootVehicle();
-@@ -1018,6 +1036,13 @@ public abstract class PlayerList {
+@@ -1058,6 +1076,13 @@ public abstract class PlayerList {
          }
          // CraftBukkit end
  
 +        // Paper start - Remove collideRule team if it exists
 +        if (this.collideRuleTeamName != null) {
-+            final Scoreboard scoreboard = this.getServer().getWorldServer(DimensionManager.OVERWORLD).getScoreboard();
++            final Scoreboard scoreboard = this.getServer().getWorldServer(World.OVERWORLD).getScoreboard();
 +            final ScoreboardTeam team = scoreboard.getTeam(this.collideRuleTeamName);
 +            if (team != null) scoreboard.removeTeam(team);
 +        }

@@ -1,0 +1,30 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Trigary <trigary0@gmail.com>
+Date: Sun, 1 Mar 2020 22:43:24 +0100
+Subject: [PATCH] add hand to BlockMultiPlaceEvent
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+index 49b39ab97f4ef32a0ea35a0832dca289da14bbde..4b8ea4e56efb4c8bfe969c9c1628b5d69aa0c4d9 100644
+--- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
++++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+@@ -315,13 +315,18 @@ public class CraftEventFactory {
+         }
+ 
+         org.bukkit.inventory.ItemStack item;
++        //Paper start - add hand to BlockMultiPlaceEvent
++        EquipmentSlot equipmentSlot;
+         if (hand == EnumHand.MAIN_HAND) {
+             item = player.getInventory().getItemInMainHand();
++            equipmentSlot = EquipmentSlot.HAND;
+         } else {
+             item = player.getInventory().getItemInOffHand();
++            equipmentSlot = EquipmentSlot.OFF_HAND;
+         }
+ 
+-        BlockMultiPlaceEvent event = new BlockMultiPlaceEvent(blockStates, blockClicked, item, player, canBuild);
++        BlockMultiPlaceEvent event = new BlockMultiPlaceEvent(blockStates, blockClicked, item, player, canBuild, equipmentSlot);
++        //Paper end
+         craftServer.getPluginManager().callEvent(event);
+ 
+         return event;
