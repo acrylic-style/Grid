@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MisterVector <whizkid3000@hotmail.com>
+Date: Fri, 26 Oct 2018 21:31:00 -0700
+Subject: [PATCH] Implement PlayerPostRespawnEvent
+
+
+diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
+index ee99d3a72d84c2922dbc3d1d4274a773e8b1f493..b77a3e6545f95de2bc6b3369e402bd975cb7c478 100644
+--- a/src/main/java/net/minecraft/server/PlayerList.java
++++ b/src/main/java/net/minecraft/server/PlayerList.java
+@@ -666,9 +666,14 @@ public abstract class PlayerList {
+         // this.a(entityplayer1, entityplayer, worldserver1); // CraftBukkit - removed
+         boolean flag2 = false;
+ 
++        // Paper start
++        boolean isBedSpawn = false;
++        boolean isRespawn = false;
++        // Paper end
++
+         // CraftBukkit start - fire PlayerRespawnEvent
+         if (location == null) {
+-            boolean isBedSpawn = false;
++            // boolean isBedSpawn = false; // Paper - moved up
+             WorldServer worldserver1 = this.server.getWorldServer(entityplayer.getSpawnDimension());
+             if (worldserver1 != null) {
+                 Optional optional;
+@@ -709,6 +714,7 @@ public abstract class PlayerList {
+ 
+             location = respawnEvent.getRespawnLocation();
+             if (!flag) entityplayer.reset(); // SPIGOT-4785
++            isRespawn = true; // Paper
+         } else {
+             location.setWorld(worldserver.getWorld());
+         }
+@@ -766,6 +772,13 @@ public abstract class PlayerList {
+         if (entityplayer.playerConnection.isDisconnected()) {
+             this.savePlayerFile(entityplayer);
+         }
++
++        // Paper start
++        if (isRespawn) {
++            cserver.getPluginManager().callEvent(new com.destroystokyo.paper.event.player.PlayerPostRespawnEvent(entityplayer.getBukkitEntity(), location, isBedSpawn));
++        }
++        // Paper end
++
+         // CraftBukkit end
+         return entityplayer1;
+     }

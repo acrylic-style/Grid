@@ -1,0 +1,43 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Spottedleaf <Spottedleaf@users.noreply.github.com>
+Date: Mon, 13 May 2019 21:10:59 -0700
+Subject: [PATCH] Fix CraftServer#isPrimaryThread and MinecraftServer
+ isMainThread
+
+md_5 changed it so he could shut down the server asynchronously
+from watchdog, although we have patches that prevent that type
+of behavior for this exact reason.
+
+md_5 also placed code in PlayerConnectionUtils that would have
+solved https://bugs.mojang.com/browse/MC-142590, making the change
+to MinecraftServer#isMainThread irrelevant.
+By reverting his change to MinecraftServer#isMainThread packet
+handling that should have been handled synchronously will be handled
+synchronously when the server gets shut down.
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index cc493d5d8b621bb69aedc5d2c5121d9199074575..19680baafcc8a5a18ec3f58da694372117c7e969 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -2064,7 +2064,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+     // CraftBukkit start
+     @Override
+     public boolean isMainThread() {
+-        return super.isMainThread() || this.isStopped(); // CraftBukkit - MC-142590
++        return super.isMainThread() /*|| this.isStopped()*/; // CraftBukkit - MC-142590 // Paper - causes issues elsewhere
+     }
+ 
+     public boolean isDebugging() {
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 349c82ec94ba34bb584670422cea0db063968bf1..c6dd85b59bcdfcfd76db44cb4779294f8e9a7164 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -1781,7 +1781,7 @@ public final class CraftServer implements Server {
+ 
+     @Override
+     public boolean isPrimaryThread() {
+-        return Thread.currentThread().equals(console.serverThread) || console.hasStopped() || !org.spigotmc.AsyncCatcher.enabled; // All bets are off if we have shut down (e.g. due to watchdog)
++        return Thread.currentThread().equals(console.serverThread); // Paper - Fix issues with detecting main thread properly
+     }
+ 
+     @Override
