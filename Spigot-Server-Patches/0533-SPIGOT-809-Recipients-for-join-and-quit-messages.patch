@@ -6,7 +6,7 @@ Subject: [PATCH] SPIGOT-809 Recipients for join and quit messages.
 https://hub.spigotmc.org/jira/projects/SPIGOT/issues/SPIGOT-809
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index eeb870107031b38e25b5fb85ea731a7db1d6c2d1..c2f074d9559460961b38d1a224beff7c3bfc4d1e 100644
+index 3481991870c1237ed207654a41827791c8017717..abeae60b76d97a6db9107bf28f45899510cc55f6 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -12,6 +12,7 @@ import java.util.Collections;
@@ -25,7 +25,7 @@ index eeb870107031b38e25b5fb85ea731a7db1d6c2d1..c2f074d9559460961b38d1a224beff7c
  import org.bukkit.event.player.PlayerResourcePackStatusEvent;
  import org.bukkit.event.player.PlayerSwapHandItemsEvent;
  import org.bukkit.event.player.PlayerTeleportEvent;
-@@ -1586,9 +1588,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1587,9 +1589,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
          */
  
          this.player.p();
@@ -48,7 +48,7 @@ index eeb870107031b38e25b5fb85ea731a7db1d6c2d1..c2f074d9559460961b38d1a224beff7c
          // CraftBukkit end
          if (this.isExemptPlayer()) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 35d7ac60f61ffb493fe4f32b63511b2b86805243..e83dc93c8b5b0859a38ac459e5ee4e4e5c18ebe5 100644
+index 0c0c285364ab919cb92b9c7db085672cb6165dff..c0b9aa912680c527490b4b0c82b6248c91de8e28 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -19,6 +19,7 @@ import java.util.Optional;

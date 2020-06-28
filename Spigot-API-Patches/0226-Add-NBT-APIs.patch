@@ -5,7 +5,7 @@ Subject: [PATCH] Add NBT APIs
 
 
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 3f0f38031000a4eda25584d069939f40fbfb026b..d11133ccf357f083b963b37d97ffa761e2be78ac 100644
+index d4c776f32caf0491670175a79584c73dd2c7fcca..acabca1b3467d7271af13b678d3c86772b8f5ef4 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -22,6 +22,7 @@ import org.bukkit.util.Vector;
@@ -16,7 +16,7 @@ index 3f0f38031000a4eda25584d069939f40fbfb026b..d11133ccf357f083b963b37d97ffa761
  
  /**
   * Represents a base entity in the world
-@@ -658,5 +659,13 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+@@ -659,5 +660,13 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
       */
      @NotNull
      org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason getEntitySpawnReason();
