@@ -6,10 +6,10 @@ Subject: [PATCH] Figure out why InventoryClickEvent isn't calling - drop when
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 628cf49569185e0e4aea59089ca80305f0586d92..8f27e6ccb892168cbb11bed91efabc3e96f40d59 100644
+index 76c9c89eb66a6264dcdfa77058db03ac31c6f795..9feff5508621789621012fb7c9da713a566638be 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
-@@ -2234,6 +2234,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -2235,6 +2235,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
              } else {
                  // CraftBukkit start - Call InventoryClickEvent
                  if (packetplayinwindowclick.c() < -1 && packetplayinwindowclick.c() != -999) {
@@ -17,7 +17,7 @@ index 628cf49569185e0e4aea59089ca80305f0586d92..8f27e6ccb892168cbb11bed91efabc3e
                      return;
                  }
  
-@@ -2498,7 +2499,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -2499,7 +2500,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
                          // correctly support custom recipes
                          player.updateInventory(player.activeContainer);
                      }

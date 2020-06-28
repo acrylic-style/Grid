@@ -20,10 +20,10 @@ index 0700af8f1141eab1a996c5aea78c1aaa19484514..b6f1908235a1351963ce9b83b6d0aa6b
              inventorycraftresult.setItem(0, itemstack);
              entityplayer.playerConnection.sendPacket(new PacketPlayOutSetSlot(i, 0, itemstack));
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 258dd4288f5c76810de6f24698b03e472ac45e38..628cf49569185e0e4aea59089ca80305f0586d92 100644
+index b26cafe0a93bdeaad0edc500a514c8105c2c7c14..76c9c89eb66a6264dcdfa77058db03ac31c6f795 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
-@@ -2423,9 +2423,9 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -2424,9 +2424,9 @@ public class PlayerConnection implements PacketListenerPlayIn {
                          org.bukkit.inventory.Recipe recipe = ((CraftingInventory) top).getRecipe();
                          if (recipe != null) {
                              if (click == ClickType.NUMBER_KEY) {
