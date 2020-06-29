@@ -28,7 +28,7 @@ receives a deterministic result, and should no longer require 1 tick
 delays anymore.
 
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 0d624d35a86f77cc710162c302270535126ad13d..35c8e18a45dc4b461d6dd320e1235ec627662723 100644
+index 456ac9b0102cb20d17ec5d0d25713aede8703de8..1e6438b71077f5e100e263b6bd14176fa0d8113a 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -104,6 +104,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
@@ -52,23 +52,23 @@ index 4ab719930f5b35c0ae221e9345f1e2eda7d9d719..8de86684dda275585826617b41d6792f
          if (!(entity instanceof EntityComplexPart)) {
              EntityTypes<?> entitytypes = entity.getEntityType();
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index a8653fd3e7cafa26575f691a79e2e219e93a104b..aad7a2207ffe3036ad3ac2e9d17ebfe7ca94ac2a 100644
+index 00071913c0bb4deec7501a54818a2a1d6febc769..18272d56bdac0ff76092d8d834c53474516732a8 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -202,6 +202,12 @@ public abstract class PlayerList {
+@@ -200,6 +200,12 @@ public abstract class PlayerList {
          this.j.put(entityplayer.getUniqueID(), entityplayer);
          // this.sendAll(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, new EntityPlayer[]{entityplayer})); // CraftBukkit - replaced with loop below
  
 +        // Paper start - correctly register player BEFORE PlayerJoinEvent, so the entity is valid and doesn't require tick delay hacks
 +        entityplayer.supressTrackerForLogin = true;
-+        worldserver.addPlayerJoin(entityplayer);
++        worldserver1.addPlayerJoin(entityplayer);
 +        this.server.getBossBattleCustomData().a(entityplayer); // see commented out section below worldserver.addPlayerJoin(entityplayer);
-+        mountSavedVehicle(entityplayer, worldserver, nbttagcompound);
++        mountSavedVehicle(entityplayer, worldserver1, nbttagcompound);
 +        // Paper end
          // CraftBukkit start
          PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent(cserver.getPlayer(entityplayer), joinMessage);
          cserver.getPluginManager().callEvent(playerJoinEvent);
-@@ -236,6 +242,8 @@ public abstract class PlayerList {
+@@ -234,6 +240,8 @@ public abstract class PlayerList {
              entityplayer.playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, new EntityPlayer[] { entityplayer1}));
          }
          entityplayer.sentListPacket = true;
@@ -77,19 +77,19 @@ index a8653fd3e7cafa26575f691a79e2e219e93a104b..aad7a2207ffe3036ad3ac2e9d17ebfe7
          // CraftBukkit end
  
          entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityMetadata(entityplayer.getId(), entityplayer.datawatcher, true)); // CraftBukkit - BungeeCord#2321, send complete data to self on spawn
-@@ -261,6 +269,11 @@ public abstract class PlayerList {
+@@ -259,6 +267,11 @@ public abstract class PlayerList {
              playerconnection.sendPacket(new PacketPlayOutEntityEffect(entityplayer.getId(), mobeffect));
          }
  
 +        // Paper start - move vehicle into method so it can be called above - short circuit around that code
-+        onPlayerJoinFinish(entityplayer, worldserver, s1);
++        onPlayerJoinFinish(entityplayer, worldserver1, s1);
 +    }
-+    private void mountSavedVehicle(EntityPlayer entityplayer, WorldServer worldserver, NBTTagCompound nbttagcompound) {
++    private void mountSavedVehicle(EntityPlayer entityplayer, WorldServer worldserver1, NBTTagCompound nbttagcompound) {
 +        // Paper end
          if (nbttagcompound != null && nbttagcompound.hasKeyOfType("RootVehicle", 10)) {
              NBTTagCompound nbttagcompound1 = nbttagcompound.getCompound("RootVehicle");
              // CraftBukkit start
-@@ -309,6 +322,10 @@ public abstract class PlayerList {
+@@ -307,6 +320,10 @@ public abstract class PlayerList {
              }
          }
  

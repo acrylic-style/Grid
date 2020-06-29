@@ -59,10 +59,10 @@ index e87fa15250a57c9b7ed4f4b530289b7b28bb7c9c..83dda2bb95d38ff248d635420c0bf12e
  
          } catch (Throwable throwable) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index d4a5608aada79f9ac2e7b4de7b79f52ab9ae6dcc..ee99d3a72d84c2922dbc3d1d4274a773e8b1f493 100644
+index 5ee209074e44a1a1988641098b9376e4f0c04b45..b00825156f12fabab0fc740f909363846cee168e 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -264,7 +264,7 @@ public abstract class PlayerList {
+@@ -262,7 +262,7 @@ public abstract class PlayerList {
              // CraftBukkit start
              WorldServer finalWorldServer = worldserver1;
              Entity entity = EntityTypes.a(nbttagcompound1.getCompound("Entity"), finalWorldServer, (entity1) -> {
