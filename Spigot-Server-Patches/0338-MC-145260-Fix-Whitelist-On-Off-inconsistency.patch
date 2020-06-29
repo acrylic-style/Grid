@@ -11,10 +11,10 @@ everything to the Whitelist object.
 https://github.com/PaperMC/Paper/issues/1880
 
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index e26baee0cc0a08983d3848863e4ce3cb3a21c91c..e39e0f44c8c1ccf65c75b3917da51091801d94a7 100644
+index e48184b87b2c98cc2f103204ba62ed22a6fd3694..29e026f6f4106da029f9596201167c08078f4a45 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -932,9 +932,9 @@ public abstract class PlayerList {
+@@ -930,9 +930,9 @@ public abstract class PlayerList {
      }
      public boolean isWhitelisted(GameProfile gameprofile, org.bukkit.event.player.PlayerLoginEvent loginEvent) {
          boolean isOp = this.operators.d(gameprofile);

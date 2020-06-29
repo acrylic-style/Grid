@@ -6,7 +6,7 @@ Subject: [PATCH] Figure out why InventoryClickEvent isn't calling - drop when
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 76c9c89eb66a6264dcdfa77058db03ac31c6f795..9feff5508621789621012fb7c9da713a566638be 100644
+index f9e9fea7d5f312355d605cee842d8e50c990c452..7746d776b73be0212aeccc0106eb3ab7cfcc1e06 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -2235,6 +2235,7 @@ public class PlayerConnection implements PacketListenerPlayIn {

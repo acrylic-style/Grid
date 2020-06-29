@@ -115,7 +115,7 @@ index 7e57a53ec614a2f7d2672edff9d7c0e0dca42377..c072f61e8c88eac8335acd660d8ff0e2
                  if (flag1) {
                      ChunkMapDistance.this.j.a(ChunkTaskQueueSorter.a(() -> {
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 9eaf78095415f09073615db80a87b1fd93a126cc..1a88503a743202e1da7dd81b5501d7b48943b3db 100644
+index 43dd0a1af7bccac64a50c75115b8191785bc2e16..79f7d2d6aba2efeea5fdbb21f7e9d5609b2323cd 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -115,6 +115,8 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
@@ -567,19 +567,19 @@ index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09
                          }
                      }
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index ae030fd102549aa6f721c27be090a3a230d789bb..ea2b2fbfe76ec4c86ac3b236c2daad3e75caa9c3 100644
+index 045d85016edff8e1e8c775f8c701ac806fb3d4e1..0ad06509f26a7677e48f4bfb9c979a42fb6a4f74 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
-@@ -177,7 +177,7 @@ public abstract class PlayerList {
+@@ -175,7 +175,7 @@ public abstract class PlayerList {
          boolean flag1 = gamerules.getBoolean(GameRules.REDUCED_DEBUG_INFO);
  
          // Spigot - view distance
 -        playerconnection.sendPacket(new PacketPlayOutLogin(entityplayer.getId(), entityplayer.playerInteractManager.getGameMode(), entityplayer.playerInteractManager.c(), BiomeManager.a(worldserver1.getSeed()), worlddata.isHardcore(), this.server.E(), this.s, worldserver1.getTypeKey(), worldserver1.getDimensionKey(), this.getMaxPlayers(), worldserver1.spigotConfig.viewDistance, flag1, !flag, worldserver1.isDebugWorld(), worldserver1.isFlatWorld()));
-+        playerconnection.sendPacket(new PacketPlayOutLogin(entityplayer.getId(), entityplayer.playerInteractManager.getGameMode(), entityplayer.playerInteractManager.c(), BiomeManager.a(worldserver1.getSeed()), worlddata.isHardcore(), this.server.E(), this.s, worldserver1.getTypeKey(), worldserver1.getDimensionKey(), this.getMaxPlayers(), worldserver.getChunkProvider().playerChunkMap.getLoadViewDistance(), flag1, !flag, worldserver1.isDebugWorld(), worldserver1.isFlatWorld())); // Paper - no-tick view distance
++        playerconnection.sendPacket(new PacketPlayOutLogin(entityplayer.getId(), entityplayer.playerInteractManager.getGameMode(), entityplayer.playerInteractManager.c(), BiomeManager.a(worldserver1.getSeed()), worlddata.isHardcore(), this.server.E(), this.s, worldserver1.getTypeKey(), worldserver1.getDimensionKey(), this.getMaxPlayers(), worldserver1.getChunkProvider().playerChunkMap.getLoadViewDistance(), flag1, !flag, worldserver1.isDebugWorld(), worldserver1.isFlatWorld())); // Paper - no-tick view distance
          entityplayer.getBukkitEntity().sendSupportedChannels(); // CraftBukkit
          playerconnection.sendPacket(new PacketPlayOutCustomPayload(PacketPlayOutCustomPayload.a, (new PacketDataSerializer(Unpooled.buffer())).a(this.getServer().getServerModName())));
          playerconnection.sendPacket(new PacketPlayOutServerDifficulty(worlddata.getDifficulty(), worlddata.isDifficultyLocked()));
-@@ -819,7 +819,7 @@ public abstract class PlayerList {
+@@ -814,7 +814,7 @@ public abstract class PlayerList {
          // CraftBukkit start
          WorldData worlddata = worldserver1.getWorldData();
          entityplayer1.playerConnection.sendPacket(new PacketPlayOutRespawn(worldserver1.getTypeKey(), worldserver1.getDimensionKey(), BiomeManager.a(worldserver1.getSeed()), entityplayer1.playerInteractManager.getGameMode(), entityplayer1.playerInteractManager.c(), worldserver1.isDebugWorld(), worldserver1.isFlatWorld(), flag));
@@ -588,7 +588,7 @@ index ae030fd102549aa6f721c27be090a3a230d789bb..ea2b2fbfe76ec4c86ac3b236c2daad3e
          entityplayer1.spawnIn(worldserver1);
          entityplayer1.dead = false;
          entityplayer1.playerConnection.teleport(new Location(worldserver1.getWorld(), entityplayer1.locX(), entityplayer1.locY(), entityplayer1.locZ(), entityplayer1.yaw, entityplayer1.pitch));
-@@ -1286,7 +1286,7 @@ public abstract class PlayerList {
+@@ -1281,7 +1281,7 @@ public abstract class PlayerList {
  
      public void a(int i) {
          this.viewDistance = i;
