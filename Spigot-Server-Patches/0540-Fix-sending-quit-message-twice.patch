@@ -5,7 +5,7 @@ Subject: [PATCH] Fix sending quit message twice
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 7c03be319cb29abbadaad9a71352f44e3bf3f589..18eb52b3ee3e3ac505e19a4e043afb9cf66360ec 100644
+index 7035d586ab76dc7960db39100a3addc02fd6b8f4..45c254b777d73d44c9573b46a405d9c249e510da 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -1600,7 +1600,9 @@ public class PlayerConnection implements PacketListenerPlayIn {

@@ -39,7 +39,7 @@ index 4c561181a977fd0244325880bb6a8cd6a54dcacc..8b2755a3b95e472e884976195d1d3551
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index ab65eb18b0fec71cda5305414bf59239644fe9bb..d8d11ed962669785a5c5132757cb4c88a67ec678 100644
+index 7c1c929819c450f853c91618b2853fcb424caa22..26f230a801bd8efa5f8b61dee53fe7b1435f906b 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1519,11 +1519,14 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
@@ -63,7 +63,7 @@ index ab65eb18b0fec71cda5305414bf59239644fe9bb..d8d11ed962669785a5c5132757cb4c88
      }
  
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 3481991870c1237ed207654a41827791c8017717..5765e0f040aa6d581342063ee2781e949d42f71f 100644
+index 4a99a05ef2d01383553e59833a8723f5364168ed..cf83059fec9f11df992827f0c0249243caa9ac33 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -2780,7 +2780,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
