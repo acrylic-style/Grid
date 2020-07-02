@@ -115,7 +115,7 @@ index 7e57a53ec614a2f7d2672edff9d7c0e0dca42377..c072f61e8c88eac8335acd660d8ff0e2
                  if (flag1) {
                      ChunkMapDistance.this.j.a(ChunkTaskQueueSorter.a(() -> {
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 43dd0a1af7bccac64a50c75115b8191785bc2e16..79f7d2d6aba2efeea5fdbb21f7e9d5609b2323cd 100644
+index 2b7e7a7aaa56b9c51fa0c8065ff25828d92c09ee..5f9ab1b81c1440d9b3003fbbf7d00b135a6b811e 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -115,6 +115,8 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
@@ -617,10 +617,10 @@ index 365539e53efdb7e729b580f52fb23659cbde4f0a..ba50189b10b54f5b35448c898f8c3495
  
              if (!this.isClientSide && (i & 1) != 0) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 70313864a60c22d94395a986daad82f41eb723d4..d5154daf8261d3e6754588b2e5b4ed2ccd9e650b 100644
+index 78add5087954ead4f6e97b7491c4190eb11562ca..bb07f8f572c21b4466735e26d4ecb79890888522 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2525,10 +2525,39 @@ public class CraftWorld implements World {
+@@ -2534,10 +2534,39 @@ public class CraftWorld implements World {
      // Spigot start
      @Override
      public int getViewDistance() {

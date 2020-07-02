@@ -30,10 +30,10 @@ index a62f4bbb973b9cb6d1ee53f56a0897d70ae176af..f207abbe757ad403a29a7a012903aaa8
 +    }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 1de3ac4242f388f2331c5a02e17b1709491dcbc7..228106442d8f6d425a0d15c816532223749e03be 100644
+index 3c95cbc18826912eb53205c6fb1387af90a5804c..aa74c838147d67c9cbfcff1f9b0dc653808fb109 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -397,6 +397,7 @@ public final class CraftServer implements Server {
+@@ -399,6 +399,7 @@ public final class CraftServer implements Server {
          if (type == PluginLoadOrder.STARTUP) {
              helpMap.clear();
              helpMap.initializeGeneralTopics();
@@ -41,7 +41,7 @@ index 1de3ac4242f388f2331c5a02e17b1709491dcbc7..228106442d8f6d425a0d15c816532223
          }
  
          Plugin[] plugins = pluginManager.getPlugins();
-@@ -416,7 +417,7 @@ public final class CraftServer implements Server {
+@@ -418,7 +419,7 @@ public final class CraftServer implements Server {
              commandMap.registerServerAliases();
              DefaultPermissions.registerCorePermissions();
              CraftDefaultPermissions.registerCorePermissions();

@@ -17,10 +17,10 @@ index 67fda8bd5a0ad6fea2df0066c61e006c8a49980c..9954120f1fbda5e043962bcc10bfdc98
          MinecraftKey minecraftkey = TileEntityTypes.a(this.getTileType());
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 892d6984740d2411ba1012429ed90cfd150dc65d..6f12848681879144dcd4967f7e16abf2af7b025e 100644
+index 7787895e3ade6b48a6d8b22df6decbd862d46d13..0cb1284080c2984d9b0f89c497b960c5ed6d920a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -225,7 +225,9 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
+@@ -227,7 +227,9 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
  import org.yaml.snakeyaml.error.MarkedYAMLException;
  
  import net.md_5.bungee.api.chat.BaseComponent; // Spigot
@@ -30,7 +30,7 @@ index 892d6984740d2411ba1012429ed90cfd150dc65d..6f12848681879144dcd4967f7e16abf2
  
  import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
-@@ -2344,5 +2346,10 @@ public final class CraftServer implements Server {
+@@ -2348,5 +2350,10 @@ public final class CraftServer implements Server {
      public com.destroystokyo.paper.entity.ai.MobGoals getMobGoals() {
          return mobGoals;
      }
@@ -42,7 +42,7 @@ index 892d6984740d2411ba1012429ed90cfd150dc65d..6f12848681879144dcd4967f7e16abf2
      // Paper end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 3d09c9a3344773fb628d0d9c12e290b9fd712cd0..423f151ab807766b554c93cb083a32ee6abeae92 100644
+index 1baff9469c06fd26b5c8a16f38573a93bf11195c..b6b0f073e5b77198bc8ed7ac602b8537dab077e8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -89,6 +89,7 @@ import net.minecraft.server.SoundCategory;
@@ -52,8 +52,8 @@ index 3d09c9a3344773fb628d0d9c12e290b9fd712cd0..423f151ab807766b554c93cb083a32ee
 +import net.minecraft.server.TileEntityContainer;
  import net.minecraft.server.Unit;
  import net.minecraft.server.Vec3D;
- import net.minecraft.server.WorldGenerator;
-@@ -2578,6 +2579,44 @@ public class CraftWorld implements World {
+ import net.minecraft.server.WorldGenFeatureHugeFungiConfiguration;
+@@ -2587,6 +2588,44 @@ public class CraftWorld implements World {
      }
      // Paper end - per player view distance
  

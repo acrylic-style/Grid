@@ -5,10 +5,10 @@ Subject: [PATCH] Expose EntityHuman#jump to the HumanEntity API
 
 
 diff --git a/src/main/java/org/bukkit/entity/HumanEntity.java b/src/main/java/org/bukkit/entity/HumanEntity.java
-index e6cdd4bc2d934ab932651e17f144d7004835bdc3..c7da9577eb91e60b22cef577c2363fc4fa34ef9b 100644
+index d3998c61af0c5fb1189ae7829e8cdfbef0cd3f97..a017327dd0448ac2b7737a489e74abc0c5509bb8 100644
 --- a/src/main/java/org/bukkit/entity/HumanEntity.java
 +++ b/src/main/java/org/bukkit/entity/HumanEntity.java
-@@ -474,4 +474,11 @@ public interface HumanEntity extends LivingEntity, AnimalTamer, InventoryHolder
+@@ -492,4 +492,11 @@ public interface HumanEntity extends LivingEntity, AnimalTamer, InventoryHolder
       */
      void openSign(@NotNull org.bukkit.block.Sign sign);
      // Paper end

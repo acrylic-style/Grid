@@ -4459,7 +4459,7 @@ index bd6dfddb3c076cf92588dd508975db0eee5c2962..d643ff0a0ae9d45711c9a40fc12af681
      private final MinecraftServer server;
      public final WorldDataServer worldDataServer; // CraftBukkit - type
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
-index 6a797a0ac8ca3f120eea5bd9c54de21a4f38b257..f1c4ae9997d5d11d903360dbccf45f3c1df078bc 100644
+index dd83cc2cc580b997a9b4f8f8b6e1176cb45e9610..3bdaca5fd461b4923c857b236472dd98d23f43a0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 @@ -85,6 +85,7 @@ public final class CraftItemStack extends ItemStack {
@@ -4685,10 +4685,10 @@ index 0000000000000000000000000000000000000000..49dc0c441b9dd7e7745cf15ced67f383
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/DummyGeneratorAccess.java b/src/main/java/org/bukkit/craftbukkit/util/DummyGeneratorAccess.java
-index 99a49ae13697940c2055f37df3c8c2e8383ecee9..7d66cc8e5e4a0f6710f12df8b75cc05bbc152c0b 100644
+index eb87f3720977e4e980d26e9cfd4fed0a808636dd..b6c39bf77e716addc9d2a1e915687bc770e937f4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/DummyGeneratorAccess.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/DummyGeneratorAccess.java
-@@ -188,4 +188,22 @@ public class DummyGeneratorAccess implements GeneratorAccess {
+@@ -187,4 +187,22 @@ public class DummyGeneratorAccess implements GeneratorAccess {
      public boolean a(BlockPosition blockposition, boolean flag, Entity entity, int i) {
          throw new UnsupportedOperationException("Not supported yet.");
      }
