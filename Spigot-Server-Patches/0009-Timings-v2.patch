@@ -1003,7 +1003,7 @@ index aa68eb71b131c1d529ded6c651621cfab071b3c4..9cba62efdb051c9850bbf28b0be17a7e
      }
  
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
-index f51325612fa14c1428679d6955a6d92322da7c84..81f2c91f9e27e2ad2855b64a7849efa18505e952 100644
+index e3f2e259b2c5e478bde45554995b9c742d9e2008..98eec5efe474011665bd819d0d0b11abd6a068ea 100644
 --- a/src/main/java/net/minecraft/server/Entity.java
 +++ b/src/main/java/net/minecraft/server/Entity.java
 @@ -29,7 +29,8 @@ import org.bukkit.command.CommandSender;
@@ -1118,7 +1118,7 @@ index dccb315440f7429fe881bd0d12af8f1ae8e35c3d..96a95413f74592ef0a8e9367fd3ed81f
          if (!this.world.isClientSide && this.dN() && this.aC()) {
              this.damageEntity(DamageSource.DROWN, 1.0F);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 64994a9635efa36ec09623c3869f22faed09b21c..fc92fbb05e442d453d6d5dd4e36143a576f55b6b 100644
+index 70604fbf6bdd5166fc91d57fb4db4a8337bc4727..0867ad04857c652dcbcdf130bb5353113ea039a0 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -65,7 +65,7 @@ import org.bukkit.craftbukkit.CraftServer;
@@ -1407,7 +1407,7 @@ index 3e2e355177e32856dac07dc8b98658ad1b717045..7c5eaff23ef6bf3cdf2575330ea6341d
  
      protected void broadcast(Entity entity, Packet<?> packet) {
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index cfc2005ee5639c88ad1e21f0dd41c917a7c5db05..ef622ae8946c7caafa222c42749ddbd90425f61c 100644
+index b8d3c4d35cee2ba4678f6d22b8ea956d598d9d9b..88fa8d63c5bb2c76ba09db6bb002f6d6b6a42afc 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -58,6 +58,7 @@ import org.bukkit.inventory.CraftingInventory;
@@ -1628,7 +1628,7 @@ index bd5a2eee9cb435a5ee75a39cea231151fba00387..a559f423b19a1e6f8efb632727025084
              CrashReport crashreport = CrashReport.a(throwable, "Ticking entity");
              CrashReportSystemDetails crashreportsystemdetails = crashreport.a("Entity being ticked");
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index f45b5ddc66024e993ac94436ee25a03e085742b4..dd02f7b8c0c0055a506bceab68cec98faf4a7641 100644
+index d643ff0a0ae9d45711c9a40fc12af68157604a33..9df9ce88e23b31f0303a3c84136a10ea14a6d33d 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
 @@ -3,6 +3,8 @@ package net.minecraft.server;
@@ -1758,10 +1758,10 @@ index f45b5ddc66024e993ac94436ee25a03e085742b4..dd02f7b8c0c0055a506bceab68cec98f
  
          // CraftBukkit start - moved from MinecraftServer.saveChunks
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index e34031d0afa6918ce70150531c7a5c5097bf23d9..384fece1d7a1b07b04b09b4876ded0d603b1840b 100644
+index 239fa2404859d233161764cceec5cd0fc37899b9..c6c4033b16df4d31e87f4dca8d9293698e03958a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2048,12 +2048,31 @@ public final class CraftServer implements Server {
+@@ -2052,12 +2052,31 @@ public final class CraftServer implements Server {
      private final Spigot spigot = new Spigot()
      {
  
@@ -1963,10 +1963,10 @@ index 7f435847ac1d13756ce233e7d5ae13f9dc17c443..00000000000000000000000000000000
 -    }
 -}
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index c5216d62660631f54d50575c30717f4052c10f8f..661c8b3c81be46ef2c9488bb52d1963c7f0e89e2 100644
+index 82d302832c579b4524121d21332c999a4d757de6..f8c4fb312232f1689fd19e165830e62609813213 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -1757,6 +1757,14 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -1778,6 +1778,14 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
              packet.components = components;
              getHandle().playerConnection.sendPacket(packet);
          }
@@ -2155,10 +2155,10 @@ index e52ef47b783785dc214746b678e7b549aea9a274..3d90b3426873a3528af14f7f1ab0adae
          this.value = value;
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index fbd533badfd2dc7cac1fe33a12b08b06bbd17179..94c28fe3dcf4f5a673f704e7b21be40b0cd6568e 100644
+index de168983ea04519c4951216621b3493245bd8383..b3b2ad576137d0383f43ec444f2353ecad3743d9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -134,6 +134,12 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -137,6 +137,12 @@ public final class CraftMagicNumbers implements UnsafeValues {
          return CraftNamespacedKey.toMinecraft(mat.getKey());
      }
      // ========================================================================
@@ -2171,7 +2171,7 @@ index fbd533badfd2dc7cac1fe33a12b08b06bbd17179..94c28fe3dcf4f5a673f704e7b21be40b
  
      public static byte toLegacyData(IBlockData data) {
          return CraftLegacy.toLegacyData(data);
-@@ -303,6 +309,13 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -309,6 +315,13 @@ public final class CraftMagicNumbers implements UnsafeValues {
          return clazz;
      }
  

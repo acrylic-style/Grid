@@ -6,10 +6,10 @@ Subject: [PATCH] Don't load chunks when attempting to unload a chunk
 Big Brain Logic
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 5fb4f31693f1214617e43228450d2435d26202f9..70313864a60c22d94395a986daad82f41eb723d4 100644
+index 3ec021746ffaea89f09126538fcaa0555872ac17..78add5087954ead4f6e97b7491c4190eb11562ca 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -476,8 +476,9 @@ public class CraftWorld implements World {
+@@ -477,8 +477,9 @@ public class CraftWorld implements World {
      @Override
      public boolean unloadChunkRequest(int x, int z) {
          org.spigotmc.AsyncCatcher.catchOp("chunk unload"); // Spigot
@@ -21,7 +21,7 @@ index 5fb4f31693f1214617e43228450d2435d26202f9..70313864a60c22d94395a986daad82f4
          }
  
          return true;
-@@ -488,7 +489,10 @@ public class CraftWorld implements World {
+@@ -489,7 +490,10 @@ public class CraftWorld implements World {
          if (!isChunkLoaded(x, z)) {
              return true;
          }
