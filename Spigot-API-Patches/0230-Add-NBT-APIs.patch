@@ -1,0 +1,1758 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Sat, 23 May 2020 20:19:11 +0900
+Subject: [PATCH] Add NBT APIs
+
+
+diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
+index 7808ade92ccd3553056c57cdf77464fb8bdf9312..7457c636a050d74549d85951ee3718b87cfd5493 100644
+--- a/src/main/java/org/bukkit/entity/Entity.java
++++ b/src/main/java/org/bukkit/entity/Entity.java
+@@ -22,6 +22,7 @@ import org.bukkit.util.Vector;
+ import org.jetbrains.annotations.Contract;
+ import org.jetbrains.annotations.NotNull;
+ import org.jetbrains.annotations.Nullable;
++import xyz.acrylicstyle.paper.nbt.NBTTagCompound;
+ 
+ /**
+  * Represents a base entity in the world
+@@ -694,5 +695,13 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+      * Check if entity is in lava
+      */
+     public boolean isInLava();
++
++    @NotNull
++    NBTTagCompound getTag();
++
++    @NotNull
++    NBTTagCompound save(@Nullable NBTTagCompound nbtTagCompound);
++
++    void load(@NotNull NBTTagCompound nbtTagCompound);
+     // Paper end
+ }
+diff --git a/src/main/java/xyz/acrylicstyle/paper/Paper.java b/src/main/java/xyz/acrylicstyle/paper/Paper.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..64a033649dbb43f452b91691360869c81764cb8a
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/Paper.java
+@@ -0,0 +1,31 @@
++package xyz.acrylicstyle.paper;
++
++import com.destroystokyo.paper.util.SneakyThrow;
++import org.bukkit.inventory.ItemStack;
++import org.jetbrains.annotations.NotNull;
++import xyz.acrylicstyle.paper.inventory.ItemStackUtils;
++
++public final class Paper {
++    private static final PaperServer server;
++
++    static {
++        PaperServer s = null;
++        try {
++            s = (PaperServer) Class.forName("xyz.acrylicstyle.paper.CraftPaperServer").newInstance();
++        } catch (Exception exception) {
++            SneakyThrow.sneaky(exception);
++        }
++        server = s;
++    }
++
++    @NotNull
++    public static PaperServer getServer() {
++        if (server == null) throw new IllegalStateException("Cannot get null PaperServer singleton");
++        return server;
++    }
++
++    @NotNull
++    public static ItemStackUtils itemStack(@NotNull ItemStack itemStack) {
++        return server.itemStack(itemStack);
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/PaperServer.java b/src/main/java/xyz/acrylicstyle/paper/PaperServer.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..39b777387070e55f5763cb6a0f8f40d04d28e0ef
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/PaperServer.java
+@@ -0,0 +1,10 @@
++package xyz.acrylicstyle.paper;
++
++import org.bukkit.inventory.ItemStack;
++import org.jetbrains.annotations.NotNull;
++import xyz.acrylicstyle.paper.inventory.ItemStackUtils;
++
++public interface PaperServer {
++    @NotNull
++    ItemStackUtils itemStack(@NotNull ItemStack itemStack);
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/inventory/ItemStackUtils.java b/src/main/java/xyz/acrylicstyle/paper/inventory/ItemStackUtils.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..d870d99dee0069ec4f9bc4ec9870a6c3ad283a6e
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/inventory/ItemStackUtils.java
+@@ -0,0 +1,30 @@
++package xyz.acrylicstyle.paper.inventory;
++
++import org.bukkit.inventory.ItemStack;
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++import xyz.acrylicstyle.paper.nbt.NBTTagCompound;
++
++public abstract class ItemStackUtils {
++    protected ItemStack itemStack;
++
++    public ItemStackUtils(@NotNull ItemStack itemStack) {
++        this.itemStack = itemStack;
++    }
++
++    @NotNull
++    public ItemStack getItemStack() {
++        return itemStack;
++    }
++
++    @NotNull
++    public abstract NBTTagCompound getOrCreateTag();
++
++    @Nullable
++    public abstract NBTTagCompound getTag();
++
++    @NotNull
++    public abstract void setTag(@Nullable NBTTagCompound nbtTagCompound);
++
++    public abstract boolean hasTag();
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTBase.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTBase.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..3dbc44514349fa406b8e67367e1be9f39ff4892b
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTBase.java
+@@ -0,0 +1,45 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import org.jetbrains.annotations.NotNull;
++
++public interface NBTBase {
++    byte getTypeId();
++
++    @NotNull
++    String toString();
++
++    @NotNull
++    NBTBase clone();
++
++    @NotNull
++    default String asString() { return this.toString(); }
++
++    interface NBTNumber extends NBTBase {
++        default long asLong() {
++            return (long) Math.floor((double) asNumber());
++        }
++
++        default int asInt() {
++            return (int) Math.floor((double) asNumber());
++        }
++
++        default short asShort() {
++            return (short) (((int) Math.floor((int) asNumber())) & '\uffff');
++        }
++
++        default byte asByte() {
++            return (byte) (((int) Math.floor((int) asNumber())) & 255);
++        }
++
++        default double asDouble() {
++            return (double) asNumber();
++        }
++
++        default float asFloat() {
++            return (float) asNumber();
++        }
++
++        @NotNull
++        Number asNumber();
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTList.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTList.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..d724f6624b1b3088bf1f0bd0251032bdb25dba30
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTList.java
+@@ -0,0 +1,30 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import org.jetbrains.annotations.NotNull;
++
++import java.util.AbstractList;
++
++public abstract class NBTList<T extends NBTBase> extends AbstractList<T> implements NBTBase {
++    public NBTList() {}
++
++    @Override
++    @NotNull
++    public abstract T set(int i, @NotNull T t);
++
++    @Override
++    public abstract void add(int i, @NotNull T t);
++
++    @Override
++    @NotNull
++    public abstract T remove(int i);
++
++    public abstract boolean a(int i, @NotNull NBTBase nbtbase);
++
++    public abstract boolean b(int i, @NotNull NBTBase nbtbase);
++
++    @Override
++    @NotNull
++    public NBTBase clone() {
++        throw new UnsupportedOperationException();
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTNativeAccessor.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTNativeAccessor.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..9f9dd15754749b331e85c8b44ca10a995b7c5121
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTNativeAccessor.java
+@@ -0,0 +1,36 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import com.destroystokyo.paper.util.SneakyThrow;
++import org.jetbrains.annotations.NotNull;
++
++class NBTNativeAccessor {
++    private static final NativeNBT nativeNBT;
++
++    static {
++        NativeNBT s = null;
++        try {
++            s = (NativeNBT) Class.forName("xyz.acrylicstyle.paper.nbt.SafeNativeNBT").newInstance();
++        } catch (Exception e) {
++            SneakyThrow.sneaky(e);
++        }
++        nativeNBT = s;
++    }
++
++    @NotNull
++    public static NativeNBT getNativeNBT() {
++        if (nativeNBT == null) throw new NullPointerException("Cannot get null NativeNBT singleton");
++        return nativeNBT;
++    }
++
++    @NotNull
++    public static NBTTagByte createNBTTagByte(byte b) { return getNativeNBT().createNBTTagByte(b); }
++
++    @NotNull
++    public static NBTTagInt createNBTTagInt(int i) { return getNativeNBT().createNBTTagInt(i); }
++
++    @NotNull
++    public static NBTTagShort createNBTTagShort(short s) { return getNativeNBT().createNBTTagShort(s); }
++
++    @NotNull
++    public static NBTTagLong createNBTTagLong(long l) { return getNativeNBT().createNBTTagLong(l); }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagByte.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagByte.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..4708ff575850c8645743582204496d577f18a03a
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagByte.java
+@@ -0,0 +1,90 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import org.jetbrains.annotations.NotNull;
++
++public class NBTTagByte implements NBTBase.NBTNumber {
++    public static final int ID = 1;
++    @NotNull
++    public static final NBTTagByte FALSE = create((byte) 0);
++
++    @NotNull
++    public static final NBTTagByte TRUE = create((byte) 1);
++
++    private final byte data;
++
++    public NBTTagByte(byte data) {
++        this.data = data;
++    }
++
++    public boolean equals(@NotNull Object object) {
++        return this == object || object instanceof NBTTagByte && this.data == ((NBTTagByte) object).data;
++    }
++
++    public int hashCode() {
++        return this.data;
++    }
++
++    @NotNull
++    public static NBTTagByte create(byte b0) {
++        return NBTNativeAccessor.createNBTTagByte(b0);
++    }
++
++    @NotNull
++    public static NBTTagByte create(boolean flag) {
++        return flag ? NBTTagByte.TRUE : NBTTagByte.FALSE;
++    }
++
++    @Override
++    public byte getTypeId() {
++        return ID;
++    }
++
++    @Override
++    @NotNull
++    public String toString() {
++        return this.data + "b";
++    }
++
++    @SuppressWarnings("MethodDoesntCallSuperMethod")
++    @Override
++    @NotNull
++    public NBTBase clone() {
++        return this;
++    }
++
++    @Override
++    public long asLong() {
++        return this.data;
++    }
++
++    @Override
++    public int asInt() {
++        return this.data;
++    }
++
++    @Override
++    public short asShort() {
++        return this.data;
++    }
++
++    @Override
++    public byte asByte() {
++        return this.data;
++    }
++
++    @Override
++    public double asDouble() {
++        return this.data;
++    }
++
++    @Override
++    public float asFloat() {
++        return this.data;
++    }
++
++    @Override
++    @NotNull
++    public Number asNumber() {
++        return this.data;
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagByteArray.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagByteArray.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..526278e8f7313b7c75d2bd053d6319bbf8483ff0
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagByteArray.java
+@@ -0,0 +1,123 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import org.apache.commons.lang.ArrayUtils;
++import org.jetbrains.annotations.NotNull;
++
++import java.util.Arrays;
++import java.util.List;
++
++public class NBTTagByteArray extends NBTList<NBTTagByte> {
++    public static final int ID = 7;
++    private byte[] data;
++
++    public NBTTagByteArray(@NotNull byte[] data) {
++        this.data = data;
++    }
++
++    public NBTTagByteArray(@NotNull List<Byte> list) {
++        this(create(list));
++    }
++
++    @NotNull
++    private static byte[] create(@NotNull List<Byte> list) {
++        byte[] abyte = new byte[list.size()];
++        for (int i = 0; i < list.size(); ++i) {
++            Byte obyte = list.get(i);
++            abyte[i] = obyte == null ? 0 : obyte;
++        }
++        return abyte;
++    }
++
++    @Override
++    public byte getTypeId() {
++        return ID;
++    }
++
++    @Override
++    @NotNull
++    public String toString() {
++        StringBuilder stringbuilder = new StringBuilder("[B;");
++        for (int i = 0; i < this.data.length; ++i) {
++            if (i != 0) stringbuilder.append(',');
++            stringbuilder.append(this.data[i]).append('B');
++        }
++        return stringbuilder.append(']').toString();
++    }
++
++    @Override
++    @NotNull
++    public NBTBase clone() {
++        byte[] abyte = new byte[this.data.length];
++
++        System.arraycopy(this.data, 0, abyte, 0, this.data.length);
++        return new NBTTagByteArray(abyte);
++    }
++
++    @Override
++    public boolean equals(@NotNull Object object) {
++        return this == object || object instanceof NBTTagByteArray && Arrays.equals(this.data, ((NBTTagByteArray) object).data);
++    }
++
++    @NotNull
++    public byte[] getBytes() {
++        return this.data;
++    }
++
++    public int size() {
++        return this.data.length;
++    }
++
++    @NotNull
++    public NBTTagByte get(int i) {
++        return NBTTagByte.create(this.data[i]);
++    }
++
++    @NotNull
++    public NBTTagByte set(int i, @NotNull NBTTagByte nbttagbyte) {
++        byte b0 = this.data[i];
++        this.data[i] = nbttagbyte.asByte();
++        return NBTTagByte.create(b0);
++    }
++
++    public void add(int i, @NotNull NBTTagByte nbttagbyte) {
++        this.data = ArrayUtils.add(this.data, i, nbttagbyte.asByte());
++    }
++
++    @Override
++    public boolean a(int i, @NotNull NBTBase nbtbase) {
++        if (nbtbase instanceof NBTNumber) {
++            this.data[i] = ((NBTNumber) nbtbase).asByte();
++            return true;
++        } else {
++            return false;
++        }
++    }
++
++    @Override
++    public boolean b(int i, @NotNull NBTBase nbtbase) {
++        if (nbtbase instanceof NBTNumber) {
++            this.data = ArrayUtils.add(this.data, i, ((NBTNumber) nbtbase).asByte());
++            return true;
++        } else {
++            return false;
++        }
++    }
++
++    @Override
++    @NotNull
++    public NBTTagByte remove(int i) {
++        byte b0 = this.data[i];
++
++        this.data = ArrayUtils.remove(this.data, i);
++        return NBTTagByte.create(b0);
++    }
++
++    public void clear() {
++        this.data = new byte[0];
++    }
++
++    @Override
++    public int hashCode() {
++        return Arrays.hashCode(this.data);
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagCompound.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagCompound.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..20876fee0ee274646a093633993967049c0438c6
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagCompound.java
+@@ -0,0 +1,307 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
++import org.jetbrains.annotations.Contract;
++import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
++
++import java.util.*;
++import java.util.regex.Pattern;
++
++public class NBTTagCompound implements NBTBase {
++    public static final int ID = 10;
++    private static final Pattern PATTERN = Pattern.compile("[A-Za-z0-9._+-]+");
++    private final Map<String, NBTBase> map;
++
++    public NBTTagCompound(@NotNull Map<String, NBTBase> map) {
++        this.map = map;
++    }
++
++    public NBTTagCompound() {
++        this(new Object2ObjectOpenHashMap<>(8, 0.8f));
++    }
++
++    @NotNull
++    public Map<String, NBTBase> getMap() {
++        return map;
++    }
++
++    public boolean equals(@NotNull Object object) {
++        return this == object || object instanceof NBTTagCompound && Objects.equals(this.map, ((NBTTagCompound) object).map);
++    }
++
++    @Override
++    public byte getTypeId() {
++        return ID;
++    }
++
++    @Override
++    @NotNull
++    public String toString() {
++        StringBuilder stringbuilder = new StringBuilder("{");
++        Collection<String> collection = this.map.keySet();
++        String s;
++        for (Iterator<String> iterator = collection.iterator(); iterator.hasNext(); stringbuilder.append(t(s)).append(':').append(this.map.get(s))) {
++            s = iterator.next();
++            if (stringbuilder.length() != 1) {
++                stringbuilder.append(',');
++            }
++        }
++        return stringbuilder.append('}').toString();
++    }
++
++    @NotNull
++    protected static String t(@NotNull String s) {
++        return NBTTagCompound.PATTERN.matcher(s).matches() ? s : NBTTagString.translate(s);
++    }
++
++    @Override
++    public int hashCode() {
++        return this.map.hashCode();
++    }
++
++    @SuppressWarnings({"unchecked", "MethodDoesntCallSuperMethod", "rawtypes"})
++    @Override
++    @NotNull
++    public NBTBase clone() {
++        it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap<String, NBTBase> ret = new it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap<>(this.map.size(), 0.8f);
++        Iterator<Map.Entry<String, NBTBase>> iterator = (this.map instanceof Object2ObjectOpenHashMap)
++            ? ((Object2ObjectOpenHashMap) this.map).object2ObjectEntrySet().fastIterator()
++            : this.map.entrySet().iterator();
++        while (iterator.hasNext()) {
++            Map.Entry<String, NBTBase> entry = iterator.next();
++            ret.put(entry.getKey(), entry.getValue().clone());
++        }
++        return new NBTTagCompound(ret);
++    }
++
++    /**
++     * Checks if key of type has {type}.
++     * @param key the key
++     * @param type the type, 99 means number.
++     * @return if key of type has same type as param type.
++     */
++    public boolean hasKeyOfType(@NotNull String key, int type) {
++        byte b0 = this.getTypeId(key);
++        return b0 == type || (type == 99 && Arrays.asList((byte) 1, (byte) 2, (byte) 3, (byte) 4, (byte) 5, (byte) 6).contains(b0)); // 1-6s are numbers
++    }
++
++    public boolean hasKey(@NotNull String key) {
++        return this.map.containsKey(key);
++    }
++
++    /**
++     * Get NBT value by key and returns its type ID.
++     * If value was null, it returns 0.
++     * @param key the key
++     * @return the type id
++     */
++    public byte getTypeId(@NotNull String key) {
++        NBTBase nbtbase = this.map.get(key);
++        return nbtbase == null ? 0 : nbtbase.getTypeId();
++    }
++
++    /**
++     * @param key key with which the specified value is to be associated
++     * @param nbtBase value to be associated with the specified key
++     * @return previous value if set, null otherwise.
++     */
++    @Nullable
++    public NBTBase set(@NotNull String key, @NotNull NBTBase nbtBase) {
++        return this.map.put(key, nbtBase);
++    }
++
++    public void setByte(@NotNull String key, byte b) {
++        this.map.put(key, NBTTagByte.create(b));
++    }
++
++    public void setShort(@NotNull String key, short s) {
++        this.map.put(key, NBTTagShort.create(s));
++    }
++
++    public void setInt(@NotNull String key, int i) {
++        this.map.put(key, NBTTagInt.create(i));
++    }
++
++    public void setLong(@NotNull String key, long l) {
++        this.map.put(key, NBTTagLong.create(l));
++    }
++
++    public void setFloat(@NotNull String key, float f) {
++        this.map.put(key, NBTTagFloat.create(f));
++    }
++
++    public void setDouble(@NotNull String key, double d) {
++        this.map.put(key, NBTTagDouble.create(d));
++    }
++
++    public void setBoolean(@NotNull String key, boolean b) {
++        this.map.put(key, NBTTagByte.create(b));
++    }
++
++    public void setByteArray(@NotNull String key, @NotNull byte[] bytes) {
++        this.map.put(key, new NBTTagByteArray(bytes));
++    }
++
++    public void setIntArray(@NotNull String key, @NotNull int[] ints) {
++        this.map.put(key, new NBTTagIntArray(ints));
++    }
++
++    public void setIntList(@NotNull String key, @NotNull List<Integer> integerList) {
++        this.map.put(key, new NBTTagIntArray(integerList));
++    }
++
++    public void setLongArray(@NotNull String key, @NotNull long[] longs) {
++        this.map.put(key, new NBTTagLongArray(longs));
++    }
++
++    public void setLongList(@NotNull String key, @NotNull List<Long> longList) {
++        this.map.put(key, new NBTTagLongArray(longList));
++    }
++
++    public void setString(@NotNull String key, @NotNull String s) {
++        this.map.put(key, NBTTagString.create(s));
++    }
++
++    public void setUUID(@NotNull String prefix, @NotNull UUID uuid) {
++        this.setLong(prefix + "Most", uuid.getMostSignificantBits());
++        this.setLong(prefix + "Least", uuid.getLeastSignificantBits());
++    }
++
++    @Nullable
++    public NBTBase get(@NotNull String key) {
++        return this.map.get(key);
++    }
++
++    public byte getByte(@NotNull String key) {
++        try {
++            if (this.hasKeyOfType(key, 99)) return ((NBTNumber) this.map.get(key)).asByte();
++        } catch (ClassCastException ignored) {}
++        return 0;
++    }
++
++    public short getShort(@NotNull String key) {
++        try {
++            if (this.hasKeyOfType(key, 99)) return ((NBTNumber) this.map.get(key)).asShort();
++        } catch (ClassCastException ignored) {}
++        return 0;
++    }
++
++    public int getInt(@NotNull String key) {
++        try {
++            if (this.hasKeyOfType(key, 99)) return ((NBTNumber) this.map.get(key)).asInt();
++        } catch (ClassCastException ignored) {}
++        return 0;
++    }
++
++    public long getLong(@NotNull String key) {
++        try {
++            if (this.hasKeyOfType(key, 99)) return ((NBTNumber) this.map.get(key)).asLong();
++        } catch (ClassCastException ignored) {}
++        return 0;
++    }
++
++    public float getFloat(@NotNull String key) {
++        try {
++            if (this.hasKeyOfType(key, 99)) return ((NBTNumber) this.map.get(key)).asFloat();
++        } catch (ClassCastException ignored) {}
++        return 0;
++    }
++
++    public double getDouble(@NotNull String key) {
++        try {
++            if (this.hasKeyOfType(key, 99)) return ((NBTNumber) this.map.get(key)).asByte();
++        } catch (ClassCastException ignored) {}
++        return 0;
++    }
++
++    @NotNull
++    public String getString(@NotNull String key) {
++        try {
++            if (this.hasKeyOfType(key, 8)) return this.map.get(key).asString();
++        } catch (ClassCastException ignored) {}
++        return "";
++    }
++
++    @NotNull
++    public byte[] getByteArray(@NotNull String key) {
++        try {
++            if (this.hasKeyOfType(key, 7)) return ((NBTTagByteArray) this.map.get(key)).getBytes();
++        } catch (ClassCastException ignored) {}
++        return new byte[0];
++    }
++
++    @NotNull
++    public int[] getIntArray(@NotNull String key) {
++        try {
++            if (this.hasKeyOfType(key, 11)) return ((NBTTagIntArray) this.map.get(key)).getInts();
++        } catch (ClassCastException ignored) {}
++        return new int[0];
++    }
++
++    @NotNull
++    public long[] getLongArray(@NotNull String key) {
++        try {
++            if (this.hasKeyOfType(key, 12)) return ((NBTTagLongArray) this.map.get(key)).getLongs();
++        } catch (ClassCastException ignored) {}
++        return new long[0];
++    }
++
++    @NotNull
++    public NBTTagCompound getCompound(@NotNull String key) {
++        try {
++            if (this.hasKeyOfType(key, 10)) {
++                return (NBTTagCompound) this.map.get(key);
++            }
++        } catch (ClassCastException e) {
++            throw new ClassCastException("Corrupt NBT tag: Expected type 10 at " + key + ", but got type " + this.getTypeId(key) + " instead.");
++        }
++        return new NBTTagCompound();
++    }
++
++    @NotNull
++    public NBTTagList getList(@NotNull String key, int i) {
++        try {
++            if (this.getTypeId(key) == 9) {
++                NBTTagList nbttaglist = (NBTTagList) this.map.get(key);
++                if (!nbttaglist.isEmpty() && nbttaglist.getType() != i) return new NBTTagList();
++                return nbttaglist;
++            }
++        } catch (ClassCastException classcastexception) {
++            throw new ClassCastException("Corrupt NBT tag: Expected type 9 at " + key + ", but got type " + this.getTypeId(key) + " instead.");
++        }
++
++        return new NBTTagList();
++    }
++
++    public boolean getBoolean(@NotNull String key) {
++        return this.getByte(key) != 0;
++    }
++
++    public void remove(@NotNull String key) {
++        this.map.remove(key);
++    }
++
++    public boolean isEmpty() {
++        return this.map.isEmpty();
++    }
++
++    /**
++     * Merge(load) from specified NBT tag.
++     * @param tag the tag
++     * @return this instance
++     */
++    @Contract("!null -> this")
++    @NotNull
++    public NBTTagCompound merge(@NotNull NBTTagCompound tag) {
++        for (String s : tag.map.keySet()) {
++            NBTBase nbtbase = tag.map.get(s);
++            if (nbtbase.getTypeId() == 10) {
++                if (this.hasKeyOfType(s, 10)) {
++                    this.getCompound(s).merge((NBTTagCompound) nbtbase);
++                } else this.set(s, nbtbase.clone());
++            } else this.set(s, nbtbase.clone());
++        }
++        return this;
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagDouble.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagDouble.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..19172fa5ca5681ff90253925cb46d0df8d7dec6d
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagDouble.java
+@@ -0,0 +1,54 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import org.jetbrains.annotations.NotNull;
++
++public class NBTTagDouble implements NBTBase.NBTNumber {
++    public static final int ID = 6;
++    public static final NBTTagDouble ZERO = new NBTTagDouble(0.0D);
++
++    private final double data;
++
++    public NBTTagDouble(double data) {
++        this.data = data;
++    }
++
++    @SuppressWarnings("MethodDoesntCallSuperMethod")
++    @Override
++    @NotNull
++    public NBTBase clone() {
++        return this;
++    }
++
++    @Override
++    public byte getTypeId() {
++        return ID;
++    }
++
++    @Override
++    @NotNull
++    public String toString() {
++        return this.data + "d";
++    }
++
++    @NotNull
++    public static NBTTagDouble create(double d0) {
++        return d0 == 0.0D ? NBTTagDouble.ZERO : new NBTTagDouble(d0);
++    }
++
++    @Override
++    public boolean equals(@NotNull Object object) {
++        return this == object || object instanceof NBTTagDouble && this.data == ((NBTTagDouble) object).data;
++    }
++
++    @Override
++    public int hashCode() {
++        long i = Double.doubleToLongBits(this.data);
++        return (int) (i ^ i >>> 32);
++    }
++
++    @Override
++    @NotNull
++    public Number asNumber() {
++        return this.data;
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagEnd.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagEnd.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..cb9e98f58f39870c7a9344567ac1efffe85a74ad
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagEnd.java
+@@ -0,0 +1,27 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import org.jetbrains.annotations.NotNull;
++
++public class NBTTagEnd implements NBTBase {
++    public static final int ID = 0;
++    public static final NBTTagEnd END = new NBTTagEnd();
++
++    private NBTTagEnd() {}
++
++    @Override
++    @NotNull
++    public NBTBase clone() {
++        return this;
++    }
++
++    @Override
++    public byte getTypeId() {
++        return ID;
++    }
++
++    @Override
++    @NotNull
++    public String toString() {
++        return "END";
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagFloat.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagFloat.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..0bc505183f8c4a60cb1f9eb38b7faf70ee9b8fb5
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagFloat.java
+@@ -0,0 +1,63 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import org.jetbrains.annotations.NotNull;
++
++public class NBTTagFloat implements NBTBase.NBTNumber {
++    public static final int ID = 5;
++    public static final NBTTagFloat ZERO = new NBTTagFloat(0.0F);
++
++    private final float data;
++
++    public NBTTagFloat(float data) {
++        this.data = data;
++    }
++
++    @NotNull
++    public static NBTTagFloat create(float f) {
++        return f == 0.0F ? NBTTagFloat.ZERO : new NBTTagFloat(f);
++    }
++
++    @Override
++    public byte getTypeId() {
++        return ID;
++    }
++
++    @NotNull
++    @Override
++    public String toString() {
++        return this.data + "f";
++    }
++
++    @SuppressWarnings("MethodDoesntCallSuperMethod")
++    @Override
++    @NotNull
++    public NBTBase clone() {
++        return this;
++    }
++
++    @Override
++    public long asLong() {
++        return (long) this.data;
++    }
++
++    @Override
++    public int asInt() {
++        return (int) this.data;
++    }
++
++    @Override
++    public double asDouble() {
++        return this.data;
++    }
++
++    @Override
++    public float asFloat() {
++        return this.data;
++    }
++
++    @Override
++    @NotNull
++    public Number asNumber() {
++        return this.data;
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagInt.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagInt.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..b0213c0ace1961f502cf2f51bd726aa21a5e112d
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagInt.java
+@@ -0,0 +1,77 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import org.jetbrains.annotations.NotNull;
++
++public class NBTTagInt implements NBTBase.NBTNumber {
++    public static final int ID = 3;
++    private final int data;
++
++    public NBTTagInt(int i) {
++        this.data = i;
++    }
++
++    @NotNull
++    public static NBTTagInt create(int i) { return NBTNativeAccessor.createNBTTagInt(i); }
++
++    @Override
++    public boolean equals(@NotNull Object object) {
++        return this == object || object instanceof NBTTagInt && this.data == ((NBTTagInt) object).data;
++    }
++
++    @Override
++    public byte getTypeId() {
++        return ID;
++    }
++
++    @Override
++    public @NotNull String toString() {
++        return Integer.toString(data);
++    }
++
++    @Override
++    public int hashCode() {
++        return this.data;
++    }
++
++    @Override
++    @NotNull
++    public NBTBase clone() {
++        return this;
++    }
++
++    @Override
++    public long asLong() {
++        return data;
++    }
++
++    @Override
++    public int asInt() {
++        return data;
++    }
++
++    @Override
++    public short asShort() {
++        return (short) data;
++    }
++
++    @Override
++    public byte asByte() {
++        return (byte) data;
++    }
++
++    @Override
++    public double asDouble() {
++        return data;
++    }
++
++    @Override
++    public float asFloat() {
++        return data;
++    }
++
++    @Override
++    @NotNull
++    public Number asNumber() {
++        return data;
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagIntArray.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagIntArray.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..929a2b719611d7223273c60576f9ffab9b467402
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagIntArray.java
+@@ -0,0 +1,122 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import org.apache.commons.lang.ArrayUtils;
++import org.jetbrains.annotations.NotNull;
++
++import java.util.Arrays;
++import java.util.List;
++
++public class NBTTagIntArray extends NBTList<NBTTagInt> {
++    public static final int ID = 11;
++    private int[] data;
++
++    public NBTTagIntArray(@NotNull int[] aint) {
++        this.data = aint;
++    }
++
++    public NBTTagIntArray(@NotNull List<Integer> list) {
++        this(create(list));
++    }
++
++    @NotNull
++    private static int[] create(@NotNull List<Integer> list) {
++        int[] aint = new int[list.size()];
++        for (int i = 0; i < list.size(); ++i) {
++            Integer integer = list.get(i);
++            aint[i] = integer == null ? 0 : integer;
++        }
++        return aint;
++    }
++
++    @Override
++    public byte getTypeId() {
++        return ID;
++    }
++
++    @Override
++    public @NotNull String toString() {
++        StringBuilder stringbuilder = new StringBuilder("[I;");
++        for (int i = 0; i < this.data.length; ++i) {
++            if (i != 0) stringbuilder.append(',');
++            stringbuilder.append(this.data[i]);
++        }
++        return stringbuilder.append(']').toString();
++    }
++
++    @Override
++    public @NotNull NBTTagIntArray clone() {
++        int[] aint = new int[this.data.length];
++
++        System.arraycopy(this.data, 0, aint, 0, this.data.length);
++        return new NBTTagIntArray(aint);
++    }
++
++    @Override
++    public boolean equals(@NotNull Object object) {
++        return this == object || object instanceof NBTTagIntArray && Arrays.equals(this.data, ((NBTTagIntArray) object).data);
++    }
++
++    @Override
++    public int hashCode() {
++        return Arrays.hashCode(this.data);
++    }
++
++    @NotNull
++    public int[] getInts() {
++        return this.data;
++    }
++
++    public int size() {
++        return this.data.length;
++    }
++
++    @NotNull
++    public NBTTagInt get(int i) {
++        return NBTTagInt.create(this.data[i]);
++    }
++
++    @NotNull
++    public NBTTagInt set(int i, @NotNull NBTTagInt nbttagint) {
++        int j = this.data[i];
++
++        this.data[i] = nbttagint.asInt();
++        return NBTTagInt.create(j);
++    }
++
++    public void add(int i, @NotNull NBTTagInt nbttagint) {
++        this.data = ArrayUtils.add(this.data, i, nbttagint.asInt());
++    }
++
++    @Override
++    public boolean a(int i, @NotNull NBTBase nbtbase) {
++        if (nbtbase instanceof NBTNumber) {
++            this.data[i] = ((NBTNumber) nbtbase).asInt();
++            return true;
++        } else {
++            return false;
++        }
++    }
++
++    @Override
++    public boolean b(int i, @NotNull NBTBase nbtbase) {
++        if (nbtbase instanceof NBTNumber) {
++            this.data = ArrayUtils.add(this.data, i, ((NBTNumber) nbtbase).asInt());
++            return true;
++        } else {
++            return false;
++        }
++    }
++
++    @Override
++    @NotNull
++    public NBTTagInt remove(int i) {
++        int j = this.data[i];
++
++        this.data = ArrayUtils.remove(this.data, i);
++        return NBTTagInt.create(j);
++    }
++
++    public void clear() {
++        this.data = new int[0];
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagList.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagList.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..af81be7ba6641c309e034cf9fa93d46442b25bee
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagList.java
+@@ -0,0 +1,212 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import com.destroystokyo.paper.util.SneakyThrow;
++import com.google.common.collect.Iterables;
++import com.google.common.collect.Lists;
++import org.jetbrains.annotations.NotNull;
++
++import java.util.List;
++import java.util.Objects;
++
++public class NBTTagList extends NBTList<NBTBase> {
++    public static final int ID = 9;
++    private final List<NBTBase> list;
++    private byte type;
++
++    public NBTTagList(@NotNull List<NBTBase> list, byte b0) {
++        this.list = list;
++        this.type = b0;
++    }
++
++    public NBTTagList() {
++        this(Lists.newArrayList(), (byte) 0);
++    }
++
++    @Override
++    public @NotNull String toString() {
++        StringBuilder stringbuilder = new StringBuilder("[");
++        for (int i = 0; i < this.list.size(); ++i) {
++            if (i != 0) stringbuilder.append(',');
++            stringbuilder.append(this.list.get(i));
++        }
++        return stringbuilder.append(']').toString();
++    }
++
++    private void resetTypeIfEmpty() {
++        if (this.list.isEmpty()) this.type = 0;
++    }
++
++    /**
++     * Removes a element from list specified by index.
++     * @param i the array index
++     * @return removed element
++     */
++    @Override
++    public @NotNull NBTBase remove(int i) {
++        NBTBase nbtbase = this.list.remove(i);
++        this.resetTypeIfEmpty();
++        return nbtbase;
++    }
++
++    @Override
++    public boolean isEmpty() {
++        return this.list.isEmpty();
++    }
++
++    @NotNull
++    public NBTTagCompound getCompound(int i) {
++        if (i >= 0 && i < this.list.size()) {
++            NBTBase nbtbase = this.list.get(i);
++            if (nbtbase instanceof NBTTagCompound) return (NBTTagCompound) nbtbase;
++        }
++        return new NBTTagCompound();
++    }
++
++    @NotNull
++    public NBTTagList getList(int i) {
++        if (i >= 0 && i < this.list.size()) {
++            NBTBase nbtbase = this.list.get(i);
++            if (nbtbase instanceof NBTTagList) return (NBTTagList) nbtbase;
++        }
++        return new NBTTagList();
++    }
++
++    public short getShort(int i) {
++        if (i >= 0 && i < this.list.size()) {
++            NBTBase nbtbase = this.list.get(i);
++            if (nbtbase instanceof NBTTagShort) return ((NBTTagShort) nbtbase).asShort();
++        }
++        return 0;
++    }
++
++    public int getInt(int i) {
++        if (i >= 0 && i < this.list.size()) {
++            NBTBase nbtbase = this.list.get(i);
++            if (nbtbase instanceof NBTTagInt) return ((NBTTagInt) nbtbase).asInt();
++        }
++        return 0;
++    }
++
++    @NotNull
++    public int[] getIntArray(int i) {
++        if (i >= 0 && i < this.list.size()) {
++            NBTBase nbtbase = this.list.get(i);
++            if (nbtbase instanceof NBTTagIntArray) return ((NBTTagIntArray) nbtbase).getInts();
++        }
++        return new int[0];
++    }
++
++    public double getDouble(int i) {
++        if (i >= 0 && i < this.list.size()) {
++            NBTBase nbtbase = this.list.get(i);
++            if (nbtbase instanceof NBTTagDouble) return ((NBTTagDouble) nbtbase).asDouble();
++        }
++        return 0.0D;
++    }
++
++    public float getFloat(int i) {
++        if (i >= 0 && i < this.list.size()) {
++            NBTBase nbtbase = this.list.get(i);
++            if (nbtbase instanceof NBTTagFloat) return ((NBTTagFloat) nbtbase).asFloat();
++        }
++        return 0.0F;
++    }
++
++    @NotNull
++    public String getString(int i) {
++        if (i >= 0 && i < this.list.size()) {
++            NBTBase nbtbase = this.list.get(i);
++            return nbtbase instanceof NBTTagString ? nbtbase.asString() : nbtbase.toString();
++        } else {
++            return "";
++        }
++    }
++
++    public int size() {
++        return this.list.size();
++    }
++
++    @NotNull
++    public NBTBase get(int i) {
++        return this.list.get(i);
++    }
++
++    @Override
++    public @NotNull NBTBase set(int i, @NotNull NBTBase nbtbase) {
++        NBTBase nbtbase1 = this.get(i);
++        if (!this.a(i, nbtbase)) {
++            throw new UnsupportedOperationException(String.format("Trying to add tag of type %s to list of %s", nbtbase, this.type));
++        } else {
++            return nbtbase1;
++        }
++    }
++
++    @Override
++    public void add(int i, @NotNull NBTBase nbtbase) {
++        if (!this.b(i, nbtbase)) {
++            throw new UnsupportedOperationException(String.format("Trying to add tag of type %s to list of %s", nbtbase, this.type));
++        }
++    }
++
++    @Override
++    public boolean a(int i, @NotNull NBTBase nbtbase) {
++        if (this.a(nbtbase)) {
++            this.list.set(i, nbtbase);
++            return true;
++        } else {
++            return false;
++        }
++    }
++
++    @Override
++    public boolean b(int i, @NotNull NBTBase nbtbase) {
++        if (this.a(nbtbase)) {
++            this.list.add(i, nbtbase);
++            return true;
++        } else {
++            return false;
++        }
++    }
++
++    private boolean a(@NotNull NBTBase nbtbase) {
++        try {
++            if (nbtbase instanceof NBTTagEnd) {
++                return false;
++            } else if (this.type == 0) {
++                return true;
++            } else {
++                return this.type == (byte) nbtbase.getClass().getField("ID").get(null);
++            }
++        } catch (ReflectiveOperationException e) { SneakyThrow.sneaky(e); return false; }
++    }
++
++    @Override
++    public @NotNull NBTTagList clone() {
++        Iterable<NBTBase> iterable = Iterables.transform(this.list, NBTBase::clone);
++        return new NBTTagList(Lists.newArrayList(iterable), this.type);
++    }
++
++    @Override
++    public boolean equals(@NotNull Object object) {
++        return this == object || object instanceof NBTTagList && Objects.equals(this.list, ((NBTTagList) object).list);
++    }
++
++    @Override
++    public int hashCode() {
++        return this.list.hashCode();
++    }
++
++    public byte getType() {
++        return type;
++    }
++
++    public byte getTypeId() {
++        return ID;
++    }
++
++    @Override
++    public void clear() {
++        this.list.clear();
++        this.type = (byte) 0;
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagLong.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagLong.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..5f03a73a884f280c28b243472350103711d91d85
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagLong.java
+@@ -0,0 +1,76 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import org.jetbrains.annotations.NotNull;
++
++public class NBTTagLong implements NBTBase.NBTNumber {
++    public static final int ID = 4;
++    private final long data;
++
++    public NBTTagLong(long data) {
++        this.data = data;
++    }
++
++    @NotNull
++    public static NBTTagLong create(long l) { return NBTNativeAccessor.createNBTTagLong(l); }
++
++    @Override
++    public byte getTypeId() {
++        return ID;
++    }
++
++    @Override
++    public @NotNull String toString() {
++        return this.data + "L";
++    }
++
++    @SuppressWarnings("MethodDoesntCallSuperMethod")
++    @Override
++    public @NotNull NBTTagLong clone() {
++        return this;
++    }
++
++    @Override
++    public boolean equals(@NotNull Object object) {
++        return this == object || object instanceof NBTTagLong && this.data == ((NBTTagLong) object).data;
++    }
++
++    @Override
++    public int hashCode() {
++        return (int) (this.data ^ this.data >>> 32);
++    }
++
++    @Override
++    public long asLong() {
++        return this.data;
++    }
++
++    @Override
++    public int asInt() {
++        return (int) this.data;
++    }
++
++    @Override
++    public short asShort() {
++        return (short) ((int) (this.data & 65535L));
++    }
++
++    @Override
++    public byte asByte() {
++        return (byte) ((int) (this.data & 255L));
++    }
++
++    @Override
++    public double asDouble() {
++        return (double) this.data;
++    }
++
++    @Override
++    public float asFloat() {
++        return (float) this.data;
++    }
++
++    @Override
++    public @NotNull Number asNumber() {
++        return this.data;
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagLongArray.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagLongArray.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..08cc00be4fe1bee78d1e52b0dc6163a8596dfc50
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagLongArray.java
+@@ -0,0 +1,125 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import it.unimi.dsi.fastutil.longs.LongSet;
++import org.apache.commons.lang.ArrayUtils;
++import org.jetbrains.annotations.NotNull;
++
++import java.util.Arrays;
++import java.util.List;
++
++public class NBTTagLongArray extends NBTList<NBTTagLong> {
++    public static final int ID = 12;
++    private long[] data;
++
++    public NBTTagLongArray(@NotNull long[] data) {
++        this.data = data;
++    }
++
++    public NBTTagLongArray(@NotNull LongSet longset) {
++        this.data = longset.toLongArray();
++    }
++
++    public NBTTagLongArray(@NotNull List<Long> list) {
++        this(create(list));
++    }
++
++    @NotNull
++    public static long[] create(@NotNull List<Long> list) {
++        long[] along = new long[list.size()];
++        for (int i = 0; i < list.size(); ++i) {
++            Long olong = list.get(i);
++            along[i] = olong == null ? 0L : olong;
++        }
++        return along;
++    }
++
++    @Override
++    public byte getTypeId() {
++        return ID;
++    }
++
++    @Override
++    public @NotNull String toString() {
++        StringBuilder stringbuilder = new StringBuilder("[L;");
++        for (int i = 0; i < this.data.length; ++i) {
++            if (i != 0) stringbuilder.append(',');
++            stringbuilder.append(this.data[i]).append('L');
++        }
++        return stringbuilder.append(']').toString();
++    }
++
++    @Override
++    public @NotNull NBTTagLongArray clone() {
++        long[] along = new long[this.data.length];
++        System.arraycopy(this.data, 0, along, 0, this.data.length);
++        return new NBTTagLongArray(along);
++    }
++
++    @Override
++    public boolean equals(@NotNull Object object) {
++        return this == object || object instanceof NBTTagLongArray && Arrays.equals(this.data, ((NBTTagLongArray) object).data);
++    }
++
++    @Override
++    public int hashCode() {
++        return Arrays.hashCode(this.data);
++    }
++
++    @NotNull
++    public long[] getLongs() {
++        return this.data;
++    }
++
++    public int size() {
++        return this.data.length;
++    }
++
++    @NotNull
++    public NBTTagLong get(int i) {
++        return NBTTagLong.create(this.data[i]);
++    }
++
++    public @NotNull NBTTagLong set(int i, @NotNull NBTTagLong nbttaglong) {
++        long j = this.data[i];
++
++        this.data[i] = nbttaglong.asLong();
++        return NBTTagLong.create(j);
++    }
++
++    public void add(int i, @NotNull NBTTagLong nbttaglong) {
++        this.data = ArrayUtils.add(this.data, i, nbttaglong.asLong());
++    }
++
++    @Override
++    public boolean a(int i, @NotNull NBTBase nbtbase) {
++        if (nbtbase instanceof NBTNumber) {
++            this.data[i] = ((NBTNumber) nbtbase).asLong();
++            return true;
++        } else {
++            return false;
++        }
++    }
++
++    @Override
++    public boolean b(int i, @NotNull NBTBase nbtbase) {
++        if (nbtbase instanceof NBTNumber) {
++            this.data = ArrayUtils.add(this.data, i, ((NBTNumber) nbtbase).asLong());
++            return true;
++        } else {
++            return false;
++        }
++    }
++
++    @Override
++    @NotNull
++    public NBTTagLong remove(int i) {
++        long j = this.data[i];
++
++        this.data = ArrayUtils.remove(this.data, i);
++        return NBTTagLong.create(j);
++    }
++
++    public void clear() {
++        this.data = new long[0];
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagShort.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagShort.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..14733f498a67252007e8bb79dc03b0f4fcd931c5
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagShort.java
+@@ -0,0 +1,66 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import org.jetbrains.annotations.NotNull;
++
++public class NBTTagShort implements NBTBase.NBTNumber {
++    public static final int ID = 2;
++    private final short data;
++
++    public NBTTagShort(short data) {
++        this.data = data;
++    }
++
++    @NotNull
++    public static NBTTagShort create(short s) { return NBTNativeAccessor.createNBTTagShort(s); }
++
++    @Override
++    public byte getTypeId() {
++        return ID;
++    }
++
++    @Override
++    public @NotNull String toString() {
++        return this.data + "s";
++    }
++
++    @SuppressWarnings("MethodDoesntCallSuperMethod")
++    @Override
++    public @NotNull NBTBase clone() {
++        return this;
++    }
++
++    @Override
++    public long asLong() {
++        return this.data;
++    }
++
++    @Override
++    public int asInt() {
++        return this.data;
++    }
++
++    @Override
++    public short asShort() {
++        return this.data;
++    }
++
++    @Override
++    public byte asByte() {
++        return (byte) this.data;
++    }
++
++    @Override
++    public double asDouble() {
++        return this.data;
++    }
++
++    @Override
++    public float asFloat() {
++        return this.data;
++    }
++
++    @Override
++    public @NotNull Number asNumber() {
++        return this.data;
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagString.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagString.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..c8436a9696945fdab09d62c6dbd235a3a4eaaac4
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagString.java
+@@ -0,0 +1,65 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import org.jetbrains.annotations.NotNull;
++
++import java.util.Objects;
++
++public class NBTTagString implements NBTBase {
++    public static final int ID = 8;
++    private static final NBTTagString EMPTY_STRING = new NBTTagString("");
++    private final String data;
++
++    public NBTTagString(@NotNull String data) {
++        this.data = data;
++    }
++
++    @NotNull
++    public static NBTTagString create(@NotNull String s) { return s.isEmpty() ? NBTTagString.EMPTY_STRING : new NBTTagString(s); }
++
++    @Override
++    public boolean equals(@NotNull Object object) {
++        return this == object || object instanceof NBTTagString && Objects.equals(this.data, ((NBTTagString) object).data);
++    }
++
++    @Override
++    public byte getTypeId() {
++        return ID;
++    }
++
++    @Override
++    public @NotNull String toString() {
++        return translate(this.data);
++    }
++
++    @NotNull
++    public static String translate(@NotNull String s) {
++        StringBuilder stringbuilder = new StringBuilder(" ");
++        int i = 0;
++        for (int j = 0; j < s.length(); ++j) {
++            char c0 = s.charAt(j);
++            if (c0 == '\\') {
++                stringbuilder.append('\\');
++            } else if (c0 == '"' || c0 == '\'') {
++                if (i == 0) i = c0 == '"' ? 39 : 34;
++                if (i == c0) stringbuilder.append('\\');
++            }
++            stringbuilder.append(c0);
++        }
++        if (i == 0) i = 34;
++        stringbuilder.setCharAt(0, (char) i);
++        stringbuilder.append((char) i);
++        return stringbuilder.toString();
++    }
++
++    @Override
++    public int hashCode() { return this.data.hashCode(); }
++
++    @Override
++    public @NotNull String asString() { return this.data; }
++
++    @SuppressWarnings("MethodDoesntCallSuperMethod")
++    @Override
++    public @NotNull NBTBase clone() {
++        return this;
++    }
++}
+diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NativeNBT.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NativeNBT.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..8c7339443062355e8a4b56f6f0741eb7b3789eea
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NativeNBT.java
+@@ -0,0 +1,17 @@
++package xyz.acrylicstyle.paper.nbt;
++
++import org.jetbrains.annotations.NotNull;
++
++interface NativeNBT {
++    @NotNull
++    NBTTagByte createNBTTagByte(byte b);
++
++    @NotNull
++    NBTTagInt createNBTTagInt(int i);
++
++    @NotNull
++    NBTTagShort createNBTTagShort(short s);
++
++    @NotNull
++    NBTTagLong createNBTTagLong(long l);
++}

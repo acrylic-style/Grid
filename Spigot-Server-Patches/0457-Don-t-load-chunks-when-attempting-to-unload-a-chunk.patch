@@ -6,24 +6,30 @@ Subject: [PATCH] Don't load chunks when attempting to unload a chunk
 Big Brain Logic
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index efa92c798010b4815b4aa63fe1e4832eeeccd9e9..c77c59223eb652346502b9a896e0ad536395e444 100644
+index 3ec021746ffaea89f09126538fcaa0555872ac17..78add5087954ead4f6e97b7491c4190eb11562ca 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -474,7 +474,7 @@ public class CraftWorld implements World {
+@@ -477,8 +477,9 @@ public class CraftWorld implements World {
      @Override
      public boolean unloadChunkRequest(int x, int z) {
          org.spigotmc.AsyncCatcher.catchOp("chunk unload"); // Spigot
--        net.minecraft.server.IChunkAccess chunk = world.getChunkProvider().getChunkAt(x, z, ChunkStatus.FULL, false);
+-        if (isChunkLoaded(x, z)) {
+-            world.getChunkProvider().removeTicket(TicketType.PLUGIN, new ChunkCoordIntPair(x, z), 1, Unit.INSTANCE);
 +        net.minecraft.server.IChunkAccess chunk = world.getChunkProvider().getChunkAtIfLoadedImmediately(x, z); // Paper
-         if (chunk != null) {
-             world.getChunkProvider().removeTicket(TicketType.PLUGIN, chunk.getPos(), 1, Unit.INSTANCE);
++        if (chunk != null) {
++            world.getChunkProvider().removeTicket(TicketType.PLUGIN, chunk.getPos(), 1, Unit.INSTANCE);
          }
-@@ -484,7 +484,7 @@ public class CraftWorld implements World {
  
-     private boolean unloadChunk0(int x, int z, boolean save) {
-         org.spigotmc.AsyncCatcher.catchOp("chunk unload"); // Spigot
--        net.minecraft.server.Chunk chunk = (net.minecraft.server.Chunk) world.getChunkProvider().getChunkAt(x, z, ChunkStatus.FULL, false);
-+        net.minecraft.server.Chunk chunk = world.getChunkProvider().getChunkAtIfLoadedImmediately(x, z); // Paper
-         if (chunk == null) {
+         return true;
+@@ -489,7 +490,10 @@ public class CraftWorld implements World {
+         if (!isChunkLoaded(x, z)) {
              return true;
          }
+-        net.minecraft.server.Chunk chunk = world.getChunkAt(x, z);
++        net.minecraft.server.Chunk chunk = world.getChunkProvider().getChunkAtIfLoadedImmediately(x, z); // Paper
++        if (chunk == null) {
++            return true;
++        }
+ 
+         chunk.mustNotSave = !save;
+         unloadChunkRequest(x, z);

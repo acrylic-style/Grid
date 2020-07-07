@@ -1,0 +1,38 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Wed, 29 Apr 2020 20:35:14 +0900
+Subject: [PATCH] add CraftEventFactory methods
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+index 6c5036b23a41769167fd53b8cc5454e5e747598e..ee79292a1e9911999e1a2ed85def8b7e707eb604 100644
+--- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
++++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+@@ -220,6 +220,8 @@ import org.bukkit.potion.PotionEffect;
+ import org.bukkit.projectiles.ProjectileSource;
+ 
+ import org.bukkit.event.entity.SpawnerSpawnEvent; // Spigot
++import xyz.acrylicstyle.paper.event.server.PluginSendActionBarEvent;
++import xyz.acrylicstyle.paper.event.server.PluginSendMessageEvent;
+ 
+ public class CraftEventFactory {
+     public static final DamageSource MELTING = CraftDamageSource.copyOf(DamageSource.BURN);
+@@ -1753,4 +1755,18 @@ public class CraftEventFactory {
+         StriderTemperatureChangeEvent event = new StriderTemperatureChangeEvent((Strider) strider.getBukkitEntity(), shivering);
+         Bukkit.getPluginManager().callEvent(event);
+     }
++
++    // Paper start
++    public static boolean callPluginSendMessageEvent(Player player, String message) {
++        PluginSendMessageEvent event = new PluginSendMessageEvent(player, message);
++        Bukkit.getPluginManager().callEvent(event);
++        return event.isCancelled();
++    }
++
++    public static boolean callPluginSendActionBarEvent(Player player, String message) {
++        PluginSendActionBarEvent event = new PluginSendActionBarEvent(player, message);
++        Bukkit.getPluginManager().callEvent(event);
++        return event.isCancelled();
++    }
++    // Paper end
+ }

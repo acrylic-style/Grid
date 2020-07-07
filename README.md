@@ -1,18 +1,18 @@
-Paper [![Build Status](https://papermc.io/ci/job/Paper-1.15/badge/icon)](https://papermc.io/ci/job/Paper-1.15/)
+Paper [![Build Status](https://ci.acrylicstyle.xyz/job/Paper-1.16/badge/icon)](https://ci.acrylicstyle.xyz/job/Paper-1.16/)
 ===========
 
 High performance Spigot fork that aims to fix gameplay and mechanics inconsistencies.
 
-
+<!--
 **Support and Project Discussion:**
  - [IRC](https://irc.spi.gt/iris/?channels=paper) or [Discord](https://discord.gg/papermc)
-
+-->
 
 How To (Server Admins)
 ------
 Paperclip is a jar file that you can download and run just like a normal jar file.
 
-Download Paper from our [downloads page](https://papermc.io/downloads).
+Download Paper from our [downloads page](https://ci.acrylicstyle.xyz/job/Paper-1.16/).
 
 Run the Paperclip jar directly from your server. Just like old times
 
@@ -28,7 +28,7 @@ How To (Plugin Developers)
 ```xml
 <repository>
     <id>papermc</id>
-    <url>https://papermc.io/repo/repository/maven-public/</url>
+    <url>https://repo.acrylicstyle.xyz/</url>
 </repository>
 ```
  * Artifact Information:
@@ -36,10 +36,27 @@ How To (Plugin Developers)
 <dependency>
     <groupId>com.destroystokyo.paper</groupId>
     <artifactId>paper-api</artifactId>
-    <version>1.15.2-R0.1-SNAPSHOT</version>
+    <version>1.16.1-R0.1-SNAPSHOT</version>
     <scope>provided</scope>
- </dependency>
+</dependency>
  ```
+
+**Or alternatively, with Gradle:**
+
+ * Repository:
+```groovy
+repositories {
+    maven {
+        url 'https://papermc.io/repo/repository/maven-public/'
+    }
+}
+```
+ * Artifact:
+```groovy
+dependencies {
+    compileOnly 'com.destroystokyo.paper:paper-api:1.16.1-R0.1-SNAPSHOT'
+}
+```
 
 How To (Compiling Jar From Source)
 ------

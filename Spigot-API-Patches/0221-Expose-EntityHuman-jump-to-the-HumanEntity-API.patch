@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Wed, 29 Apr 2020 22:07:50 +0900
+Subject: [PATCH] Expose EntityHuman#jump to the HumanEntity API
+
+
+diff --git a/src/main/java/org/bukkit/entity/HumanEntity.java b/src/main/java/org/bukkit/entity/HumanEntity.java
+index d3998c61af0c5fb1189ae7829e8cdfbef0cd3f97..a017327dd0448ac2b7737a489e74abc0c5509bb8 100644
+--- a/src/main/java/org/bukkit/entity/HumanEntity.java
++++ b/src/main/java/org/bukkit/entity/HumanEntity.java
+@@ -492,4 +492,11 @@ public interface HumanEntity extends LivingEntity, AnimalTamer, InventoryHolder
+      */
+     void openSign(@NotNull org.bukkit.block.Sign sign);
+     // Paper end
++
++    // Paper start - Expose EntityHuman#jump
++    /**
++     * Force the player to jump.
++     */
++    void jump();
++    // Paper end
+ }

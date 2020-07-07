@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Wed, 29 Apr 2020 23:33:37 +0900
+Subject: [PATCH] Fix MC-146524
+
+
+diff --git a/src/main/java/net/minecraft/server/PathfinderGoalNearestAttackableTarget.java b/src/main/java/net/minecraft/server/PathfinderGoalNearestAttackableTarget.java
+index c0721c7fe479c8f753b8f48197a70dcd1ecfef5f..644bdb876ca04b7549a363e24222ddb777a67dbe 100644
+--- a/src/main/java/net/minecraft/server/PathfinderGoalNearestAttackableTarget.java
++++ b/src/main/java/net/minecraft/server/PathfinderGoalNearestAttackableTarget.java
+@@ -16,7 +16,14 @@ public class PathfinderGoalNearestAttackableTarget<T extends EntityLiving> exten
+     }
+ 
+     public PathfinderGoalNearestAttackableTarget(EntityInsentient entityinsentient, Class<T> oclass, boolean flag, boolean flag1) {
+-        this(entityinsentient, oclass, 10, flag, flag1, (Predicate) null);
++        // Paper start - Fix MC-146524
++        this(entityinsentient, oclass, 10, flag, flag1, entity -> {
++            if (entity instanceof EntityPlayer) {
++                EnumGamemode gamemode = ((EntityPlayer) entity).playerInteractManager.getGameMode();
++                return gamemode == EnumGamemode.SURVIVAL || gamemode == EnumGamemode.ADVENTURE;
++            } else return true;
++        });
++        // Paper end
+     }
+ 
+     public PathfinderGoalNearestAttackableTarget(EntityInsentient entityinsentient, Class<T> oclass, int i, boolean flag, boolean flag1, @Nullable Predicate<EntityLiving> predicate) {
