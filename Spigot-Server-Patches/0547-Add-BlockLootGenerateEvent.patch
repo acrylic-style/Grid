@@ -5,7 +5,7 @@ Subject: [PATCH] Add BlockLootGenerateEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/TileEntityLootable.java b/src/main/java/net/minecraft/server/TileEntityLootable.java
-index d017904561d093bf8f0061f646a75aa53975be88..4411c553e00035c3b065dbfcc7f37671e0b0c11f 100644
+index 55b1e5da2b5128e479dbdf14eb1da692af1880fe..abab1e5a1495082adaaed8af06d7ad98c8cc1095 100644
 --- a/src/main/java/net/minecraft/server/TileEntityLootable.java
 +++ b/src/main/java/net/minecraft/server/TileEntityLootable.java
 @@ -1,5 +1,17 @@

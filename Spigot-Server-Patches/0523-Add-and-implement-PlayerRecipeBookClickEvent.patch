@@ -5,7 +5,7 @@ Subject: [PATCH] Add and implement PlayerRecipeBookClickEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index d6043dd55615c838348a90d7220da816e8671e62..656ece5aa761b4196d47bbdf0288b49775cbb1d3 100644
+index 3dd28ca2a9857d65bdcb951dd7bbf600749e2f16..4a99a05ef2d01383553e59833a8723f5364168ed 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -2516,9 +2516,15 @@ public class PlayerConnection implements PacketListenerPlayIn {

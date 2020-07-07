@@ -41,10 +41,10 @@ index 56bf840e3d514153ed249093761ddcc04b282403..7787895e3ade6b48a6d8b22df6decbd8
  
      // Paper start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 6531937377600b464ae5ab1c797d1cfe60c1d731..bd3d55399ea35bc1bb2912ddb9c62e5e48a4459d 100644
+index ee79292a1e9911999e1a2ed85def8b7e707eb604..2a8345fe73b4fc2367908d236ae34e63824f64b8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -221,6 +221,7 @@ import org.bukkit.projectiles.ProjectileSource;
+@@ -222,6 +222,7 @@ import org.bukkit.projectiles.ProjectileSource;
  import org.bukkit.event.entity.SpawnerSpawnEvent; // Spigot
  import xyz.acrylicstyle.paper.event.server.PluginSendActionBarEvent;
  import xyz.acrylicstyle.paper.event.server.PluginSendMessageEvent;
@@ -52,7 +52,7 @@ index 6531937377600b464ae5ab1c797d1cfe60c1d731..bd3d55399ea35bc1bb2912ddb9c62e5e
  
  public class CraftEventFactory {
      public static final DamageSource MELTING = CraftDamageSource.copyOf(DamageSource.BURN);
-@@ -1745,14 +1746,8 @@ public class CraftEventFactory {
+@@ -1757,14 +1758,8 @@ public class CraftEventFactory {
      }
  
      // Paper start

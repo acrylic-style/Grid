@@ -5,10 +5,10 @@ Subject: [PATCH] add CraftEventFactory methods
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 521e204260e96c3010fdfb90e52f7170ad9a9fc4..6531937377600b464ae5ab1c797d1cfe60c1d731 100644
+index 6c5036b23a41769167fd53b8cc5454e5e747598e..ee79292a1e9911999e1a2ed85def8b7e707eb604 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -219,6 +219,8 @@ import org.bukkit.potion.PotionEffect;
+@@ -220,6 +220,8 @@ import org.bukkit.potion.PotionEffect;
  import org.bukkit.projectiles.ProjectileSource;
  
  import org.bukkit.event.entity.SpawnerSpawnEvent; // Spigot
@@ -17,7 +17,7 @@ index 521e204260e96c3010fdfb90e52f7170ad9a9fc4..6531937377600b464ae5ab1c797d1cfe
  
  public class CraftEventFactory {
      public static final DamageSource MELTING = CraftDamageSource.copyOf(DamageSource.BURN);
-@@ -1741,4 +1743,18 @@ public class CraftEventFactory {
+@@ -1753,4 +1755,18 @@ public class CraftEventFactory {
          StriderTemperatureChangeEvent event = new StriderTemperatureChangeEvent((Strider) strider.getBukkitEntity(), shivering);
          Bukkit.getPluginManager().callEvent(event);
      }

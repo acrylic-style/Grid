@@ -5,11 +5,11 @@ Subject: [PATCH] POM Changes
 
 
 diff --git a/pom.xml b/pom.xml
-index dfc7c2f351c895a7378b13f88ca8efcaaf38d478..383b8f7318da38c7eb4409f703ede0411f2ed1d0 100644
+index 15ce1c66462351d6d1ba55c111db13ef1c9f0789..3c9ce5c0dfe5cb77ba93b53196c3ea1f8792e692 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -223,6 +223,19 @@
-                     <shadedArtifactAttached>true</shadedArtifactAttached>
+@@ -236,6 +236,19 @@
+                     </links>
                  </configuration>
              </plugin>
 +            <plugin> <!-- Paper start -->

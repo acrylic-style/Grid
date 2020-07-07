@@ -5,7 +5,7 @@ Subject: [PATCH] Add NBT APIs
 
 
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index d4c776f32caf0491670175a79584c73dd2c7fcca..acabca1b3467d7271af13b678d3c86772b8f5ef4 100644
+index 7808ade92ccd3553056c57cdf77464fb8bdf9312..7457c636a050d74549d85951ee3718b87cfd5493 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -22,6 +22,7 @@ import org.bukkit.util.Vector;
@@ -16,10 +16,10 @@ index d4c776f32caf0491670175a79584c73dd2c7fcca..acabca1b3467d7271af13b678d3c8677
  
  /**
   * Represents a base entity in the world
-@@ -659,5 +660,13 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+@@ -694,5 +695,13 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+      * Check if entity is in lava
       */
-     @NotNull
-     org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason getEntitySpawnReason();
+     public boolean isInLava();
 +
 +    @NotNull
 +    NBTTagCompound getTag();

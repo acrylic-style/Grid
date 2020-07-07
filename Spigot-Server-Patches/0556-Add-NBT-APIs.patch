@@ -31,7 +31,7 @@ index ad4807e0bdd6409bd798f995da8f43cec1d0b385..4592cb3b3f0999a9dbac9ff20af53005
          this.type = b0;
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 821417610fdb23791bd83e263977026b9d09e31a..ab6f81e403b93a84557ec85c17f843d14249cc3e 100644
+index 8002a38bcc806a5d79531fe1a9c12b2c5ac6c37b..0d992a1dd1fe9d6d027cd8821a66305da8b06e33 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 @@ -168,6 +168,7 @@ import org.bukkit.plugin.Plugin;
@@ -42,9 +42,27 @@ index 821417610fdb23791bd83e263977026b9d09e31a..ab6f81e403b93a84557ec85c17f843d1
  
  public abstract class CraftEntity implements org.bukkit.entity.Entity {
      private static PermissibleBase perm;
-@@ -1065,5 +1066,20 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
-     public org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason getEntitySpawnReason() {
-         return getHandle().spawnReason;
+@@ -1069,7 +1070,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+     public boolean isInWater() {
+         return getHandle().isInWater();
+     }
+-    
++
+     public boolean isInRain() {
+         return getHandle().isInRain();
+     }
+@@ -1085,7 +1086,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+     public boolean isInWaterOrBubbleColumn() {
+         return getHandle().isInWaterOrBubbleColumn();
+     }
+-    
++
+     public boolean isInWaterOrRainOrBubbleColumn() {
+         return getHandle().isInWaterOrRainOrBubble();
+     }
+@@ -1093,5 +1094,20 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
+     public boolean isInLava() {
+         return getHandle().isInLava();
      }
 +
 +    @Override

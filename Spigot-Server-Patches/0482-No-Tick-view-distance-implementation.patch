@@ -115,7 +115,7 @@ index 7e57a53ec614a2f7d2672edff9d7c0e0dca42377..c072f61e8c88eac8335acd660d8ff0e2
                  if (flag1) {
                      ChunkMapDistance.this.j.a(ChunkTaskQueueSorter.a(() -> {
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 2b7e7a7aaa56b9c51fa0c8065ff25828d92c09ee..5f9ab1b81c1440d9b3003fbbf7d00b135a6b811e 100644
+index 70dda78684c1dc620fec5e4132a4b013bcaff37e..6e0882e7e396f76b451e11c6cc6959e813de0a1f 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -115,6 +115,8 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
@@ -567,7 +567,7 @@ index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09
                          }
                      }
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 045d85016edff8e1e8c775f8c701ac806fb3d4e1..0ad06509f26a7677e48f4bfb9c979a42fb6a4f74 100644
+index 3d110c998f6b28e55055637bbfeff6f2ebdb2747..59f00891ee2d1641678d4903a365cb94247bf08f 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -175,7 +175,7 @@ public abstract class PlayerList {
@@ -598,7 +598,7 @@ index 045d85016edff8e1e8c775f8c701ac806fb3d4e1..0ad06509f26a7677e48f4bfb9c979a42
  
          while (iterator.hasNext()) {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 365539e53efdb7e729b580f52fb23659cbde4f0a..ba50189b10b54f5b35448c898f8c3495ddf8e112 100644
+index 24047e02c0232217be6ced5708daef754d74e280..302b0eda863dcaf7eeea7b0e1820929a46f44c54 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -508,8 +508,13 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -615,9 +615,9 @@ index 365539e53efdb7e729b580f52fb23659cbde4f0a..ba50189b10b54f5b35448c898f8c3495
 +                // Paper end - per player view distance
              }
  
-             if (!this.isClientSide && (i & 1) != 0) {
+             if ((i & 1) != 0) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 78add5087954ead4f6e97b7491c4190eb11562ca..bb07f8f572c21b4466735e26d4ecb79890888522 100644
+index 277c851a7bf148f93764c7a63f5168045d429624..35d93119ef1ebe6c4d9f07c55e7380ba2adb1d40 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -2534,10 +2534,39 @@ public class CraftWorld implements World {
