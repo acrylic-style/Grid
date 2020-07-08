@@ -3,18 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.destroystokyo.paper</groupId>
-        <artifactId>paper-parent</artifactId>
+        <groupId>xyz.acrylicstyle.grid</groupId>
+        <artifactId>grid-parent</artifactId>
         <version>dev-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.destroystokyo.paper</groupId>
-    <artifactId>paper-mojangapi</artifactId>
+    <groupId>xyz.acrylicstyle.grid</groupId>
+    <artifactId>grid-mojangapi</artifactId>
     <version>1.16.1-R0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Paper-MojangAPI</name>
-    <url>https://github.com/PaperMC/Paper</url>
+    <name>Grid-MojangAPI</name>
+    <url>https://github.com/acrylic-style/Grid</url>
     <description>API additions that utilize Mojang Specific API's</description>
 
     <properties>
@@ -49,8 +49,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
-            <artifactId>paper-api</artifactId>
+            <groupId>xyz.acrylicstyle.grid</groupId>
+            <artifactId>grid-api</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
