@@ -203,7 +203,7 @@ index 93bc7535a68fbf8c2dd3b5e18cedbcbf140d60c4..113ea57fec3d71bd9842d27674eac620
                      Calendar deadline = Calendar.getInstance();
                      deadline.add(Calendar.DAY_OF_YEAR, -7);
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
-index 93046379d0cefd5d3236fc59e698809acdc18f80..674096cab190d62622f9947853b056f57d43a2a5 100644
+index 93046379d0cefd5d3236fc59e698809acdc18f80..5bce2cdb39e65a9f500b49c433c0a3e91c4b8ceb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 @@ -11,7 +11,7 @@ public final class Versioning {
@@ -211,7 +211,7 @@ index 93046379d0cefd5d3236fc59e698809acdc18f80..674096cab190d62622f9947853b056f5
          String result = "Unknown-Version";
  
 -        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/org.spigotmc/spigot-api/pom.properties");
-+        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.destroystokyo.paper/paper-api/pom.properties");
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/xyz.acrylicstyle.grid/grid-api/pom.properties");
          Properties properties = new Properties();
  
          if (stream != null) {
