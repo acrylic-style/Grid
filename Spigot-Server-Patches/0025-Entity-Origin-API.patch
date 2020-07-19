@@ -5,7 +5,7 @@ Subject: [PATCH] Entity Origin API
 
 
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
-index 80f1c4930d6dd602210b07a50b10c45e9f80ae8a..12730f52fdb0774dcf8be81547c8f03ef9f184a4 100644
+index e85172eb69b04746eab08abf213dcd02cd4513ee..bfe36be070677d215eadd3ad38f93c6bddab0b75 100644
 --- a/src/main/java/net/minecraft/server/Entity.java
 +++ b/src/main/java/net/minecraft/server/Entity.java
 @@ -167,6 +167,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
@@ -101,10 +101,10 @@ index ad8a506bb430b26fe147a657a2f826daf9bf4d45..ad4807e0bdd6409bd798f995da8f43ce
          if (i >= 0 && i < this.list.size()) {
              NBTBase nbtbase = (NBTBase) this.list.get(i);
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index 2b39fb903c1cf6ded8aa170f5bd25f4fadb1195a..db3b35eac5584b8319fc0d4cbb28408b2d0f620b 100644
+index df63ea6680e9619e09477ed44a021e128314436c..118f2b80193bf59139c46b811be96edda4ae0014 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
-@@ -1088,6 +1088,11 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1087,6 +1087,11 @@ public class WorldServer extends World implements GeneratorAccessSeed {
                  this.navigators.add(((EntityInsentient) entity).getNavigation());
              }
              entity.valid = true; // CraftBukkit
