@@ -34,7 +34,7 @@ index 08141147f9795546e9397abed95834ed5e69a126..d9e5d71a87140c90b79902887bd2f481
          this.activeContainer = this.defaultContainer;
      }
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index f9f37413a8579287f1425e7d2e8554870f91164f..a33309747f4f333e17aed9dba74fd92b445a4e0a 100644
+index ef0f8a66eefefce5f78ff35833bfe45437885e0b..5053b1a09bd992b884a5871cb8f355ffbcb26260 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -408,7 +408,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
@@ -101,7 +101,7 @@ index 411e6ff17ac50a410da038ad538ad56ba3aef8a8..201b2b0dcbaf6765390c18052f3b3450
          this.player.o();
      }
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 9d05320b132679ccd511422c2c187b0d5fa89c2c..4c11aa13b725b2bb502701f2d5fb3878ff162f05 100644
+index 628a5f109d6c44ba97876c42aefb5570deef6eb3..c4b0394d07b2af2ca14a68a300668197143e8fcc 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -420,7 +420,7 @@ public abstract class PlayerList {
@@ -114,10 +114,10 @@ index 9d05320b132679ccd511422c2c187b0d5fa89c2c..4c11aa13b725b2bb502701f2d5fb3878
          PlayerQuitEvent playerQuitEvent = new PlayerQuitEvent(cserver.getPlayer(entityplayer), "\u00A7e" + entityplayer.getName() + " left the game");
          cserver.getPluginManager().callEvent(playerQuitEvent);
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index 10eb83bec33050ec1054de493960c87f67d4ec66..4675ddb1f7c989521dfc9fbd0367e6fbbaa7abda 100644
+index 5ccd9457f81dab2b2cb821960c0557c925623b50..f8139831254e676c2142a39858e8c0629943badc 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
-@@ -967,7 +967,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -966,7 +966,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
          for (TileEntity tileentity : chunk.getTileEntities().values()) {
              if (tileentity instanceof IInventory) {
                  for (org.bukkit.entity.HumanEntity h : Lists.newArrayList(((IInventory) tileentity).getViewers())) {
@@ -126,7 +126,7 @@ index 10eb83bec33050ec1054de493960c87f67d4ec66..4675ddb1f7c989521dfc9fbd0367e6fb
                  }
              }
          }
-@@ -1025,7 +1025,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1024,7 +1024,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
          // Spigot Start
          if (entity.getBukkitEntity() instanceof org.bukkit.inventory.InventoryHolder) {
              for (org.bukkit.entity.HumanEntity h : Lists.newArrayList(((org.bukkit.inventory.InventoryHolder) entity.getBukkitEntity()).getInventory().getViewers())) {

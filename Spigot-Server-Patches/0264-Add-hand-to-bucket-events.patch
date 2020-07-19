@@ -95,10 +95,10 @@ index 9b6912f6e7b3c289948325a6985d9c961a8a8e30..a0f93486b21e3bdbcf3b705c005c2e13
      public boolean s_() {
          return this.isClientSide;
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index 1a103dd830109e119acc1a371b37386e228586b5..a343cba51850bb7214c241a92db0694d3c1aaf60 100644
+index 9cdb6ee9a718ed3464b525a4d79256b54617c2fb..74d672b6a1beef5c4af8a2fcfc72486696fdcd05 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
-@@ -1483,15 +1483,17 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1482,15 +1482,17 @@ public class WorldServer extends World implements GeneratorAccessSeed {
          this.getMinecraftServer().getPlayerList().sendAll(new PacketPlayOutSpawnPosition(blockposition));
      }
  
