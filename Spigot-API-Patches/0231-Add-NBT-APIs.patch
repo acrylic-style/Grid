@@ -1161,7 +1161,7 @@ index 0000000000000000000000000000000000000000..929a2b719611d7223273c60576f9ffab
 +}
 diff --git a/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagList.java b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagList.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..af81be7ba6641c309e034cf9fa93d46442b25bee
+index 0000000000000000000000000000000000000000..a86ca6a76ef7f2758b6453fb171b81af60a1bb51
 --- /dev/null
 +++ b/src/main/java/xyz/acrylicstyle/paper/nbt/NBTTagList.java
 @@ -0,0 +1,212 @@
@@ -1342,7 +1342,7 @@ index 0000000000000000000000000000000000000000..af81be7ba6641c309e034cf9fa93d464
 +            } else if (this.type == 0) {
 +                return true;
 +            } else {
-+                return this.type == (byte) nbtbase.getClass().getField("ID").get(null);
++                return this.type == ((Integer) nbtbase.getClass().getField("ID").get(null)).byteValue();
 +            }
 +        } catch (ReflectiveOperationException e) { SneakyThrow.sneaky(e); return false; }
 +    }
