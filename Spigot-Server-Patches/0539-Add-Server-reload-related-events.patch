@@ -5,7 +5,7 @@ Subject: [PATCH] Add Server reload related events
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 56bf840e3d514153ed249093761ddcc04b282403..7787895e3ade6b48a6d8b22df6decbd862d46d13 100644
+index 506e76eecd4be892bdc70367c0ee4d9764569ca7..b14d4840604c040ae7ee6cbfda2651dae68818c2 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -144,6 +144,7 @@ import org.bukkit.craftbukkit.command.BukkitCommandWrapper;
@@ -41,10 +41,10 @@ index 56bf840e3d514153ed249093761ddcc04b282403..7787895e3ade6b48a6d8b22df6decbd8
  
      // Paper start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index ee79292a1e9911999e1a2ed85def8b7e707eb604..2a8345fe73b4fc2367908d236ae34e63824f64b8 100644
+index 1f2a9facd62d27b5513896bc96c50a20eab1b3ee..0ba3967e212f9876969d7a0c16d104dc82877c04 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -222,6 +222,7 @@ import org.bukkit.projectiles.ProjectileSource;
+@@ -223,6 +223,7 @@ import org.bukkit.projectiles.ProjectileSource;
  import org.bukkit.event.entity.SpawnerSpawnEvent; // Spigot
  import xyz.acrylicstyle.paper.event.server.PluginSendActionBarEvent;
  import xyz.acrylicstyle.paper.event.server.PluginSendMessageEvent;
@@ -52,7 +52,7 @@ index ee79292a1e9911999e1a2ed85def8b7e707eb604..2a8345fe73b4fc2367908d236ae34e63
  
  public class CraftEventFactory {
      public static final DamageSource MELTING = CraftDamageSource.copyOf(DamageSource.BURN);
-@@ -1757,14 +1758,8 @@ public class CraftEventFactory {
+@@ -1765,14 +1766,8 @@ public class CraftEventFactory {
      }
  
      // Paper start

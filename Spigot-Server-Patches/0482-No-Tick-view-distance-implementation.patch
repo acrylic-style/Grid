@@ -115,7 +115,7 @@ index 7e57a53ec614a2f7d2672edff9d7c0e0dca42377..c072f61e8c88eac8335acd660d8ff0e2
                  if (flag1) {
                      ChunkMapDistance.this.j.a(ChunkTaskQueueSorter.a(() -> {
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 70dda78684c1dc620fec5e4132a4b013bcaff37e..6e0882e7e396f76b451e11c6cc6959e813de0a1f 100644
+index 747657396a855d56a6746a9b827de69ad3710b3d..69b10093552fd3b84d355e216a3eb6bee3d486ef 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -115,6 +115,8 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
@@ -235,7 +235,7 @@ index 7f660d3c528f5fb4150e4ee8b29913436f125b06..40347212ad1bcf857d5b8ddb0ee6a698
  
      public CompletableFuture<Either<IChunkAccess, PlayerChunk.Failure>> a(ChunkStatus chunkstatus, PlayerChunkMap playerchunkmap) {
 diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09cc6e60a9 100644
+index 15a5c85cab5a5d9e74a577f648258e205fcb6251..ecab6d2309a7804c1ab4e7f7bcc519efb7f0a49f 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
 @@ -95,7 +95,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
@@ -368,7 +368,7 @@ index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09
      }
  
      public void updatePlayerMobTypeMap(Entity entity) {
-@@ -1140,15 +1226,11 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1142,15 +1228,11 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
          completablefuture1.thenAcceptAsync((either) -> {
              either.mapLeft((chunk) -> {
                  this.u.getAndIncrement();
@@ -386,7 +386,7 @@ index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09
          });
          return completablefuture1;
      }
-@@ -1243,32 +1325,38 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1245,32 +1327,38 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
          }
      }
  
@@ -440,7 +440,7 @@ index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09
  
      protected void sendChunk(EntityPlayer entityplayer, ChunkCoordIntPair chunkcoordintpair, Packet<?>[] apacket, boolean flag, boolean flag1) {
          if (entityplayer.world == this.world) {
-@@ -1276,7 +1364,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1278,7 +1366,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
                  PlayerChunk playerchunk = this.getVisibleChunk(chunkcoordintpair.pair());
  
                  if (playerchunk != null) {
@@ -449,7 +449,7 @@ index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09
  
                      if (chunk != null) {
                          this.a(entityplayer, apacket, chunk);
-@@ -1537,6 +1625,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1539,6 +1627,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
      }
      // Paper end - optimise isOutsideOfRange
  
@@ -457,7 +457,7 @@ index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09
      private boolean b(EntityPlayer entityplayer) {
          return entityplayer.isSpectator() && !this.world.getGameRules().getBoolean(GameRules.SPECTATORS_GENERATE_CHUNKS);
      }
-@@ -1564,13 +1653,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1566,13 +1655,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
              this.removePlayerFromDistanceMaps(entityplayer); // Paper - distance maps
          }
  
@@ -472,7 +472,7 @@ index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09
  
      }
  
-@@ -1578,7 +1661,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1580,7 +1663,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
          SectionPosition sectionposition = SectionPosition.a((Entity) entityplayer);
  
          entityplayer.a(sectionposition);
@@ -481,7 +481,7 @@ index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09
          return sectionposition;
      }
  
-@@ -1623,6 +1706,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1625,6 +1708,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
          int k1;
          int l1;
  
@@ -489,7 +489,7 @@ index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09
          if (Math.abs(i1 - i) <= this.viewDistance * 2 && Math.abs(j1 - j) <= this.viewDistance * 2) {
              k1 = Math.min(i, i1) - this.viewDistance;
              l1 = Math.min(j, j1) - this.viewDistance;
-@@ -1660,7 +1744,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1662,7 +1746,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
                      this.sendChunk(entityplayer, chunkcoordintpair1, new Packet[2], false, true);
                  }
              }
@@ -498,7 +498,7 @@ index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09
  
          this.updateMaps(entityplayer); // Paper - distance maps
  
-@@ -1668,11 +1752,46 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1670,11 +1754,46 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
  
      @Override
      public Stream<EntityPlayer> a(ChunkCoordIntPair chunkcoordintpair, boolean flag) {
@@ -549,7 +549,7 @@ index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09
      }
  
      protected void addEntity(Entity entity) {
-@@ -1830,6 +1949,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1832,6 +1951,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
  
      }
  
@@ -557,7 +557,7 @@ index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09
      private void a(EntityPlayer entityplayer, Packet<?>[] apacket, Chunk chunk) {
          if (apacket[0] == null) {
              apacket[0] = new PacketPlayOutMapChunk(chunk, 65535, true);
-@@ -2015,7 +2135,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -2017,7 +2137,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
                          ChunkCoordIntPair chunkcoordintpair = new ChunkCoordIntPair(this.tracker.chunkX, this.tracker.chunkZ);
                          PlayerChunk playerchunk = PlayerChunkMap.this.getVisibleChunk(chunkcoordintpair.pair());
  
@@ -567,7 +567,7 @@ index 026562c72d7e95345d9369c6d6331cf6cedb8f17..fe343f70ce8024c86363637fda8e5c09
                          }
                      }
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 3d110c998f6b28e55055637bbfeff6f2ebdb2747..59f00891ee2d1641678d4903a365cb94247bf08f 100644
+index 2c0d9c52fa90639c6b3b542b626a8b55b82a0df1..382f334f82efefcfbd1781ac09e191cd27a0fb0c 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -175,7 +175,7 @@ public abstract class PlayerList {
@@ -617,7 +617,7 @@ index 24047e02c0232217be6ced5708daef754d74e280..302b0eda863dcaf7eeea7b0e1820929a
  
              if ((i & 1) != 0) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 277c851a7bf148f93764c7a63f5168045d429624..35d93119ef1ebe6c4d9f07c55e7380ba2adb1d40 100644
+index b55cf9d88d4d4bd09dbaaecf35818fc028d9003d..bda6c43c9c94fe805ec0f5f332408b97b5d4eaf7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -2534,10 +2534,39 @@ public class CraftWorld implements World {

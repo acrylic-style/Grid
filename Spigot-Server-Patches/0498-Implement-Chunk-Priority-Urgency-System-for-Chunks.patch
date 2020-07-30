@@ -484,7 +484,7 @@ index c072f61e8c88eac8335acd660d8ff0e2f9db819e..4c4108705e9d25912e57a7b3c28b4f1a
          protected int c(long i) {
              return this.a.get(i);
 diff --git a/src/main/java/net/minecraft/server/ChunkProviderServer.java b/src/main/java/net/minecraft/server/ChunkProviderServer.java
-index a6363b73522f9d27534b6e80f4b3789e84316c49..604e7004b659daed2844ba1a76bf09288ec549e5 100644
+index 319059ba31f3614cc59cd4c4e4fa9242f6e4fe99..7c87ef638d538093e944341525a1027be5d15a0e 100644
 --- a/src/main/java/net/minecraft/server/ChunkProviderServer.java
 +++ b/src/main/java/net/minecraft/server/ChunkProviderServer.java
 @@ -443,6 +443,26 @@ public class ChunkProviderServer extends IChunkProvider {
@@ -882,7 +882,7 @@ index e5751adde516544722b95016f64b2a46c16e77ce..04dea2c9fd9337631a6289c7242338e1
      }
  
 diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-index df315700fb28d682f406f8122e7cc187dbc13273..6a1ebb6daf2fdcb2bd276e36672fbec05d98adef 100644
+index 1147f58c6a0bc153e03a461588efabdfd9ed6357..6b48c4e1d69f8de6ec32258c200be3c136ba20aa 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
 @@ -51,6 +51,7 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
@@ -1094,7 +1094,7 @@ index df315700fb28d682f406f8122e7cc187dbc13273..6a1ebb6daf2fdcb2bd276e36672fbec0
  
                  list.add(completablefuture);
              }
-@@ -1028,14 +1165,22 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1030,14 +1167,22 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
          };
  
          CompletableFuture<NBTTagCompound> chunkSaveFuture = this.world.asyncChunkTaskManager.getChunkSaveFuture(chunkcoordintpair.x, chunkcoordintpair.z);
@@ -1122,7 +1122,7 @@ index df315700fb28d682f406f8122e7cc187dbc13273..6a1ebb6daf2fdcb2bd276e36672fbec0
          return ret;
          // Paper end
      }
-@@ -1172,7 +1317,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1174,7 +1319,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
              long i = playerchunk.i().pair();
  
              playerchunk.getClass();
@@ -1132,7 +1132,7 @@ index df315700fb28d682f406f8122e7cc187dbc13273..6a1ebb6daf2fdcb2bd276e36672fbec0
      }
  
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 7fd991fd3994a18625c193aeb15ed521d3b6a447..6bb2b3520362d056d4d75c65764e4c8dbc1417f9 100644
+index dd18c97ad7eb6f9441a66a3986402d2c30d0cb27..e5f8ef32e8a4670905c7b2c84a7cd273ed40ccd2 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -1302,6 +1302,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
@@ -1208,7 +1208,7 @@ index d7b9d9fd3a3b607278a3d72b0b306b0be2aa30ad..6fd852db6bcfbfbf84ec2acf6d23b08a
      public static <T> TicketType<T> a(String s, Comparator<T> comparator) {
          return new TicketType<>(s, comparator, 0L);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 35d93119ef1ebe6c4d9f07c55e7380ba2adb1d40..07131f3c42c793ac70430209345b140a6b5961fe 100644
+index bda6c43c9c94fe805ec0f5f332408b97b5d4eaf7..efa31e9eb2645232665c4a9fc1d7f969aa71f533 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -2524,6 +2524,10 @@ public class CraftWorld implements World {
@@ -1223,10 +1223,10 @@ index 35d93119ef1ebe6c4d9f07c55e7380ba2adb1d40..07131f3c42c793ac70430209345b140a
              net.minecraft.server.Chunk chunk = (net.minecraft.server.Chunk) either.left().orElse(null);
              return CompletableFuture.completedFuture(chunk == null ? null : chunk.getBukkitChunk());
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index e3ae90aa7c2c067741540995fbb1c694b663f624..b832ece4948323e60fabecdeee5c9051b65c5e8e 100644
+index 3951d3366b9450465391d5ecba993442cc7b88b8..72cd52fd7f0ba8df5be8989111d76e7180f033d7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-@@ -744,6 +744,14 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
+@@ -750,6 +750,14 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
          throw new UnsupportedOperationException("Cannot set rotation of players. Consider teleporting instead.");
      }
  

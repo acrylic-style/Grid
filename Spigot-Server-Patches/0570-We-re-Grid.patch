@@ -5,10 +5,10 @@ Subject: [PATCH] We're Grid.
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 26f230a801bd8efa5f8b61dee53fe7b1435f906b..0ea9111e52f959a62f3429c13c7fe1f6e049c544 100644
+index 67a6fc68c6611dab2a3617d5605d7a9e7d9bee2a..fee2cd4bdf7862dd2ca72c6c1af2451c9c852980 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1446,7 +1446,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1447,7 +1447,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -18,7 +18,7 @@ index 26f230a801bd8efa5f8b61dee53fe7b1435f906b..0ea9111e52f959a62f3429c13c7fe1f6
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 5d497d19993856d80e29ddabcf5ef6fe3cf00566..42fc5bd4bb0962998ec17421824c1a2f8332b93c 100644
+index efb8cee2ce409823e27f2dcf7aa12617fb57d804..061a123445b579ff38460fcd98b084bbda03b579 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -235,7 +235,7 @@ import javax.annotation.Nullable; // Paper

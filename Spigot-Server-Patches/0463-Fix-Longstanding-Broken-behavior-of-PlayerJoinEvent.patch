@@ -28,7 +28,7 @@ receives a deterministic result, and should no longer require 1 tick
 delays anymore.
 
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 456ac9b0102cb20d17ec5d0d25713aede8703de8..1e6438b71077f5e100e263b6bd14176fa0d8113a 100644
+index d4d789e84a2b6a3ba108532630a89f51b3a23f54..bc78b08d3f235de5d98107403c41451034f97976 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -104,6 +104,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
@@ -40,10 +40,10 @@ index 456ac9b0102cb20d17ec5d0d25713aede8703de8..1e6438b71077f5e100e263b6bd14176f
      // CraftBukkit end
      public PlayerNaturallySpawnCreaturesEvent playerNaturallySpawnedEvent; // Paper
 diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-index 4ab719930f5b35c0ae221e9345f1e2eda7d9d719..8de86684dda275585826617b41d6792f233b814c 100644
+index fbe7129280f371ab9658fba2965c003b455aaa7a..537d7889ff3eaacfb74f499c1adb6cac10b0feef 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-@@ -1535,6 +1535,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1537,6 +1537,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
                  .printStackTrace();
              return;
          }
@@ -52,7 +52,7 @@ index 4ab719930f5b35c0ae221e9345f1e2eda7d9d719..8de86684dda275585826617b41d6792f
          if (!(entity instanceof EntityComplexPart)) {
              EntityTypes<?> entitytypes = entity.getEntityType();
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 00071913c0bb4deec7501a54818a2a1d6febc769..18272d56bdac0ff76092d8d834c53474516732a8 100644
+index 3e63eeca4f22fa4e607adf0e5845df1498ffcef5..521b972377d21a6dd8781e604bf220e0652e5b74 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -200,6 +200,12 @@ public abstract class PlayerList {

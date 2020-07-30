@@ -5,7 +5,7 @@ Subject: [PATCH] Add PrepareResultEvent
 
 Adds a new event for all crafting stations that generate a result slot item
 
-Anvil and Grindstone now extend this event
+Anvil, Grindstone and Smithing now extend this event
 
 diff --git a/src/main/java/net/minecraft/server/Container.java b/src/main/java/net/minecraft/server/Container.java
 index 4effcc860f9b1cf9f13f4c6ae02a6b16df459259..268bedd042b651514aa94b735876de9c40bae56f 100644
@@ -82,11 +82,11 @@ index 9490f74ee426e162844432073b3d78a2b6cddb32..1fe21ca13a1eecb64cb2d3f4f18993e1
  
      @Override
 diff --git a/src/main/java/net/minecraft/server/ContainerSmithing.java b/src/main/java/net/minecraft/server/ContainerSmithing.java
-index 76a81b30fa9e53952202c61717231d68d7be8e71..80a98e10df3f880b77c4dc99c9b871a2362f50cd 100644
+index a54f6c96392fe4097aee3e6f95fe1244fa273542..50a4e305babbfefd83e5cf180ef6da1958c3215c 100644
 --- a/src/main/java/net/minecraft/server/ContainerSmithing.java
 +++ b/src/main/java/net/minecraft/server/ContainerSmithing.java
 @@ -65,6 +65,7 @@ public class ContainerSmithing extends ContainerAnvilAbstract {
-             this.resultInventory.setItem(0, itemstack);
+             org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareSmithingEvent(getBukkitView(), itemstack); // CraftBukkit
          }
  
 +        org.bukkit.craftbukkit.event.CraftEventFactory.callPrepareResultEvent(this, 2); // Paper
@@ -106,10 +106,10 @@ index 270bf7f3e6ca15891419f1ce3e88d9aff094bee6..a235f6406dc06ceafea6fbe429bf595d
  
      private void a(IInventory iinventory, ItemStack itemstack) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 2a8345fe73b4fc2367908d236ae34e63824f64b8..09db2e85014bcf7c2f4b1240b825f507f4ab7e88 100644
+index 0ba3967e212f9876969d7a0c16d104dc82877c04..63bcd209f9e784248f8193ac58b6221e14311d64 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1551,12 +1551,33 @@ public class CraftEventFactory {
+@@ -1552,19 +1552,44 @@ public class CraftEventFactory {
          return event;
      }
  
@@ -120,6 +120,19 @@ index 2a8345fe73b4fc2367908d236ae34e63824f64b8..09db2e85014bcf7c2f4b1240b825f507
 +    public static void callPrepareAnvilEvent(InventoryView view, ItemStack item) { // Paper - verify nothing uses return - handled below in PrepareResult
 +        PrepareAnvilEvent event = new PrepareAnvilEvent(view, CraftItemStack.asCraftMirror(item)); // Paper - remove clone
 +        //event.getView().getPlayer().getServer().getPluginManager().callEvent(event); // disable event
+         event.getInventory().setItem(2, event.getResult());
+-        return event;
++        //return event; // Paper
+     }
++    // Paper end
+ 
+-    public static PrepareSmithingEvent callPrepareSmithingEvent(InventoryView view, ItemStack item) {
+-        PrepareSmithingEvent event = new PrepareSmithingEvent(view, CraftItemStack.asCraftMirror(item).clone());
+-        event.getView().getPlayer().getServer().getPluginManager().callEvent(event);
++    // Paper start - disable this method, handled in callPrepareResultEvent
++    public static void callPrepareSmithingEvent(InventoryView view, ItemStack item) { // Paper - verify nothing uses return - handled below in PrepareResult
++        PrepareSmithingEvent event = new PrepareSmithingEvent(view, CraftItemStack.asCraftMirror(item)); // Paper - remove clone
++        //event.getView().getPlayer().getServer().getPluginManager().callEvent(event); // Paper - disable event
          event.getInventory().setItem(2, event.getResult());
 -        return event;
 +        //return event; // Paper
@@ -136,6 +149,8 @@ index 2a8345fe73b4fc2367908d236ae34e63824f64b8..09db2e85014bcf7c2f4b1240b825f507
 +            event = new PrepareAnvilEvent(view, result);
 +        } else if (view.getTopInventory() instanceof org.bukkit.inventory.GrindstoneInventory) {
 +            event = new com.destroystokyo.paper.event.inventory.PrepareGrindstoneEvent(view, result);
++        } else if (view.getTopInventory() instanceof org.bukkit.inventory.SmithingInventory) {
++            event = new PrepareSmithingEvent(view, result);
 +        } else {
 +            event = new com.destroystokyo.paper.event.inventory.PrepareResultEvent(view, result);
 +        }

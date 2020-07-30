@@ -5,7 +5,7 @@ Subject: [PATCH] Add TileEntity API
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 4e92ce18227c8f650fe5c6f4a670e6f56d629872..699343b153862a5562863df5b7ea5a0297f3a0f9 100644
+index 62cc1c74c11f56dcbd1e24e9c5478497742e6351..f061be0d4ba19722e3720c9148fa2fce8c204625 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -50,6 +50,8 @@ import org.bukkit.util.CachedServerIcon;
@@ -17,7 +17,7 @@ index 4e92ce18227c8f650fe5c6f4a670e6f56d629872..699343b153862a5562863df5b7ea5a02
  
  /**
   * Represents the Bukkit core, for version and Server singleton handling
-@@ -1759,6 +1761,13 @@ public final class Bukkit {
+@@ -1770,6 +1772,13 @@ public final class Bukkit {
      public static com.destroystokyo.paper.entity.ai.MobGoals getMobGoals() {
          return server.getMobGoals();
      }
@@ -32,7 +32,7 @@ index 4e92ce18227c8f650fe5c6f4a670e6f56d629872..699343b153862a5562863df5b7ea5a02
  
      @NotNull
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 0653e0ffe96748dc971ec7e8027f8159696adf62..6aa51ab4310b02ae19a541776ef294159c22ef6b 100644
+index 6e01bf2d52e8bb6de7395f50c12f16c64aef72ae..b97cdf3d18d4545eb62de5b57ea410c034fd3f0a 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -51,6 +51,8 @@ import org.bukkit.util.CachedServerIcon;
@@ -44,7 +44,7 @@ index 0653e0ffe96748dc971ec7e8027f8159696adf62..6aa51ab4310b02ae19a541776ef29415
  
  /**
   * Represents a server implementation.
-@@ -1537,5 +1539,12 @@ public interface Server extends PluginMessageRecipient {
+@@ -1546,5 +1548,12 @@ public interface Server extends PluginMessageRecipient {
       */
      @NotNull
      com.destroystokyo.paper.entity.ai.MobGoals getMobGoals();
