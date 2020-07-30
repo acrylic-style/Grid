@@ -5,9 +5,34 @@ Subject: [PATCH] POM Changes
 
 
 diff --git a/pom.xml b/pom.xml
-index 79b8a2e7a277e5669c1024808edf5f79fe6544bf..8d692c144814861dc5fcb20b4f488e7785d1af47 100644
+index cb37aea9d7f60b54b95b5cf1798d5a6c5c0e7c14..8d692c144814861dc5fcb20b4f488e7785d1af47 100644
 --- a/pom.xml
 +++ b/pom.xml
+@@ -3,18 +3,18 @@
+          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+     <modelVersion>4.0.0</modelVersion>
+     <parent>
+-        <groupId>com.destroystokyo.paper</groupId>
+-        <artifactId>paper-parent</artifactId>
++        <groupId>xyz.acrylicstyle.grid</groupId>
++        <artifactId>grid-parent</artifactId>
+         <version>dev-SNAPSHOT</version>
+     </parent>
+ 
+-    <groupId>com.destroystokyo.paper</groupId>
+-    <artifactId>paper-api</artifactId>
++    <groupId>xyz.acrylicstyle.grid</groupId>
++    <artifactId>grid-api</artifactId>
+     <version>1.16.1-R0.1-SNAPSHOT</version>
+     <packaging>jar</packaging>
+ 
+-    <name>Paper-API</name>
+-    <url>https://github.com/PaperMC/Paper</url>
++    <name>Grid-API</name>
++    <url>https://github.com/acrylic-style/Grid</url>
+     <description>An enhanced plugin API for Minecraft servers.</description>
+ 
+     <properties>
 @@ -236,6 +236,19 @@
                      </links>
                  </configuration>
