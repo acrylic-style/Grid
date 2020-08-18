@@ -1,0 +1,74 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Wed, 19 Aug 2020 00:19:13 +0900
+Subject: [PATCH] Add BlockPlaceInteractEvent
+
+
+diff --git a/src/main/java/xyz/acrylicstyle/paper/event/block/BlockPlaceInteractEvent.java b/src/main/java/xyz/acrylicstyle/paper/event/block/BlockPlaceInteractEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..c243f47f756d2784152d13d9278d548653e3940f
+--- /dev/null
++++ b/src/main/java/xyz/acrylicstyle/paper/event/block/BlockPlaceInteractEvent.java
+@@ -0,0 +1,62 @@
++package xyz.acrylicstyle.paper.event.block;
++
++import org.bukkit.block.Block;
++import org.bukkit.entity.Player;
++import org.bukkit.event.HandlerList;
++import org.bukkit.event.block.BlockEvent;
++import org.bukkit.inventory.EquipmentSlot;
++import org.bukkit.inventory.ItemStack;
++import org.jetbrains.annotations.NotNull;
++
++/**
++ * Basically {@link org.bukkit.event.block.BlockPlaceEvent}
++ * + {@link org.bukkit.event.player.PlayerInteractEvent}.
++ * This event can be cancelled separately, usage of item, or placement of the block.
++ */
++public class BlockPlaceInteractEvent extends BlockEvent {
++    @NotNull
++    private static final HandlerList handlers = new HandlerList();
++
++    @NotNull protected final Player player;
++    @NotNull protected final ItemStack itemInHand;
++    @NotNull protected final EquipmentSlot hand;
++    protected boolean cancelBlockPlace = false;
++    protected boolean cancelItemUsage = false;
++
++    public BlockPlaceInteractEvent(@NotNull Player player, @NotNull Block theBlock, @NotNull ItemStack itemInHand, @NotNull EquipmentSlot hand) {
++        super(theBlock);
++        this.player = player;
++        this.itemInHand = itemInHand;
++        this.hand = hand;
++    }
++
++    @NotNull
++    public ItemStack getItemInHand() {
++        return itemInHand;
++    }
++
++    @NotNull
++    public EquipmentSlot getHand() {
++        return hand;
++    }
++
++    @NotNull
++    public Player getPlayer() {
++        return player;
++    }
++
++    public void setCancelBlockPlace(boolean cancelBlockPlace) { this.cancelBlockPlace = cancelBlockPlace; }
++
++    public void setCancelItemUsage(boolean cancelItemUsage) { this.cancelItemUsage = cancelItemUsage; }
++
++    public boolean isCancelBlockPlace() { return cancelBlockPlace; }
++
++    public boolean isCancelItemUsage() { return cancelItemUsage; }
++
++    @NotNull
++    @Override
++    public HandlerList getHandlers() { return handlers; }
++
++    @NotNull
++    public static HandlerList getHandlerList() { return handlers; }
++}
