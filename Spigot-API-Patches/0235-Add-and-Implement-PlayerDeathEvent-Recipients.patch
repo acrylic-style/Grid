@@ -1,0 +1,30 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Wed, 19 Aug 2020 00:18:45 +0900
+Subject: [PATCH] Add and Implement PlayerDeathEvent Recipients
+
+
+diff --git a/src/main/java/org/bukkit/event/entity/PlayerDeathEvent.java b/src/main/java/org/bukkit/event/entity/PlayerDeathEvent.java
+index 3a743430acb5eecc4d8db068fa62fe6d38a249e5..14fb1c63020c6aca5ee12e7cc64ba3a8c1bb77e3 100644
+--- a/src/main/java/org/bukkit/event/entity/PlayerDeathEvent.java
++++ b/src/main/java/org/bukkit/event/entity/PlayerDeathEvent.java
+@@ -19,6 +19,19 @@ public class PlayerDeathEvent extends EntityDeathEvent {
+     private boolean keepLevel = false;
+     private boolean keepInventory = false;
+ 
++    // Grid start
++    private final List<Player> recipients = new java.util.ArrayList<>(org.bukkit.Bukkit.getOnlinePlayers());
++
++    /**
++     * A mutable collection to add/remove death message recipients that the player should receive the death message for this event.
++     * If the showDeathMessages game rule is off, modifying this list may not work.
++     * @return the list to players who receive messages
++     */
++    @NotNull
++    public List<Player> getRecipients() {
++        return recipients;
++    }
++    // Grid end
+     // Paper start
+     private List<ItemStack> itemsToKeep = new java.util.ArrayList<>();
+ 
