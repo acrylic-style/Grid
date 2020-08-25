@@ -18,7 +18,7 @@ For consistency, the old API methods now forward to use the
 ItemMeta API equivalents, and should deprecate the old API's.
 
 diff --git a/src/main/java/net/minecraft/server/ItemStack.java b/src/main/java/net/minecraft/server/ItemStack.java
-index 76091ab3f149decc0d3c848b79edd24e20cf181d..a360711ea14983e8df34caa5edda80a015e6db23 100644
+index 10b98ba59570ae12797fa29533a6e56701849527..dce861df47403ae7f7c5f0f541f3f7abf0abe0cc 100644
 --- a/src/main/java/net/minecraft/server/ItemStack.java
 +++ b/src/main/java/net/minecraft/server/ItemStack.java
 @@ -9,6 +9,8 @@ import com.mojang.serialization.Codec;
@@ -70,7 +70,7 @@ index 76091ab3f149decc0d3c848b79edd24e20cf181d..a360711ea14983e8df34caa5edda80a0
          if (this.getItem().usesDurability()) {
              this.setDamage(this.getDamage());
          }
-@@ -710,6 +731,7 @@ public final class ItemStack {
+@@ -716,6 +737,7 @@ public final class ItemStack {
          nbttagcompound.setString("id", String.valueOf(IRegistry.ENCHANTMENT.getKey(enchantment)));
          nbttagcompound.setShort("lvl", (short) ((byte) i));
          nbttaglist.add(nbttagcompound);
@@ -79,7 +79,7 @@ index 76091ab3f149decc0d3c848b79edd24e20cf181d..a360711ea14983e8df34caa5edda80a0
  
      public boolean hasEnchantments() {
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
-index 3bdaca5fd461b4923c857b236472dd98d23f43a0..5f968e8988c3bd20c0f0c078c8f4038630098c8c 100644
+index 721a1c6bd4505cb132e7004c45b795d4959389e3..9913d0136841dac35b6649cb1afbe1e93b36bf4c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 @@ -178,28 +178,11 @@ public final class CraftItemStack extends ItemStack {
@@ -194,7 +194,7 @@ index 3bdaca5fd461b4923c857b236472dd98d23f43a0..5f968e8988c3bd20c0f0c078c8f40386
  
      static Map<Enchantment, Integer> getEnchantments(net.minecraft.server.ItemStack item) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
-index be74b465dd94a79fdfc8fdc236b4fc7b59424499..be39fbc1433e03e2f0e562095fea590691d7a062 100644
+index dec0db24ae611736c99158ba4cb11015ad4b8575..55a3d9d3805bd2b14f853faecd47e572094d1c64 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaItem.java
 @@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableList;

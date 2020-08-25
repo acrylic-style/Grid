@@ -1,0 +1,66 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Thu, 11 Jun 2020 23:52:26 +0900
+Subject: [PATCH] Fix Compilation Error
+
+
+diff --git a/src/main/java/net/minecraft/server/CommandLocate.java b/src/main/java/net/minecraft/server/CommandLocate.java
+index f43f41d524cf01195288b5b163de14ef4bd00c55..e718dc8f49a003e48b67a720f3b2d199907ade29 100644
+--- a/src/main/java/net/minecraft/server/CommandLocate.java
++++ b/src/main/java/net/minecraft/server/CommandLocate.java
+@@ -5,6 +5,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
+ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+ import java.util.Iterator;
+ import java.util.Map.Entry;
++import java.util.concurrent.atomic.AtomicReference;
+ 
+ public class CommandLocate {
+ 
+@@ -15,12 +16,15 @@ public class CommandLocate {
+             return commandlistenerwrapper.hasPermission(2);
+         });
+ 
+-        Entry entry;
++        // Paper start - compile fix
++        // Converts variable -> AtomicReference
++        AtomicReference<Entry> entry = new AtomicReference<Entry>();
+ 
+-        for (Iterator iterator = StructureGenerator.a.entrySet().iterator(); iterator.hasNext();literalargumentbuilder = (LiteralArgumentBuilder) literalargumentbuilder.then(CommandDispatcher.a((String) entry.getKey()).executes((commandcontext) -> {
+-            return a((CommandListenerWrapper) commandcontext.getSource(), (StructureGenerator) entry.getValue());
++        for (Iterator iterator = StructureGenerator.a.entrySet().iterator(); iterator.hasNext();literalargumentbuilder = (LiteralArgumentBuilder) literalargumentbuilder.then(CommandDispatcher.a((String) entry.get().getKey()).executes((commandcontext) -> {
++            return a((CommandListenerWrapper) commandcontext.getSource(), (StructureGenerator) entry.get().getValue());
+         }))) {
+-            entry = (Entry) iterator.next();
++            entry.set((Entry) iterator.next());
++            // Paper end
+         }
+ 
+         com_mojang_brigadier_commanddispatcher.register(literalargumentbuilder);
+diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
+index 3d855b0d76eaf2fdde47520aeab9ea58101647c3..4fa58328240db34515ce47d866b29591621cebbe 100644
+--- a/src/main/java/net/minecraft/server/PlayerConnection.java
++++ b/src/main/java/net/minecraft/server/PlayerConnection.java
+@@ -1602,7 +1602,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
+             });
+             // Paper end
+             for (IChatBaseComponent iChatBaseComponent : chatMessage) {
+-                this.minecraftServer.sendMessage(iChatBaseComponent);
++                this.minecraftServer.sendMessage(iChatBaseComponent, SystemUtils.getNullUUID()); // Paper - compilation fix
+             }
+         }
+         // CraftBukkit end
+diff --git a/src/main/java/xyz/acrylicstyle/paper/CraftDamageSource.java b/src/main/java/xyz/acrylicstyle/paper/CraftDamageSource.java
+index a0060141ad5acb9fa4bc94efa63a537cfd02d995..c5b9ca3fe69059620f5a99c196611b39d6a8b610 100644
+--- a/src/main/java/xyz/acrylicstyle/paper/CraftDamageSource.java
++++ b/src/main/java/xyz/acrylicstyle/paper/CraftDamageSource.java
+@@ -34,8 +34,8 @@ public final class CraftDamageSource {
+             return DamageSource.FALLING_BLOCK;
+         } else if (damageSource.equals(net.minecraft.server.DamageSource.FIRE)) {
+             return DamageSource.FIRE;
+-        } else if (damageSource.equals(net.minecraft.server.DamageSource.FIREWORKS)) {
+-            return DamageSource.FIREWORKS;
++        //} else if (damageSource.equals(net.minecraft.server.DamageSource.FIREWORKS)) { // todo: removed?
++        //    return DamageSource.FIREWORKS;
+         } else if (damageSource.equals(net.minecraft.server.DamageSource.FLY_INTO_WALL)) {
+             return DamageSource.FLY_INTO_WALL;
+         } else if (damageSource.equals(net.minecraft.server.DamageSource.GENERIC)) {

@@ -5,7 +5,7 @@ Subject: [PATCH] ProfileWhitelistVerifyEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 650755c0a6df59260a5f7c8cb041b2a8fe63e4a8..fbacfe2c825f71b3c8617a3bf022f6793eb64996 100644
+index 847e132803afcedfaadbeb037f193841272942b7..c17245bd2016507cce1cac087e03d3b0f4ee6043 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -540,9 +540,9 @@ public abstract class PlayerList {
@@ -20,7 +20,7 @@ index 650755c0a6df59260a5f7c8cb041b2a8fe63e4a8..fbacfe2c825f71b3c8617a3bf022f679
          } else if (getIPBans().isBanned(socketaddress) && !getIPBans().get(socketaddress).hasExpired()) {
              IpBanEntry ipbanentry = this.l.get(socketaddress);
  
-@@ -923,9 +923,25 @@ public abstract class PlayerList {
+@@ -935,9 +935,25 @@ public abstract class PlayerList {
          this.server.getCommandDispatcher().a(entityplayer);
      }
  
@@ -46,4 +46,4 @@ index 650755c0a6df59260a5f7c8cb041b2a8fe63e4a8..fbacfe2c825f71b3c8617a3bf022f679
 +    // Paper end
  
      public boolean isOp(GameProfile gameprofile) {
-         return this.operators.d(gameprofile) || this.server.a(gameprofile) && this.server.getSaveData().n() || this.v;
+         return this.operators.d(gameprofile) || this.server.a(gameprofile) && this.server.getSaveData().o() || this.v;

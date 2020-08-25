@@ -108,6 +108,7 @@ importLibrary com.mojang brigadier com/mojang/brigadier StringReader.java
 importLibrary com.mojang brigadier com/mojang/brigadier arguments/BoolArgumentType.java
 importLibrary com.mojang authlib com/mojang/authlib yggdrasil/YggdrasilGameProfileRepository.java
 importLibrary com.mojang datafixerupper com/mojang/datafixers/util Either.java
+importLibrary com.mojang datafixerupper com/mojang/serialization/codecs KeyDispatchCodec.java
 
 ########################################################
 ########################################################

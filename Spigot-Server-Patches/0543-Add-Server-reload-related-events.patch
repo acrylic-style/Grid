@@ -1,0 +1,71 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Wed, 29 Apr 2020 21:37:37 +0900
+Subject: [PATCH] Add Server reload related events
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 7d83cf39ae4b78588a2cb5decccf53edfd448735..72757a74ebb3eed88ca9f8e5c3ce6b7daa0d0e5c 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -143,6 +143,7 @@ import org.bukkit.craftbukkit.command.BukkitCommandWrapper;
+ import org.bukkit.craftbukkit.command.CraftCommandMap;
+ import org.bukkit.craftbukkit.command.VanillaCommandWrapper;
+ import org.bukkit.craftbukkit.entity.CraftPlayer;
++import org.bukkit.craftbukkit.event.CraftEventFactory;
+ import org.bukkit.craftbukkit.generator.CraftChunkData;
+ import org.bukkit.craftbukkit.help.SimpleHelpMap;
+ import org.bukkit.craftbukkit.inventory.CraftBlastingRecipe;
+@@ -225,6 +226,7 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;
+ import org.yaml.snakeyaml.error.MarkedYAMLException;
+ 
+ import net.md_5.bungee.api.chat.BaseComponent; // Spigot
++import xyz.acrylicstyle.paper.event.server.ServerReloadedEvent;
+ 
+ import javax.annotation.Nullable; // Paper
+ import javax.annotation.Nonnull; // Paper
+@@ -811,6 +813,7 @@ public final class CraftServer implements Server {
+ 
+     @Override
+     public void reload() {
++        if (CraftEventFactory.callServerPreReloadEvent()) return; // Paper - cancel reload when the evnet was cancelled
+         org.spigotmc.WatchdogThread.hasStarted = false; // Paper - Disable watchdog early timeout on reload
+         reloadCount++;
+         configuration = YamlConfiguration.loadConfiguration(getConfigFile());
+@@ -931,6 +934,7 @@ public final class CraftServer implements Server {
+         enablePlugins(PluginLoadOrder.POSTWORLD);
+         getPluginManager().callEvent(new ServerLoadEvent(ServerLoadEvent.LoadType.RELOAD));
+         org.spigotmc.WatchdogThread.hasStarted = true; // Paper - Disable watchdog early timeout on reload
++        getPluginManager().callEvent(new ServerReloadedEvent()); // Paper - Add simple event to avoid bugs
+     }
+ 
+     // Paper start
+diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+index 66b72d2485d4487d809d28bb9b1968aeb3a161f6..fedc45699972198d483a3a28f8540a4cc0d4005d 100644
+--- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
++++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+@@ -227,6 +227,7 @@ import org.bukkit.projectiles.ProjectileSource;
+ import org.bukkit.event.entity.SpawnerSpawnEvent; // Spigot
+ import xyz.acrylicstyle.paper.event.server.PluginSendActionBarEvent;
+ import xyz.acrylicstyle.paper.event.server.PluginSendMessageEvent;
++import xyz.acrylicstyle.paper.event.server.ServerPreReloadEvent;
+ 
+ public class CraftEventFactory {
+     public static final DamageSource MELTING = CraftDamageSource.copyOf(DamageSource.BURN);
+@@ -1778,14 +1779,8 @@ public class CraftEventFactory {
+     }
+ 
+     // Paper start
+-    public static boolean callPluginSendMessageEvent(Player player, String message) {
+-        PluginSendMessageEvent event = new PluginSendMessageEvent(player, message);
+-        Bukkit.getPluginManager().callEvent(event);
+-        return event.isCancelled();
+-    }
+-
+-    public static boolean callPluginSendActionBarEvent(Player player, String message) {
+-        PluginSendActionBarEvent event = new PluginSendActionBarEvent(player, message);
++    public static boolean callServerPreReloadEvent() {
++        ServerPreReloadEvent event = new ServerPreReloadEvent();
+         Bukkit.getPluginManager().callEvent(event);
+         return event.isCancelled();
+     }

@@ -5,7 +5,7 @@ Subject: [PATCH] Add PlayerJumpEvent
 
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 13b3d746f911d80615c986f6ccb0377e28a407de..35cabf3fa68ade8d9de2429457293a54c283f1c4 100644
+index bc084ade77cff987c41d148ce85fc61d6efb5feb..3290e50440dc22f5530272c2817c594028d3432e 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -58,6 +58,8 @@ import org.bukkit.inventory.CraftingInventory;
@@ -17,7 +17,7 @@ index 13b3d746f911d80615c986f6ccb0377e28a407de..35cabf3fa68ade8d9de2429457293a54
  import co.aikar.timings.MinecraftTimings; // Paper
  // CraftBukkit end
  
-@@ -945,7 +947,34 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -939,7 +941,34 @@ public class PlayerConnection implements PacketListenerPlayIn {
                              boolean flag = d8 > 0.0D;
  
                              if (this.player.isOnGround() && !packetplayinflying.b() && flag) {
