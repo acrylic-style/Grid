@@ -46,7 +46,7 @@ index 02c09f39848399a86d46bd17569b4f01a7b5ab1f..ed9b2f9adfecdc6d1b9925579ec51065
          double[] adouble = new double[]{1.0D};
          double d0 = vec3d1.x - vec3d.x;
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
-index c3bf2328f2ebeefe81a35846f0c1b2f0b178920f..431091b87370a8416a6945c560981ba1882894d4 100644
+index 915378493d9c5bb501b21eb7aca380580716f4c3..8832ffc0fcf9410ecc07ac100c2c8e3cd4dbddff 100644
 --- a/src/main/java/net/minecraft/server/Entity.java
 +++ b/src/main/java/net/minecraft/server/Entity.java
 @@ -1419,6 +1419,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
@@ -57,7 +57,7 @@ index c3bf2328f2ebeefe81a35846f0c1b2f0b178920f..431091b87370a8416a6945c560981ba1
      public final Vec3D j(float f) {
          if (f == 1.0F) {
              return new Vec3D(this.locX(), this.getHeadY(), this.locZ());
-@@ -2052,6 +2053,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -2056,6 +2057,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
          return this.getPassengers().size() < 1;
      }
  
@@ -120,10 +120,10 @@ index b88a99221933108141b558adef6aa91f0cedc136..c13bb708ccd14c3848afbc9afaf6439c
          return !(entity instanceof EntityHuman) || !entity.isSpectator() && !((EntityHuman) entity).isCreative() && entity.world.getDifficulty() != EnumDifficulty.PEACEFUL;
      };
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index 2e7bacff55f57fda8b5644fb9d7934a615e5f550..39b8ab223bc708e5ee3dc967e489fdc76d944416 100644
+index 63f46a4c6fda5a08f89d68da879ce4ad83056cf5..607f0bca1ca454bd60aad82df81702bf15e0ff4a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-@@ -219,6 +219,33 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+@@ -221,6 +221,33 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
              new com.destroystokyo.paper.block.TargetBlockInfo(org.bukkit.craftbukkit.block.CraftBlock.at(getHandle().world, ((net.minecraft.server.MovingObjectPositionBlock)rayTrace).getBlockPosition()),
                  net.minecraft.server.MCUtil.toBukkitBlockFace(((net.minecraft.server.MovingObjectPositionBlock)rayTrace).getDirection()));
      }

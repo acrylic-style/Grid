@@ -1,13 +1,13 @@
-Paper [![Build Status](https://ci.acrylicstyle.xyz/job/Paper-1.16/badge/icon)](https://ci.acrylicstyle.xyz/job/Paper-1.16/)
+Grid [![Build Status](https://ci.acrylicstyle.xyz/job/Paper-1.16/badge/icon)](https://ci.acrylicstyle.xyz/job/Paper-1.16/)
 ===========
 
-High performance Paper fork that aims to fix bugs, gameplay and mechanics inconsistencies.
+High performance Paper fork that aims to fix gameplay and mechanics inconsistencies.
 
 How To (Server Admins)
 ------
 Powergrid is a jar file that you can download and run just like a normal jar file.
 
-Download Grid from our [downloads page](https://ci.acrylicstyle.xyz/job/Paper-1.16/).
+Download Grid from our [downloads page](https://ci.acrylicstyle.xyz/guestAuth/repository/download/Grid_Build/.lastSuccessful/powergrid.jar).
 
 Run the Paperclip jar directly from your server. Just like old times
 
@@ -23,7 +23,7 @@ How To (Plugin Developers)
 ```xml
 <repository>
     <id>grid</id>
-    <url>https://repo.acrylicstyle.xyz/</url>
+    <url>https://repo2.acrylicstyle.xyz/</url>
 </repository>
 ```
  * Artifact Information:
@@ -31,7 +31,7 @@ How To (Plugin Developers)
 <dependency>
     <groupId>xyz.acrylicstyle.grid</groupId>
     <artifactId>grid-api</artifactId>
-    <version>1.16.1-R0.1-SNAPSHOT</version>
+    <version>1.16.2-R0.1-SNAPSHOT</version>
     <scope>provided</scope>
 </dependency>
  ```
@@ -42,14 +42,14 @@ How To (Plugin Developers)
 ```groovy
 repositories {
     maven {
-        url 'https://repo.acrylicstyle.xyz/'
+        url 'https://repo2.acrylicstyle.xyz/'
     }
 }
 ```
  * Artifact:
 ```groovy
 dependencies {
-    compileOnly 'xyz.acrylicstyle.grid:grid-api:1.16.1-R0.1-SNAPSHOT'
+    compileOnly 'xyz.acrylicstyle.grid:grid-api:1.16.2-R0.1-SNAPSHOT'
 }
 ```
 

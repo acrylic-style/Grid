@@ -20,7 +20,7 @@ index 0700af8f1141eab1a996c5aea78c1aaa19484514..b6f1908235a1351963ce9b83b6d0aa6b
              inventorycraftresult.setItem(0, itemstack);
              entityplayer.playerConnection.sendPacket(new PacketPlayOutSetSlot(i, 0, itemstack));
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 6e9e600bd243446b9debb3695c0d7c667717fce0..3d855b0d76eaf2fdde47520aeab9ea58101647c3 100644
+index 150658b989e984bf48c3368f7009cc1fef01cdd4..63036415fa402528ca2888c78618b21c10537c97 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -2424,9 +2424,9 @@ public class PlayerConnection implements PacketListenerPlayIn {

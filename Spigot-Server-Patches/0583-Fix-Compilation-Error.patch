@@ -37,7 +37,7 @@ index f43f41d524cf01195288b5b163de14ef4bd00c55..e718dc8f49a003e48b67a720f3b2d199
  
          com_mojang_brigadier_commanddispatcher.register(literalargumentbuilder);
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 3d855b0d76eaf2fdde47520aeab9ea58101647c3..4fa58328240db34515ce47d866b29591621cebbe 100644
+index 63036415fa402528ca2888c78618b21c10537c97..2ab8e0faa0537b9b52fcde00820dd687523ce7c6 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -1602,7 +1602,7 @@ public class PlayerConnection implements PacketListenerPlayIn {

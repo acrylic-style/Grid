@@ -5,12 +5,12 @@ Subject: [PATCH] Add effect to block break naturally
 
 
 diff --git a/src/main/java/org/bukkit/block/Block.java b/src/main/java/org/bukkit/block/Block.java
-index 596f1d68b69a2ba3976398d0045379f047541f40..a6fe268b28591e7e964741094e7f639d6c23b52b 100644
+index d4ba9c2b858204825d47fd6e91dab8c003df085a..f8c599718143fe638de422fd4625f353ee6c54ae 100644
 --- a/src/main/java/org/bukkit/block/Block.java
 +++ b/src/main/java/org/bukkit/block/Block.java
-@@ -460,6 +460,18 @@ public interface Block extends Metadatable {
+@@ -469,6 +469,18 @@ public interface Block extends Metadatable {
       */
-     boolean breakNaturally();
+     boolean breakNaturally(@Nullable ItemStack tool);
  
 +    // Paper start
 +    /**
@@ -25,5 +25,5 @@ index 596f1d68b69a2ba3976398d0045379f047541f40..a6fe268b28591e7e964741094e7f639d
 +    // Paper end
 +
      /**
-      * Breaks the block and spawns items as if a player had digged it with a
-      * specific tool
+      * Simulate bone meal application to this block (if possible).
+      *

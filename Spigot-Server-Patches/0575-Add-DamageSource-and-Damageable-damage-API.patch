@@ -21,10 +21,10 @@ index e6d050099b787831bebedfa2c264e5a311776e3a..384223ee974890d6c49da554332e5ec2
 +    // Paper end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index 3777aba5f32f58f4620d4fe496af4e641ff8c858..8f79fbe37328f3698b2336fa725cdb10ccbe369a 100644
+index 0819c31979540443576411ba8135e01a8db59775..3726ab407a3cc2f23d619e31b1e24934874e53b5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-@@ -88,6 +88,7 @@ import org.bukkit.potion.PotionType;
+@@ -90,6 +90,7 @@ import org.bukkit.potion.PotionType;
  import org.bukkit.util.BlockIterator;
  import org.bukkit.util.RayTraceResult;
  import org.bukkit.util.Vector;
@@ -32,7 +32,7 @@ index 3777aba5f32f58f4620d4fe496af4e641ff8c858..8f79fbe37328f3698b2336fa725cdb10
  
  public class CraftLivingEntity extends CraftEntity implements LivingEntity {
      private CraftEntityEquipment equipment;
-@@ -155,6 +156,13 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
+@@ -157,6 +158,13 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
          setMaxHealth(getHandle().getAttributeInstance(GenericAttributes.MAX_HEALTH).getAttribute().getDefault());
      }
  
