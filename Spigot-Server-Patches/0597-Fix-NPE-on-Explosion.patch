@@ -5,7 +5,7 @@ Subject: [PATCH] Fix NPE on Explosion
 
 
 diff --git a/src/main/java/net/minecraft/server/Explosion.java b/src/main/java/net/minecraft/server/Explosion.java
-index 3ecbce7a5a2f125d1495f86c661a96159774d4a4..fb765fc853584f9081990d941d4d12123b811065 100644
+index b7cfa6fb188d36ecbad0389bb51e5f1016b9eabd..094783afcfed06018c9fcda873e5ab4fa6e02dd3 100644
 --- a/src/main/java/net/minecraft/server/Explosion.java
 +++ b/src/main/java/net/minecraft/server/Explosion.java
 @@ -138,7 +138,7 @@ public class Explosion {

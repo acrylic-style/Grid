@@ -5,10 +5,10 @@ Subject: [PATCH] Add TileEntity API
 
 
 diff --git a/src/main/java/net/minecraft/server/TileEntity.java b/src/main/java/net/minecraft/server/TileEntity.java
-index e48fbf6280e107ab3a288f9099373df0fd6fccbd..7388eef2393ee3329a794c630bfa55c662611619 100644
+index d32540c88bb902e9c191142a2b75a05b63218e52..cd279f8b5bccf813d96c1877d9fc020d1adf3c55 100644
 --- a/src/main/java/net/minecraft/server/TileEntity.java
 +++ b/src/main/java/net/minecraft/server/TileEntity.java
-@@ -95,6 +95,7 @@ public abstract class TileEntity implements KeyedObject { // Paper
+@@ -96,6 +96,7 @@ public abstract class TileEntity implements KeyedObject { // Paper
          return this.b(nbttagcompound);
      }
  

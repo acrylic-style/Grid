@@ -6,7 +6,7 @@ Subject: [PATCH] SPIGOT-809 Recipients for join and quit messages.
 https://hub.spigotmc.org/jira/projects/SPIGOT/issues/SPIGOT-809
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index a5f5a985ba5333f9df6ad56fbd7d843807ea946d..5db425d19dcd9c8e2def6b6a74273e739c635423 100644
+index e0c3eab9aef950d91920076990215d79d2b710c6..0e69781c54361f7a15fee885b39befcb4650f05c 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -13,6 +13,7 @@ import java.util.Collections;
@@ -17,7 +17,7 @@ index a5f5a985ba5333f9df6ad56fbd7d843807ea946d..5db425d19dcd9c8e2def6b6a74273e73
  import java.util.stream.Stream;
  import javax.annotation.Nullable;
  import org.apache.commons.lang3.StringEscapeUtils;
-@@ -50,6 +51,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
+@@ -51,6 +52,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
  import org.bukkit.event.player.PlayerItemHeldEvent;
  import org.bukkit.event.player.PlayerKickEvent;
  import org.bukkit.event.player.PlayerMoveEvent;
@@ -25,7 +25,7 @@ index a5f5a985ba5333f9df6ad56fbd7d843807ea946d..5db425d19dcd9c8e2def6b6a74273e73
  import org.bukkit.event.player.PlayerResourcePackStatusEvent;
  import org.bukkit.event.player.PlayerSwapHandItemsEvent;
  import org.bukkit.event.player.PlayerTeleportEvent;
-@@ -1586,9 +1588,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1582,9 +1584,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
          */
  
          this.player.p();
@@ -48,7 +48,7 @@ index a5f5a985ba5333f9df6ad56fbd7d843807ea946d..5db425d19dcd9c8e2def6b6a74273e73
          // CraftBukkit end
          if (this.isExemptPlayer()) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 33915eeb0229c0739d69b0ee2cb2251c9d99f87a..8855a3312c48c8f980329920c2300d4fdf45676c 100644
+index 787e80c50a61d6bd80efd8bd0d4b5140908aaeed..fa26105cd8aa2dd43c48f8f8d0dc76d10d566d87 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -18,6 +18,7 @@ import java.util.Map;

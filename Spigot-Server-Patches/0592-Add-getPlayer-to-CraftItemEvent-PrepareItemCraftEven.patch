@@ -20,10 +20,10 @@ index 0700af8f1141eab1a996c5aea78c1aaa19484514..b6f1908235a1351963ce9b83b6d0aa6b
              inventorycraftresult.setItem(0, itemstack);
              entityplayer.playerConnection.sendPacket(new PacketPlayOutSetSlot(i, 0, itemstack));
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index 150658b989e984bf48c3368f7009cc1fef01cdd4..63036415fa402528ca2888c78618b21c10537c97 100644
+index 81d5e32dc127b7a22f0597a65d4956cd9d743022..db395f958c0e6a27581e3054d76578ff669d9581 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
-@@ -2424,9 +2424,9 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -2425,9 +2425,9 @@ public class PlayerConnection implements PacketListenerPlayIn {
                          org.bukkit.inventory.Recipe recipe = ((CraftingInventory) top).getRecipe();
                          if (recipe != null) {
                              if (click == ClickType.NUMBER_KEY) {
@@ -36,10 +36,10 @@ index 150658b989e984bf48c3368f7009cc1fef01cdd4..63036415fa402528ca2888c78618b21c
                          }
                      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index fedc45699972198d483a3a28f8540a4cc0d4005d..f51dd0cd59d22958fd4fcca6628dc3d408bf6616 100644
+index 0be651b161b984a434a2929392ea2afbb34878e9..c3fc9608e7c398b3a869ffe9853f67905d8c2c4b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1255,11 +1255,11 @@ public class CraftEventFactory {
+@@ -1251,11 +1251,11 @@ public class CraftEventFactory {
          return container;
      }
  

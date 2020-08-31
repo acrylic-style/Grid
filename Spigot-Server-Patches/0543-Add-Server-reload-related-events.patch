@@ -41,7 +41,7 @@ index 7d83cf39ae4b78588a2cb5decccf53edfd448735..72757a74ebb3eed88ca9f8e5c3ce6b7d
  
      // Paper start
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index 66b72d2485d4487d809d28bb9b1968aeb3a161f6..fedc45699972198d483a3a28f8540a4cc0d4005d 100644
+index 4823c187f2f6f36b679253547494ab0a07ed211f..0be651b161b984a434a2929392ea2afbb34878e9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -227,6 +227,7 @@ import org.bukkit.projectiles.ProjectileSource;
@@ -52,7 +52,7 @@ index 66b72d2485d4487d809d28bb9b1968aeb3a161f6..fedc45699972198d483a3a28f8540a4c
  
  public class CraftEventFactory {
      public static final DamageSource MELTING = CraftDamageSource.copyOf(DamageSource.BURN);
-@@ -1778,14 +1779,8 @@ public class CraftEventFactory {
+@@ -1774,14 +1775,8 @@ public class CraftEventFactory {
      }
  
      // Paper start

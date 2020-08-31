@@ -85,10 +85,10 @@ index bdcbc2a05714c37fc034ddbfd0166efbeff1c4ac..9290d6c84e764bf691d9222723d73209
              this.methodProfiler.a(() -> {
                  return worldserver + " " + worldserver.getDimensionKey().a();
 diff --git a/src/main/java/net/minecraft/server/TileEntity.java b/src/main/java/net/minecraft/server/TileEntity.java
-index 6ccca984daa803ddf446a8f69aca0d86ee27fabc..e48fbf6280e107ab3a288f9099373df0fd6fccbd 100644
+index 338cf8c896a6fc869eb9c54d39ad5713f6fcc377..d32540c88bb902e9c191142a2b75a05b63218e52 100644
 --- a/src/main/java/net/minecraft/server/TileEntity.java
 +++ b/src/main/java/net/minecraft/server/TileEntity.java
-@@ -62,6 +62,7 @@ public abstract class TileEntity implements KeyedObject { // Paper
+@@ -63,6 +63,7 @@ public abstract class TileEntity implements KeyedObject { // Paper
      public void setCurrentChunk(Chunk chunk) {
          this.currentChunk = chunk != null ? new java.lang.ref.WeakReference<>(chunk) : null;
      }
@@ -96,7 +96,7 @@ index 6ccca984daa803ddf446a8f69aca0d86ee27fabc..e48fbf6280e107ab3a288f9099373df0
      // Paper end
  
      @Nullable
-@@ -140,6 +141,7 @@ public abstract class TileEntity implements KeyedObject { // Paper
+@@ -141,6 +142,7 @@ public abstract class TileEntity implements KeyedObject { // Paper
  
      public void update() {
          if (this.world != null) {
@@ -485,7 +485,7 @@ index c6e6c54a3eb5d725b71f2ec2bb27dd8e2aceabde..c79ebe2343cc14f113c0cc6496c20e7d
      }
  
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index ab5bf1ea0413cd947204794017b02a52cb601507..3db488d602dde2ba5dcd324ad38b19edd24e9285 100644
+index 58c030976f36c20808fcec6d922f5a1d4727a372..930e41935e0ef1af37eafca005d4e492c3b72a6f 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -1099,8 +1099,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
