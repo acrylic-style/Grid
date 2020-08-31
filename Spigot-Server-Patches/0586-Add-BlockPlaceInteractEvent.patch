@@ -26,7 +26,7 @@ index bbb1de7d1adce6e986467db234b27518df4dd87f..1a6b0a8f049491b7369cadb45d59115f
                              if (placeEvent != null && (placeEvent.isCancelled() || !placeEvent.canBuild())) {
                                  blockstate.update(true, false);
 diff --git a/src/main/java/net/minecraft/server/ItemStack.java b/src/main/java/net/minecraft/server/ItemStack.java
-index ace50805bfebbf4c3485ba1de334d975830a7d3c..1e5f4ef28d71585df9d482c0bd895844e0d47bbc 100644
+index ace50805bfebbf4c3485ba1de334d975830a7d3c..213ce4d9791db609c672085b2829a2754ad77862 100644
 --- a/src/main/java/net/minecraft/server/ItemStack.java
 +++ b/src/main/java/net/minecraft/server/ItemStack.java
 @@ -37,6 +37,7 @@ import org.bukkit.entity.Player;
@@ -37,7 +37,7 @@ index ace50805bfebbf4c3485ba1de334d975830a7d3c..1e5f4ef28d71585df9d482c0bd895844
  // CraftBukkit end
  
  public final class ItemStack {
-@@ -273,12 +274,36 @@ public final class ItemStack {
+@@ -273,13 +274,41 @@ public final class ItemStack {
              if (entityhuman != null && enuminteractionresult.a()) {
                  org.bukkit.event.block.BlockPlaceEvent placeEvent = null;
                  List<BlockState> blocks = new java.util.ArrayList<>(world.capturedBlockStates.values());
@@ -50,8 +50,10 @@ index ace50805bfebbf4c3485ba1de334d975830a7d3c..1e5f4ef28d71585df9d482c0bd895844
                      placeEvent = org.bukkit.craftbukkit.event.CraftEventFactory.callBlockPlaceEvent(world, entityhuman, enumhand, blocks.get(0), blockposition.getX(), blockposition.getY(), blockposition.getZ());
                  }
 +                // Grid start - implement BlockPlaceInteractEvent
++                boolean cancelPlaceInteract = false;
 +                if (placeInteractEvent != null) {
-+                    if (placeInteractEvent.isCancelBlockPlace()) {
++                    if (placeInteractEvent.isCancelBlockPlace()) { // copied from below
++                        cancelPlaceInteract = true;
 +                        // PAIL: Remove this when MC-99075 fixed
 +                        placeInteractEvent.getPlayer().updateInventory();
 +                        world.capturedTileEntities.clear(); // Paper - clear out tile entities as chests and such will pop loot
@@ -59,7 +61,7 @@ index ace50805bfebbf4c3485ba1de334d975830a7d3c..1e5f4ef28d71585df9d482c0bd895844
 +                        for (BlockState blockstate : blocks) {
 +                            blockstate.update(true, false);
 +                        }
-+
+ 
 +                        // Brute force all possible updates
 +                        BlockPosition placedPos = ((CraftBlock) placeInteractEvent.getBlock()).getPosition();
 +                        for (EnumDirection dir : EnumDirection.values()) {
@@ -67,13 +69,24 @@ index ace50805bfebbf4c3485ba1de334d975830a7d3c..1e5f4ef28d71585df9d482c0bd895844
 +                        }
 +                    }
 +                    if (placeInteractEvent.isCancelItemUsage()) {
++                        cancelPlaceInteract = true;
 +                        enuminteractionresult = EnumInteractionResult.FAIL;
++                        placeInteractEvent.getPlayer().updateInventory();
 +                    }
 +                }
 +                // Grid end - implement BlockPlaceInteractEvent
- 
++                if (!cancelPlaceInteract) { // Grid
                  if (placeEvent != null && (placeEvent.isCancelled() || !placeEvent.canBuild())) {
                      enuminteractionresult = EnumInteractionResult.FAIL; // cancel placement
+                     // PAIL: Remove this when MC-99075 fixed
+@@ -362,6 +391,7 @@ public final class ItemStack {
+ 
+                     entityhuman.b(StatisticList.ITEM_USED.b(item));
+                 }
++                } // Grid
+             }
+             world.capturedTileEntities.clear();
+             world.capturedBlockStates.clear();
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 index f51dd0cd59d22958fd4fcca6628dc3d408bf6616..23047c3f13e110fcb9f4c2c03e93003d799fa8f9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
