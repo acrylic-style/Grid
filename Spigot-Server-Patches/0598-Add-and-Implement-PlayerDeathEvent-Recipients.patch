@@ -5,7 +5,7 @@ Subject: [PATCH] Add and Implement PlayerDeathEvent Recipients
 
 
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 73ea9518316ff465e86fe95143875c9de5aa2fa8..be59f7982cca87ca1c63eb6af2616d9b90c84b0f 100644
+index 8b1e866b3e0362d3a391586bbf14702dc25b8c00..b05972d55cb9eb7d7ccecff0a57743462e6d3aea 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -714,7 +714,10 @@ public class EntityPlayer extends EntityHuman implements ICrafting {

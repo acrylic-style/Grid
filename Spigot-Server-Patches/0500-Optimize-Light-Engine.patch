@@ -1350,7 +1350,7 @@ index 27c4dc6caf7b6303766dd8eee4812209600cd728..676f0d28b0c8a590c6429a9390295363
          if (getCurrentPriority() != priority) {
              this.u.a(this.location, this::getCurrentPriority, priority, this::setPriority); // use preferred priority
 diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
-index 13c2da8000b22a4be98bbdd723fc06b04834b02d..8a069cfcbf60f4ef409299cff59232c0cfd7db54 100644
+index 7c7b23590735d31cefda5cced96d4e874c06c8f2..fcd3388d88aad6e897b73e2c823267ada327cbda 100644
 --- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
 @@ -277,6 +277,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {

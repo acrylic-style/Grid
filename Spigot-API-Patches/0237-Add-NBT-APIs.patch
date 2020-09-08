@@ -5,7 +5,7 @@ Subject: [PATCH] Add NBT APIs
 
 
 diff --git a/src/main/java/org/bukkit/entity/Entity.java b/src/main/java/org/bukkit/entity/Entity.java
-index 7808ade92ccd3553056c57cdf77464fb8bdf9312..7457c636a050d74549d85951ee3718b87cfd5493 100644
+index cb9ef706eeb994f1948708ad5e8689550ea56df7..798d332f43b502f33dcdfbc233d8c55b92c43af1 100644
 --- a/src/main/java/org/bukkit/entity/Entity.java
 +++ b/src/main/java/org/bukkit/entity/Entity.java
 @@ -22,6 +22,7 @@ import org.bukkit.util.Vector;
@@ -16,7 +16,7 @@ index 7808ade92ccd3553056c57cdf77464fb8bdf9312..7457c636a050d74549d85951ee3718b8
  
  /**
   * Represents a base entity in the world
-@@ -694,5 +695,13 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
+@@ -690,5 +691,13 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
       * Check if entity is in lava
       */
      public boolean isInLava();

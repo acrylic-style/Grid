@@ -37,10 +37,10 @@ index f43f41d524cf01195288b5b163de14ef4bd00c55..e718dc8f49a003e48b67a720f3b2d199
  
          com_mojang_brigadier_commanddispatcher.register(literalargumentbuilder);
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index db395f958c0e6a27581e3054d76578ff669d9581..fa4ff780b2fd651a83e84fb577f0c10bb07fe103 100644
+index e15ca54b104cffb7702e6401134ae739bfa98760..cd395814ddcc8164035a95f0f1b08feabad7dd67 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
-@@ -1598,7 +1598,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1603,7 +1603,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
              });
              // Paper end
              for (IChatBaseComponent iChatBaseComponent : chatMessage) {

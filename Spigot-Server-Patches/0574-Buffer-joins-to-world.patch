@@ -8,10 +8,10 @@ the world per tick, this attempts to reduce the impact that join floods
 has on the server
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 60f03502a7fd622d2de3b2da9fe8014b289f3d31..016a66017d542466c734cdbed251b477f308f561 100644
+index 9fc12595a566f216620a7fb296d2d30e22332689..f65d3545039a2c471819ab5950c171ef6193cdb4 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-@@ -446,4 +446,9 @@ public class PaperConfig {
+@@ -452,4 +452,9 @@ public class PaperConfig {
              maxPlayerAutoSavePerTick = (playerAutoSaveRate == -1 || playerAutoSaveRate > 100) ? 10 : 20;
          }
      }

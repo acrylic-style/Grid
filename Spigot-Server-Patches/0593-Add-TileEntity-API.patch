@@ -42,7 +42,7 @@ index 48445d8442357653bdeece0d2037d842b4e7367d..4b4c6fbbfa659d4077080f6217859c66
      // Paper end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 7b1813e7497eed128e72e3130b77f7856e6a2a35..0e724d14a52ec7f268fc9897c2c0a40084ad460d 100644
+index 31b75abb620698fa356f795c2589896c21154f11..db0651f690a98679f5f011988108ca8cd1712f89 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -90,6 +90,7 @@ import net.minecraft.server.SoundCategory;
@@ -53,7 +53,7 @@ index 7b1813e7497eed128e72e3130b77f7856e6a2a35..0e724d14a52ec7f268fc9897c2c0a400
  import net.minecraft.server.Unit;
  import net.minecraft.server.Vec3D;
  import net.minecraft.server.WorldServer;
-@@ -2581,6 +2582,44 @@ public class CraftWorld implements World {
+@@ -2582,6 +2583,44 @@ public class CraftWorld implements World {
      }
      // Paper end - per player view distance
  

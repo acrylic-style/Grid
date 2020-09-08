@@ -71,10 +71,10 @@ index 7391fd31148dbde60e34955841a296f454ac768e..53a8ea7d1eff84abe6c49464d556aa27
  
          this.checkBlockCollisions();
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index e2b7886e63ab60110af9d01f2b8b86b7a9f79bc6..848fc157dc8f22c793a523975066523424a92273 100644
+index d423313fd949ff1adf3f6d9c5f339a465e0f0b9e..7239e9b9d072af9d1610fd2e06a123505e31a110 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -1185,6 +1185,16 @@ public class CraftEventFactory {
+@@ -1188,6 +1188,16 @@ public class CraftEventFactory {
          return CraftItemStack.asNMSCopy(bitem);
      }
  

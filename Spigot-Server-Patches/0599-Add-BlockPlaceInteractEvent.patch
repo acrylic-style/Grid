@@ -88,10 +88,10 @@ index 3adb29f004d2fee36f3ee9b21ee5417e84b64837..6a9d468f8939428fe0ffe2ff8a0494fd
              world.capturedTileEntities.clear();
              world.capturedBlockStates.clear();
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index c3fc9608e7c398b3a869ffe9853f67905d8c2c4b..6ca79e7bce48467de1c92d4498667aa6fc41837c 100644
+index 83782b76f9c6b46460e15d97e81734ff22812fc5..27f03986a1b0a79553fda4056719cb9bd0c55f16 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -225,6 +225,7 @@ import org.bukkit.potion.PotionEffect;
+@@ -226,6 +226,7 @@ import org.bukkit.potion.PotionEffect;
  import org.bukkit.projectiles.ProjectileSource;
  
  import org.bukkit.event.entity.SpawnerSpawnEvent; // Spigot
@@ -99,7 +99,7 @@ index c3fc9608e7c398b3a869ffe9853f67905d8c2c4b..6ca79e7bce48467de1c92d4498667aa6
  import xyz.acrylicstyle.paper.event.server.PluginSendActionBarEvent;
  import xyz.acrylicstyle.paper.event.server.PluginSendMessageEvent;
  import xyz.acrylicstyle.paper.event.server.ServerPreReloadEvent;
-@@ -1780,6 +1781,22 @@ public class CraftEventFactory {
+@@ -1783,6 +1784,22 @@ public class CraftEventFactory {
          Bukkit.getPluginManager().callEvent(event);
          return event.isCancelled();
      }

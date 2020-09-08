@@ -28,7 +28,7 @@ receives a deterministic result, and should no longer require 1 tick
 delays anymore.
 
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index b22eb32199de78730bc6db5d803fadde5fd3b7c1..5d7be3c9841949a11a3207d0ff355b78e2e28e81 100644
+index c4d832b32d0cdcc870b741afdcd38aca585ac9b5..8b0037594df8d76c98c2285f5a63662aef4e3202 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -106,6 +106,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
@@ -52,7 +52,7 @@ index 842f5ebad2a4d040b9912ec4841de426667cd91d..c2abf8dca89f3a4f3671e21b2cbfe9c7
          if (!(entity instanceof EntityComplexPart)) {
              EntityTypes<?> entitytypes = entity.getEntityType();
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 2b8ee11bee76671875b9ca2316181ccd2c0088e6..a38b0f5dbc76214853034b0a4663d985e62111bf 100644
+index 7e63e062bafb838e5c817bf5eb794cee522b369b..4995fa3fda87dfb47c8050e57ca29a895b809482 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -200,6 +200,12 @@ public abstract class PlayerList {

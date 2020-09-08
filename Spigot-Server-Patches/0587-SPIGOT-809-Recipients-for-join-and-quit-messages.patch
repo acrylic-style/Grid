@@ -6,7 +6,7 @@ Subject: [PATCH] SPIGOT-809 Recipients for join and quit messages.
 https://hub.spigotmc.org/jira/projects/SPIGOT/issues/SPIGOT-809
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index e0c3eab9aef950d91920076990215d79d2b710c6..0e69781c54361f7a15fee885b39befcb4650f05c 100644
+index b067f3b7031509bb94e617785e5a4d19b9d5d3e1..c78dc199eae53cca478873f0f8d10ea1cdb90ef9 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -13,6 +13,7 @@ import java.util.Collections;
@@ -25,7 +25,7 @@ index e0c3eab9aef950d91920076990215d79d2b710c6..0e69781c54361f7a15fee885b39befcb
  import org.bukkit.event.player.PlayerResourcePackStatusEvent;
  import org.bukkit.event.player.PlayerSwapHandItemsEvent;
  import org.bukkit.event.player.PlayerTeleportEvent;
-@@ -1582,9 +1584,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -1587,9 +1589,18 @@ public class PlayerConnection implements PacketListenerPlayIn {
          */
  
          this.player.p();

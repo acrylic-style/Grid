@@ -5,10 +5,10 @@ Subject: [PATCH] add CraftEventFactory methods
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-index af387466fe6becd6869d3a463646746b4325f91a..a31eb0a3e37146b8122f6570d0110b3d8fdd2ed0 100644
+index 65de5c4e5ffb993d85af2410c44d0149878b6859..a8194eacda80fcc06fe4b338eb202d5d3cb60cfb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
-@@ -225,6 +225,8 @@ import org.bukkit.potion.PotionEffect;
+@@ -226,6 +226,8 @@ import org.bukkit.potion.PotionEffect;
  import org.bukkit.projectiles.ProjectileSource;
  
  import org.bukkit.event.entity.SpawnerSpawnEvent; // Spigot
@@ -17,7 +17,7 @@ index af387466fe6becd6869d3a463646746b4325f91a..a31eb0a3e37146b8122f6570d0110b3d
  
  public class CraftEventFactory {
      public static final DamageSource MELTING = CraftDamageSource.copyOf(DamageSource.BURN);
-@@ -1746,6 +1748,20 @@ public class CraftEventFactory {
+@@ -1749,6 +1751,20 @@ public class CraftEventFactory {
          Bukkit.getPluginManager().callEvent(event);
      }
  

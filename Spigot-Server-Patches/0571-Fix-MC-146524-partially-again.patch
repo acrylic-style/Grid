@@ -18,7 +18,7 @@ index 644bdb876ca04b7549a363e24222ddb777a67dbe..1e995a30c31985d19f2c6a02809fe8cf
              if (entity instanceof EntityPlayer) {
                  EnumGamemode gamemode = ((EntityPlayer) entity).playerInteractManager.getGameMode();
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 7ebf1a782d5740e99fcb113b779195b60db3df06..c3c8c4c67b9a05b4202b78407ccce980b6ffe39c 100644
+index 1fd064aedb02f72cc626681d088007c467214a7e..9ef7e974f3f9a6365ff7dd9b13efe8c04673fd07 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -223,7 +223,7 @@ public class CraftPlayer extends CraftHumanEntity implements Player {

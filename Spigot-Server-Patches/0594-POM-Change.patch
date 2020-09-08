@@ -5,7 +5,7 @@ Subject: [PATCH] POM Change
 
 
 diff --git a/pom.xml b/pom.xml
-index bffa48090dc89302225582af18d8212c42a44a44..af83e8d921fc9ce6640fa63222f9c29359cfbecb 100644
+index d018f900db595ab1cbf1d6d68496235e5c146217..4846c6151d0ff23f2b85df95d4d76feef12ff693 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -349,6 +349,19 @@

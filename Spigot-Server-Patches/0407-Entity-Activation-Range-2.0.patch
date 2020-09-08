@@ -108,10 +108,10 @@ index f5203a0058974de7f1e3e9e291908ff37d54dbd0..9cf496b5e59b228ed65dca7b6b2fea72
          if (this.isPassenger() && this.getVehicle() instanceof EntityInsentient) {
              EntityInsentient entityinsentient = (EntityInsentient) this.getVehicle();
 diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
-index 228edf1beb04649ddca0726d90f41ce5506c253b..fede5e527a6f19243a25567e378ceebf79e118d6 100644
+index 9eb7c8e4f58956d652b5b1f636353f0da98c2606..8ba93673ad5516b597cbe185bb8402fb5ab4e6e7 100644
 --- a/src/main/java/net/minecraft/server/EntityLiving.java
 +++ b/src/main/java/net/minecraft/server/EntityLiving.java
-@@ -97,7 +97,7 @@ public abstract class EntityLiving extends Entity {
+@@ -98,7 +98,7 @@ public abstract class EntityLiving extends Entity {
      protected float aN;
      protected int aO;protected int getKillCount() { return this.aO; } // Paper - OBFHELPER
      public float lastDamage;
@@ -326,7 +326,7 @@ index 182cd7e9110408fff9909ef362d368d055a2b167..f3df10587e652d3a26d15deb09304b97
          return this.c;
      }
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 3db488d602dde2ba5dcd324ad38b19edd24e9285..08ad1e6034fe484a65faacd6b8e63d664720f395 100644
+index 930e41935e0ef1af37eafca005d4e492c3b72a6f..8afacfb8d5f4efd2ad6f95fbb7b0d62e68c51503 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -82,6 +82,12 @@ public abstract class World implements GeneratorAccess, AutoCloseable {

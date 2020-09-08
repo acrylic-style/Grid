@@ -13,7 +13,7 @@
     <version>1.16.2-R0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Paper-MojangAPI</name>
+    <name>Grid-MojangAPI</name>
     <url>https://github.com/PaperMC/Paper</url>
     <description>API additions that utilize Mojang Specific API's</description>
 

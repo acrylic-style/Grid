@@ -6,10 +6,10 @@ Subject: [PATCH] Add missing strikeLighting call to
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 834723da5a8bd4374f58a4aac7ee6d23733dfb58..dae43991a9d104974c116f2e3bf6f04b3bcc5582 100644
+index 0d8b2349b98d9d56cce1025c2be60d22e46d3869..470687acb55694b84b33fab50fd9623f6c559817 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2595,6 +2595,7 @@ public class CraftWorld implements World {
+@@ -2596,6 +2596,7 @@ public class CraftWorld implements World {
              lightning.teleportAndSync( loc.getX(), loc.getY(), loc.getZ() );
              lightning.isEffect = true;
              lightning.isSilent = isSilent;

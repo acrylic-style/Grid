@@ -7,10 +7,10 @@ Will not run if max entity craming is disabled and
 the max collisions per entity is less than or equal to 0
 
 diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
-index 0cce4dabcfc6bd2ad99d59597d4cddd98276bb8d..ab03bca06ebd6474ef41266b366b7f0176e477c3 100644
+index 1227dfbc0599b59fab6216a60f120f895b1f6f8c..1e6295d33be71c482da4a53dad4c3aa5ffce5710 100644
 --- a/src/main/java/net/minecraft/server/EntityLiving.java
 +++ b/src/main/java/net/minecraft/server/EntityLiving.java
-@@ -2820,10 +2820,16 @@ public abstract class EntityLiving extends Entity {
+@@ -2831,10 +2831,16 @@ public abstract class EntityLiving extends Entity {
      protected void doTick() {}
  
      protected void collideNearby() {

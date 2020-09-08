@@ -21,7 +21,7 @@ index e6d050099b787831bebedfa2c264e5a311776e3a..384223ee974890d6c49da554332e5ec2
 +    // Paper end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
-index 0819c31979540443576411ba8135e01a8db59775..3726ab407a3cc2f23d619e31b1e24934874e53b5 100644
+index 22705cda3d2ec7f0c037a7e130572d6e18d0b91b..334d841f7ae35da6c6d3b165e5d85e96be153bae 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftLivingEntity.java
 @@ -90,6 +90,7 @@ import org.bukkit.potion.PotionType;
