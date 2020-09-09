@@ -86,3 +86,16 @@ index 4b4c6fbbfa659d4077080f6217859c6685596c58..8b5a05b59bac764f29ce3b2ab064a0b7
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+index 674096cab190d62622f9947853b056f57d43a2a5..5bce2cdb39e65a9f500b49c433c0a3e91c4b8ceb 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+@@ -11,7 +11,7 @@ public final class Versioning {
+     public static String getBukkitVersion() {
+         String result = "Unknown-Version";
+ 
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.destroystokyo.paper/paper-api/pom.properties");
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/xyz.acrylicstyle.grid/grid-api/pom.properties");
+         Properties properties = new Properties();
+ 
+         if (stream != null) {
