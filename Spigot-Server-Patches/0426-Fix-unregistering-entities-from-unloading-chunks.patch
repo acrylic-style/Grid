@@ -15,10 +15,10 @@ Combine that with a buggy detail of the previous implementation of
 the Dupe UUID patch, then this was the likely source of the "Ghost entities"
 
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index 62b2a4d38102b1ffbda4d2fc031350a51fcf180c..ab955f3eaada8017116b99840e2519fd3429cf23 100644
+index bd7c3c32809b79218d857f9ae6b4c23220d29ea5..075f9d7b3dffc0285b2152d0e141adb685209f0c 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
-@@ -1424,9 +1424,9 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1445,9 +1445,9 @@ public class WorldServer extends World implements GeneratorAccessSeed {
      }
  
      private void removeEntityFromChunk(Entity entity) {

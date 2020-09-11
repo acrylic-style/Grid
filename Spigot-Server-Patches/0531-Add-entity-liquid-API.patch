@@ -5,10 +5,10 @@ Subject: [PATCH] Add entity liquid API
 
 
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
-index ad521f95aba0e82e3280351419ad23acfa283f9a..97e61dae7927d7da18fcb23d9e4bf639234af4a5 100644
+index d16bdc6d44672e71ae37e2ae4530d97c4a10bfdd..f9f6a57e4e07d94c01d6b559e8138404b78d31f3 100644
 --- a/src/main/java/net/minecraft/server/Entity.java
 +++ b/src/main/java/net/minecraft/server/Entity.java
-@@ -1076,12 +1076,13 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -1073,12 +1073,13 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
          return this.inWater;
      }
  
@@ -23,7 +23,7 @@ index ad521f95aba0e82e3280351419ad23acfa283f9a..97e61dae7927d7da18fcb23d9e4bf639
      private boolean k() {
          return this.world.getType(this.getChunkCoordinates()).a(Blocks.BUBBLE_COLUMN);
      }
-@@ -1095,6 +1096,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -1092,6 +1093,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
          return this.isInWater() || this.isInRain() || this.k();
      }
  
@@ -31,7 +31,7 @@ index ad521f95aba0e82e3280351419ad23acfa283f9a..97e61dae7927d7da18fcb23d9e4bf639
      public boolean aG() {
          return this.isInWater() || this.k();
      }
-@@ -1237,6 +1239,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -1234,6 +1236,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
          return this.O == tag;
      }
  

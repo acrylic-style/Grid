@@ -10,10 +10,10 @@ persistenting Living Entity, SPAWNER for spawners,
 or DEFAULT since data was not stored.
 
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
-index 8832ffc0fcf9410ecc07ac100c2c8e3cd4dbddff..c754809203e33375365bbd3730dd266efefd84d2 100644
+index f24f9177940549d81641a3d361710165d1c5d2d2..88326c0fd9a84f988e63bbfbc84a159a49ae844e 100644
 --- a/src/main/java/net/minecraft/server/Entity.java
 +++ b/src/main/java/net/minecraft/server/Entity.java
-@@ -74,6 +74,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -72,6 +72,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
          }
      };
      List<Entity> entitySlice = null;
@@ -21,7 +21,7 @@ index 8832ffc0fcf9410ecc07ac100c2c8e3cd4dbddff..c754809203e33375365bbd3730dd266e
      // Paper end
  
      public com.destroystokyo.paper.loottable.PaperLootableInventoryData lootableData; // Paper
-@@ -1585,6 +1586,9 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -1582,6 +1583,9 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
              if (this.origin != null) {
                  nbttagcompound.set("Paper.Origin", this.createList(origin.getX(), origin.getY(), origin.getZ()));
              }
@@ -31,7 +31,7 @@ index 8832ffc0fcf9410ecc07ac100c2c8e3cd4dbddff..c754809203e33375365bbd3730dd266e
              // Save entity's from mob spawner status
              if (spawnedViaMobSpawner) {
                  nbttagcompound.setBoolean("Paper.FromMobSpawner", true);
-@@ -1714,6 +1718,26 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -1711,6 +1715,26 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
              }
  
              spawnedViaMobSpawner = nbttagcompound.getBoolean("Paper.FromMobSpawner"); // Restore entity's from mob spawner status
@@ -71,7 +71,7 @@ index 1aecc84479b00a019a5b68f5e726d1c2965ae0f7..c3a5db97fd85b31c6b4bce93527b9d0e
                              // Spigot Start
                              if (org.bukkit.craftbukkit.event.CraftEventFactory.callSpawnerSpawnEvent(entity, blockposition).isCancelled()) {
 diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
-index 81a808c05ecc4262d9c5d1db26f649c4e709a0e5..77262daa02b52e4f3e44f770060a4a56494f642c 100644
+index cb04de23dd8b506ebfd07d60acd082d6b7e14528..fbed3c1012c5b6fe61598ae6fae64edc2ad2e490 100644
 --- a/src/main/java/net/minecraft/server/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/PlayerList.java
 @@ -262,7 +262,7 @@ public abstract class PlayerList {
@@ -84,10 +84,10 @@ index 81a808c05ecc4262d9c5d1db26f649c4e709a0e5..77262daa02b52e4f3e44f770060a4a56
              });
  
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index 0b7047863bb3a3f3d61491bb1924b94a0305e40a..ad9633747c4fc8546924c4d86ad45eb611c12102 100644
+index d6c86ce6a6a23ac8e889b0a9e7b8b7b8513ba5d1..21c0450d10e34ba066325af1b1bf77326149b0b1 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
-@@ -922,6 +922,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -925,6 +925,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
      // CraftBukkit start
      private boolean addEntity0(Entity entity, CreatureSpawnEvent.SpawnReason spawnReason) {
          org.spigotmc.AsyncCatcher.catchOp("entity add"); // Spigot

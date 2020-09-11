@@ -9,10 +9,10 @@ as this is how Vanilla teleports entities.
 Cancel any pending motion when teleported.
 
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
-index 45e7e30892d031df42ae72de28ba4bbe8e1a6cd5..1ee01486f880992c2694f1dd637e9828b1d40c2d 100644
+index f9f6a57e4e07d94c01d6b559e8138404b78d31f3..cfb14c54d648e6b8f83382601bd639056ebe2125 100644
 --- a/src/main/java/net/minecraft/server/Entity.java
 +++ b/src/main/java/net/minecraft/server/Entity.java
-@@ -1318,6 +1318,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -1315,6 +1315,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
      }
  
      public void setPositionRotation(double d0, double d1, double d2, float f, float f1) {

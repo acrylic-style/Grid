@@ -6,10 +6,10 @@ Subject: [PATCH] Add Debug Entities option to debug dupe uuid issues
 Add -Ddebug.entities=true to your JVM flags to gain more information
 
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
-index d62d25af15dee1457df85dbc4db6f7f0a632ecba..b1d7c30690e09f60075b9d2cff47d6a53115118b 100644
+index 98ecbd1089aeb6d0dc92801d59d01b6e20a4a7c3..f33bc0b6c6d033d692bdd9c9cfb7d2197e9ca40c 100644
 --- a/src/main/java/net/minecraft/server/Entity.java
 +++ b/src/main/java/net/minecraft/server/Entity.java
-@@ -78,6 +78,8 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -76,6 +76,8 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
      public com.destroystokyo.paper.loottable.PaperLootableInventoryData lootableData; // Paper
      private CraftEntity bukkitEntity;
  
@@ -40,7 +40,7 @@ index 8862bbd73b627e37709d46e6aeeee70c89cbd821..4bbcd00950405a4bf3ce391b557049a3
  
      protected void g() {
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index 275442e07743e4e4e3f1468f58c50bb38ab7537a..b6af67e7625dd6e24fad5812d4b563b6ce91bede 100644
+index 1b15ccd6c05d1ed965c03cd50f7488e26741c2ed..651791f27b796b081a52b8d8735a51e2f940e5df 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -68,6 +68,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -52,7 +52,7 @@ index 275442e07743e4e4e3f1468f58c50bb38ab7537a..b6af67e7625dd6e24fad5812d4b563b6
      public boolean captureBlockStates = false;
      public boolean captureTreeGeneration = false;
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index 5e6a39ded0405d8ab8ba26d2a9f152cda0fa94fb..bd0e35fac15ca559d6508df8c7f593af036ab551 100644
+index 81cdfe2351e62461171e5658290d80bb9b735d7a..04e57c81d0e58a801ad8e842c48fc6a143de70f2 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
 @@ -84,6 +84,9 @@ public class WorldServer extends World implements GeneratorAccessSeed {
@@ -65,7 +65,7 @@ index 5e6a39ded0405d8ab8ba26d2a9f152cda0fa94fb..bd0e35fac15ca559d6508df8c7f593af
  
      @Override public Chunk getChunkIfLoaded(int x, int z) { // Paper - this was added in world too but keeping here for NMS ABI
          return this.chunkProvider.getChunkAt(x, z, false);
-@@ -919,8 +922,28 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -922,8 +925,28 @@ public class WorldServer extends World implements GeneratorAccessSeed {
      // CraftBukkit start
      private boolean addEntity0(Entity entity, CreatureSpawnEvent.SpawnReason spawnReason) {
          org.spigotmc.AsyncCatcher.catchOp("entity add"); // Spigot
@@ -95,7 +95,7 @@ index 5e6a39ded0405d8ab8ba26d2a9f152cda0fa94fb..bd0e35fac15ca559d6508df8c7f593af
              // WorldServer.LOGGER.warn("Tried to add entity {} but it was marked as removed already", EntityTypes.getName(entity.getEntityType())); // CraftBukkit
              return false;
          } else if (this.isUUIDTaken(entity)) {
-@@ -1117,7 +1140,24 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1120,7 +1143,24 @@ public class WorldServer extends World implements GeneratorAccessSeed {
                  }
              }
  

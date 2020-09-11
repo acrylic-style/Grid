@@ -51,10 +51,10 @@ index 3b3cae92513a85ba842d403c68f5a1fb8fde785d..5ee581d1634f44a98756c5d11def9c3d
                  if (oclass.isInstance(t0) && t0.getBoundingBox().c(axisalignedbb) && (predicate == null || predicate.test(t0))) { // Spigot - instance check
                      list.add(t0);
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
-index 5e96d7a8adc043ff7e1451d4ecdacb2cfc9d08c6..1a05de09824360c451a4b0354d1a8f486432ec7b 100644
+index 91deb3a39cc9a28d96bcac8fe3f4bb68e1fb2003..015b74ba8792647d09e67152978bcb28c2e56b38 100644
 --- a/src/main/java/net/minecraft/server/Entity.java
 +++ b/src/main/java/net/minecraft/server/Entity.java
-@@ -192,6 +192,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -189,6 +189,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
      protected int numCollisions = 0; // Paper
      public void inactiveTick() { }
      // Spigot end
@@ -63,10 +63,10 @@ index 5e96d7a8adc043ff7e1451d4ecdacb2cfc9d08c6..1a05de09824360c451a4b0354d1a8f48
      public float getBukkitYaw() {
          return this.yaw;
 diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
-index 35116b1c893d0374359cc81bd8a29b5936940576..13370a4a0d210bd3b14a26f60b1cd9a9a3a6c941 100644
+index 186a7b1435132f0795b74ee843f8a4c830aa9f43..7ec836666f3468ce90db0da448f5b7afaad24c32 100644
 --- a/src/main/java/net/minecraft/server/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/WorldServer.java
-@@ -1189,6 +1189,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1192,6 +1192,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
                  entity.origin = entity.getBukkitEntity().getLocation();
              }
              // Paper end
@@ -74,7 +74,7 @@ index 35116b1c893d0374359cc81bd8a29b5936940576..13370a4a0d210bd3b14a26f60b1cd9a9
              new com.destroystokyo.paper.event.entity.EntityAddToWorldEvent(entity.getBukkitEntity()).callEvent(); // Paper - fire while valid
          }
  
-@@ -1201,6 +1202,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
+@@ -1204,6 +1205,7 @@ public class WorldServer extends World implements GeneratorAccessSeed {
              this.removeEntityFromChunk(entity);
              this.entitiesById.remove(entity.getId());
              this.unregisterEntity(entity);

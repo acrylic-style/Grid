@@ -17,7 +17,7 @@ index d32540c88bb902e9c191142a2b75a05b63218e52..cd279f8b5bccf813d96c1877d9fc020d
          MinecraftKey minecraftkey = TileEntityTypes.a(this.getTileType());
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 48445d8442357653bdeece0d2037d842b4e7367d..4b4c6fbbfa659d4077080f6217859c6685596c58 100644
+index b56cbe4213b1d35f2cb3ac72de0b1ca0a870b1c2..c4f39bdbd419673a29a4baf3307ca044fbc6baa5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -226,7 +226,9 @@ import org.yaml.snakeyaml.constructor.SafeConstructor;

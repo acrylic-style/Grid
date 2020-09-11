@@ -5,7 +5,7 @@ Subject: [PATCH] Fix arguments on Illusioner
 
 
 diff --git a/src/main/java/net/minecraft/server/EntityIllagerIllusioner.java b/src/main/java/net/minecraft/server/EntityIllagerIllusioner.java
-index 1c82316208f83d539cb61b20abbeb46db66a8c0b..0af97b8e64462ecce212ca43347244ab3429a00e 100644
+index 6e7d1a8aca2ffa5a117b02b565584cd2cb773ae9..854ccbaa690b13d00775eb4145b10fe59c797832 100644
 --- a/src/main/java/net/minecraft/server/EntityIllagerIllusioner.java
 +++ b/src/main/java/net/minecraft/server/EntityIllagerIllusioner.java
 @@ -135,7 +135,7 @@ public class EntityIllagerIllusioner extends EntityIllagerWizard implements IRan

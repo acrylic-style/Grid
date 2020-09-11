@@ -20,10 +20,10 @@ this is going to be the best soultion all around.
 Improvements/suggestions welcome!
 
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
-index 47c0fd89a82d91dc6083f9600ac6889e2b27234b..915378493d9c5bb501b21eb7aca380580716f4c3 100644
+index 4c96d3db6d0e97def4c04a4ec45cdab9d040fbe3..ca4a5c4dc435587525cf95ac8156cca877e935a7 100644
 --- a/src/main/java/net/minecraft/server/Entity.java
 +++ b/src/main/java/net/minecraft/server/Entity.java
-@@ -1947,12 +1947,15 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -1944,12 +1944,15 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
  
      }
  
@@ -41,7 +41,7 @@ index 47c0fd89a82d91dc6083f9600ac6889e2b27234b..915378493d9c5bb501b21eb7aca38058
          }
  
      }
-@@ -2007,7 +2010,10 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -2004,7 +2007,10 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
          return true; // CraftBukkit
      }
  
@@ -53,7 +53,7 @@ index 47c0fd89a82d91dc6083f9600ac6889e2b27234b..915378493d9c5bb501b21eb7aca38058
          if (entity.getVehicle() == this) {
              throw new IllegalStateException("Use x.stopRiding(y), not y.removePassenger(x)");
          } else {
-@@ -2017,7 +2023,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -2014,7 +2020,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
              if (getBukkitEntity() instanceof Vehicle && entity.getBukkitEntity() instanceof LivingEntity) {
                  VehicleExitEvent event = new VehicleExitEvent(
                          (Vehicle) getBukkitEntity(),
@@ -62,7 +62,7 @@ index 47c0fd89a82d91dc6083f9600ac6889e2b27234b..915378493d9c5bb501b21eb7aca38058
                  );
                  // Suppress during worldgen
                  if (this.valid) {
-@@ -2031,7 +2037,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -2028,7 +2034,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
              }
              // CraftBukkit end
              // Spigot start
@@ -91,10 +91,10 @@ index a6265c71973b67a0b49a41e2163a6f48876f1b41..272f4ff0a59350a088d6699a9fcb6bb9
      }
  
 diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
-index e95091c10ca14ddc20b904e2759fb63504c177a0..f23a4ef2a0479b6a7508f99fa8753375d60ac440 100644
+index c54641d984bdd04067f9dba66322b01b840904ed..fb86ed22331ca8194460da7210f03a4c7e01abc3 100644
 --- a/src/main/java/net/minecraft/server/EntityLiving.java
 +++ b/src/main/java/net/minecraft/server/EntityLiving.java
-@@ -2903,11 +2903,13 @@ public abstract class EntityLiving extends Entity {
+@@ -2904,11 +2904,13 @@ public abstract class EntityLiving extends Entity {
          return ((Byte) this.datawatcher.get(EntityLiving.ag) & 4) != 0;
      }
  
@@ -112,7 +112,7 @@ index e95091c10ca14ddc20b904e2759fb63504c177a0..f23a4ef2a0479b6a7508f99fa8753375
              this.a(entity);
          }
 diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
-index 777b2f7e77d2b59d5a439252daf9d317ab82a838..04bd11742627815890c676df134ec23221cea3e7 100644
+index 9717ae9ead12eae7ad258b1a9d8b63c21945d934..0bc51dd94d87b469022183c5a4f94cebe9f1a950 100644
 --- a/src/main/java/net/minecraft/server/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/EntityPlayer.java
 @@ -1107,11 +1107,13 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
