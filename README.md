@@ -1,13 +1,18 @@
-Grid [![Build Status](https://ci.acrylicstyle.xyz/job/Paper-1.16/badge/icon)](https://ci.acrylicstyle.xyz/job/Paper-1.16/)
+Paper [![Build Status](https://papermc.io/ci/job/Paper-1.16/badge/icon)](https://papermc.io/ci/job/Paper-1.16/)
 ===========
 
-High performance Paper fork that aims to fix gameplay and mechanics inconsistencies.
+High performance Spigot fork that aims to fix gameplay and mechanics inconsistencies.
+
+
+**Support and Project Discussion:**
+ - [IRC](https://irc.spi.gt/iris/?channels=paper) or [Discord](https://discord.gg/papermc)
+
 
 How To (Server Admins)
 ------
-Powergrid is a jar file that you can download and run just like a normal jar file.
+Paperclip is a jar file that you can download and run just like a normal jar file.
 
-Download Grid from our [downloads page](https://ci.acrylicstyle.xyz/guestAuth/repository/download/Grid_Build/.lastSuccessful/powergrid.jar).
+Download Paper from our [downloads page](https://papermc.io/downloads).
 
 Run the Paperclip jar directly from your server. Just like old times
 
@@ -22,16 +27,16 @@ How To (Plugin Developers)
  * Maven Repo (for paper-api):
 ```xml
 <repository>
-    <id>grid</id>
-    <url>https://repo2.acrylicstyle.xyz/</url>
+    <id>papermc</id>
+    <url>https://papermc.io/repo/repository/maven-public/</url>
 </repository>
 ```
  * Artifact Information:
 ```xml
 <dependency>
-    <groupId>xyz.acrylicstyle.grid</groupId>
-    <artifactId>grid-api</artifactId>
-    <version>1.16.2-R0.1-SNAPSHOT</version>
+    <groupId>com.destroystokyo.paper</groupId>
+    <artifactId>paper-api</artifactId>
+    <version>1.16.3-R0.1-SNAPSHOT</version>
     <scope>provided</scope>
 </dependency>
  ```
@@ -42,14 +47,14 @@ How To (Plugin Developers)
 ```groovy
 repositories {
     maven {
-        url 'https://repo2.acrylicstyle.xyz/'
+        url 'https://papermc.io/repo/repository/maven-public/'
     }
 }
 ```
  * Artifact:
 ```groovy
 dependencies {
-    compileOnly 'xyz.acrylicstyle.grid:grid-api:1.16.2-R0.1-SNAPSHOT'
+    compileOnly 'com.destroystokyo.paper:paper-api:1.16.3-R0.1-SNAPSHOT'
 }
 ```
 

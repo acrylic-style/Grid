@@ -5,7 +5,7 @@ Subject: [PATCH] We're Grid.
 
 
 diff --git a/pom.xml b/pom.xml
-index fe08bcb8f2413fb0a0b8330ad415736b0a7dc95a..c4bb6bb170f64124d934ce4ed053abf7cdab6920 100644
+index 61e3180f9df5d534944b806dddac46420aa8867f..5f049ba7e165e7191300a60f0499cf0d7a9aebf0 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -1,10 +1,10 @@
@@ -50,7 +50,7 @@ index fe08bcb8f2413fb0a0b8330ad415736b0a7dc95a..c4bb6bb170f64124d934ce4ed053abf7
              <version>${project.version}</version>
              <scope>compile</scope>
          </dependency>
-@@ -164,7 +164,7 @@
+@@ -165,7 +165,7 @@
  
      <!-- This builds a completely 'ready to start' jar with all dependencies inside -->
      <build>

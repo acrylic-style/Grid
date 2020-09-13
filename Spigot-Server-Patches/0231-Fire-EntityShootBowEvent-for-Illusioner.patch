@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aikar <aikar@aikar.co>
+Date: Mon, 18 Jun 2018 22:19:36 -0400
+Subject: [PATCH] Fire EntityShootBowEvent for Illusioner
+
+
+diff --git a/src/main/java/net/minecraft/server/EntityIllagerIllusioner.java b/src/main/java/net/minecraft/server/EntityIllagerIllusioner.java
+index ff8efca2616cb14d9e79e03e3d08781d2547b8eb..6e7d1a8aca2ffa5a117b02b565584cd2cb773ae9 100644
+--- a/src/main/java/net/minecraft/server/EntityIllagerIllusioner.java
++++ b/src/main/java/net/minecraft/server/EntityIllagerIllusioner.java
+@@ -135,7 +135,7 @@ public class EntityIllagerIllusioner extends EntityIllagerWizard implements IRan
+ 
+         entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float) (14 - this.world.getDifficulty().a() * 4));
+         // Paper start
+-        org.bukkit.event.entity.EntityShootBowEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityShootBowEvent(this, this.getItemInMainHand(), entityarrow.getOriginalItemStack(), entityarrow, entityliving.getRaisedHand(), 0.8F, true);
++        org.bukkit.event.entity.EntityShootBowEvent event = org.bukkit.craftbukkit.event.CraftEventFactory.callEntityShootBowEvent(this, this.getItemInMainHand(), this.getItemInOffHand(), entityarrow,0.8F);
+         if (event.isCancelled()) {
+             event.getProjectile().remove();
+             return;
