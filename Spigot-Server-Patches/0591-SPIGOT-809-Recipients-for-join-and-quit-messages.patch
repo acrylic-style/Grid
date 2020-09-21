@@ -6,7 +6,7 @@ Subject: [PATCH] SPIGOT-809 Recipients for join and quit messages.
 https://hub.spigotmc.org/jira/projects/SPIGOT/issues/SPIGOT-809
 
 diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
-index b067f3b7031509bb94e617785e5a4d19b9d5d3e1..c78dc199eae53cca478873f0f8d10ea1cdb90ef9 100644
+index 05b3a7478195037927cd1a902b603862d9747e61..8c7fcf4da0616ac4608a721a305d0eda437fb6cd 100644
 --- a/src/main/java/net/minecraft/server/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/PlayerConnection.java
 @@ -13,6 +13,7 @@ import java.util.Collections;

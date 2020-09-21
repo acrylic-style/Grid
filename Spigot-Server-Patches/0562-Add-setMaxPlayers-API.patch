@@ -18,10 +18,10 @@ index 2ae926d9a2ad99a46409dfa000c6f895600a2616..787e80c50a61d6bd80efd8bd0d4b5140
      private EnumGamemode u;
      private boolean v;
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 003642c0b591eba5778f5e5bf5cb7d46f1c85952..b56cbe4213b1d35f2cb3ac72de0b1ca0a870b1c2 100644
+index 5c30d1b97e49dbe363a570c0de434862adef8061..0712fc90f7f4265b9c4d027dada0d0a1a5034a1e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -616,6 +616,13 @@ public final class CraftServer implements Server {
+@@ -618,6 +618,13 @@ public final class CraftServer implements Server {
          return playerList.getMaxPlayers();
      }
  

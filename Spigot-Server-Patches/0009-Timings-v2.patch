@@ -1004,7 +1004,7 @@ index 468d0cce2208bc21ec3d62590ac6e050a2037518..b5d1dbf889138699c877f13382557ce3
      }
  
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
-index aaeb862fd93110bc19e0c2e212f67a19d5462dbb..0f26aacfec892709052b7c2684b553ffe2e16ff6 100644
+index cd7866f2251f68f24801eacc55800907f184537f..74277d79a845fb0a44298f42d626148616cb5a1d 100644
 --- a/src/main/java/net/minecraft/server/Entity.java
 +++ b/src/main/java/net/minecraft/server/Entity.java
 @@ -31,7 +31,6 @@ import org.bukkit.craftbukkit.event.CraftPortalEvent;
@@ -1015,15 +1015,15 @@ index aaeb862fd93110bc19e0c2e212f67a19d5462dbb..0f26aacfec892709052b7c2684b553ff
  import org.bukkit.event.entity.EntityCombustByEntityEvent;
  import org.bukkit.event.hanging.HangingBreakByEntityEvent;
  import org.bukkit.event.vehicle.VehicleBlockCollisionEvent;
-@@ -162,7 +161,6 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
-     public boolean valid;
+@@ -163,7 +162,6 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
      public org.bukkit.projectiles.ProjectileSource projectileSource; // For projectiles only
      public boolean forceExplosionKnockback; // SPIGOT-949
+     public boolean persistentInvisibility = false;
 -    public CustomTimingsHandler tickTimer = org.bukkit.craftbukkit.SpigotTimings.getEntityTimings(this); // Spigot
      // Spigot start
      public final org.spigotmc.ActivationRange.ActivationType activationType = org.spigotmc.ActivationRange.initializeEntityActivationType(this);
      public final boolean defaultActivationState;
-@@ -531,7 +529,6 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -532,7 +530,6 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
      }
  
      public void move(EnumMoveType enummovetype, Vec3D vec3d) {
@@ -1031,7 +1031,7 @@ index aaeb862fd93110bc19e0c2e212f67a19d5462dbb..0f26aacfec892709052b7c2684b553ff
          if (this.noclip) {
              this.a(this.getBoundingBox().c(vec3d));
              this.recalcPosition();
-@@ -667,7 +664,6 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+@@ -668,7 +665,6 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
  
              this.world.getMethodProfiler().exit();
          }
@@ -1633,7 +1633,7 @@ index 67fdd560f8136d83a13f75e265d5f5dd11871375..8f51a1e5e37566001e1d419065ce7307
      private static final CraftPersistentDataTypeRegistry DATA_TYPE_REGISTRY = new CraftPersistentDataTypeRegistry();
      public CraftPersistentDataContainer persistentDataContainer;
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
-index f69c2055a33a9396e0df6554aa4e498ba0fd4e71..9836de9a748a5d7828d02a1831561f0d35d4b577 100644
+index 4059aaf6da1bfe6003e2d94ce33e32eb1aaa93c9..07ba51a801d803109dd92f77c19b389eb24f61b2 100644
 --- a/src/main/java/net/minecraft/server/World.java
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -18,7 +18,6 @@ import org.apache.logging.log4j.Logger;
@@ -1807,10 +1807,10 @@ index 4947a0aaab2dd91f3184365e64c4ad4e05132283..a807933d65a22dc1b15eda4dee819af7
  
          // CraftBukkit start - moved from MinecraftServer.saveChunks
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index e47ebe8093fe059a7ccec0161bbe0ec9bb0ac3bc..374c1c82ed26fe0fb3519f4339708bc1e8386be9 100644
+index 159c0c671833a8973b543fd83d8b6b3394b35dc0..90551257c299aaf694eb4f4063d5b1b3eee94876 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2053,12 +2053,31 @@ public final class CraftServer implements Server {
+@@ -2064,12 +2064,31 @@ public final class CraftServer implements Server {
      private final Spigot spigot = new Spigot()
      {
  
@@ -2204,10 +2204,10 @@ index e52ef47b783785dc214746b678e7b549aea9a274..3d90b3426873a3528af14f7f1ab0adae
          this.value = value;
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 4d8cd8234a65fc00badc2351e32210bd1a901f2f..931bdc2da33479991f4024c4f1a7dcc39f5d54d9 100644
+index 983444d7b742c1f7c5f08f26808dd484f90d6c20..bfecee2c9e4c68d5e254b445b3100247322017fc 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -138,6 +138,12 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -158,6 +158,12 @@ public final class CraftMagicNumbers implements UnsafeValues {
          return CraftNamespacedKey.toMinecraft(mat.getKey());
      }
      // ========================================================================
@@ -2220,7 +2220,7 @@ index 4d8cd8234a65fc00badc2351e32210bd1a901f2f..931bdc2da33479991f4024c4f1a7dcc3
  
      public static byte toLegacyData(IBlockData data) {
          return CraftLegacy.toLegacyData(data);
-@@ -312,6 +318,13 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -332,6 +338,13 @@ public final class CraftMagicNumbers implements UnsafeValues {
          return clazz;
      }
  
