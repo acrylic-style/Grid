@@ -1,0 +1,30 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: GreenMeanie <GreenMeanieMC@gmail.com>
+Date: Sat, 20 Oct 2018 22:34:02 -0400
+Subject: [PATCH] Reset players airTicks on respawn
+
+
+diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
+index 18a79f9c61c0263526cd632f032d17bdc6cb2139..52016eefd310a19297d6b16b73596aec3792aed5 100644
+--- a/src/main/java/net/minecraft/server/Entity.java
++++ b/src/main/java/net/minecraft/server/Entity.java
+@@ -2263,6 +2263,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, Ke
+ 
+     }
+ 
++    public final int getMaxAirTicks() { return bG(); } // Paper - OBFHELPER
+     public int bG() {
+         return 300;
+     }
+diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
+index 41c12fe080168a4ac92d4b31f3e0c9e34d034d48..3d03db6e9f67da17e62b0ffc554f2fa210f1d281 100644
+--- a/src/main/java/net/minecraft/server/EntityPlayer.java
++++ b/src/main/java/net/minecraft/server/EntityPlayer.java
+@@ -1997,6 +1997,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+         }
+ 
+         this.setHealth(this.getMaxHealth());
++        this.setAirTicks(this.getMaxAirTicks()); // Paper
+         this.fireTicks = 0;
+         this.fallDistance = 0;
+         this.foodData = new FoodMetaData(this);

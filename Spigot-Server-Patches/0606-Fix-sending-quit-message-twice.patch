@@ -1,0 +1,21 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Fri, 15 May 2020 23:45:56 +0900
+Subject: [PATCH] Fix sending quit message twice
+
+
+diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
+index c990a5a3d95fc2b3376887fcfeeb8609c7b277b1..2d757dd824a1f98617488ea313aac6c6524422ab 100644
+--- a/src/main/java/net/minecraft/server/PlayerConnection.java
++++ b/src/main/java/net/minecraft/server/PlayerConnection.java
+@@ -1610,7 +1610,9 @@ public class PlayerConnection implements PacketListenerPlayIn {
+                 }
+             });
+             // Paper end
+-            this.minecraftServer.getPlayerList().sendMessage(CraftChatMessage.fromString(quitMessage.getQuitMessage()));
++            for (IChatBaseComponent iChatBaseComponent : chatMessage) {
++                this.minecraftServer.sendMessage(iChatBaseComponent);
++            }
+         }
+         // CraftBukkit end
+         if (this.isExemptPlayer()) {

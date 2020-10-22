@@ -269,7 +269,7 @@ index 0000000000000000000000000000000000000000..b8868b86338ce0e89bc74eccccf714b9
 +}
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..68d3cb02dbfdc9d6f9d3682a2659c9430b50c490
+index 0000000000000000000000000000000000000000..2d9b6439cff9e8907b55c8882b15e94abe625465
 --- /dev/null
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -0,0 +1,185 @@
@@ -306,7 +306,7 @@ index 0000000000000000000000000000000000000000..68d3cb02dbfdc9d6f9d3682a2659c943
 +            + "If you need help with the configuration or have any questions related to Paper,\n"
 +            + "join us in our Discord or IRC channel.\n"
 +            + "\n"
-+            + "Discord: https://paperdiscord.emc.gs\n"
++            + "Discord: https://discord.gg/papermc\n"
 +            + "IRC: #paper @ irc.spi.gt ( http://irc.spi.gt/iris/?channels=paper )\n"
 +            + "Website: https://papermc.io/ \n"
 +            + "Docs: https://paper.readthedocs.org/ \n";
@@ -718,7 +718,7 @@ index 0986d666b777b9992f8cbbffef964717cabe91df..159c0c671833a8973b543fd83d8b6b33
 +    // Paper end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 9c98589c2db92720b4ae054ee74ef7ab0dac891a..f187c7d127c356861c30141efeafcef0057878ec 100644
+index 8b2c7b6da2c6793e1cb1498f26693fb23dd3fa3e..112a6d3ebe2f0b57f4e3c09d4ec342123af5f550 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -129,6 +129,14 @@ public class Main {

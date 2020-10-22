@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: connorhartley <vectrixu+gh@gmail.com>
+Date: Mon, 7 Jan 2019 14:43:48 -0600
+Subject: [PATCH] Workaround for vehicle tracking issue on disconnect
+
+
+diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
+index 32b2d592f2e2e736ab46a08ecbad89bc3adc3f2b..585e0f8007ff7e73e5b9f363ed4a977b48a3fafc 100644
+--- a/src/main/java/net/minecraft/server/EntityPlayer.java
++++ b/src/main/java/net/minecraft/server/EntityPlayer.java
+@@ -1373,6 +1373,13 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+     public void p() {
+         this.ch = true;
+         this.ejectPassengers();
++
++        // Paper start - Workaround an issue where the vehicle doesn't track the passenger disconnection dismount.
++        if (this.isPassenger() && this.getVehicle() instanceof EntityPlayer) {
++            this.stopRiding();
++        }
++        // Paper end
++
+         if (this.isSleeping()) {
+             this.wakeup(true, false);
+         }

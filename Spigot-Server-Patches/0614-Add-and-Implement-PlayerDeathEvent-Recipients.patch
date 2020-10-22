@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: acrylic-style <me@acrylicstyle.xyz>
+Date: Wed, 19 Aug 2020 00:18:44 +0900
+Subject: [PATCH] Add and Implement PlayerDeathEvent Recipients
+
+
+diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
+index 8e1655a975af24f6781a95be7030afa8f1b14472..2a2c482c9b868bb995266b6a054daf5e5295984e 100644
+--- a/src/main/java/net/minecraft/server/EntityPlayer.java
++++ b/src/main/java/net/minecraft/server/EntityPlayer.java
+@@ -714,7 +714,10 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+                     this.server.getPlayerList().b(this, ichatbasecomponent);
+                 }
+             } else {
+-                this.server.getPlayerList().sendMessage(ichatbasecomponent, ChatMessageType.SYSTEM, SystemUtils.b);
++                // Grid start - implement PlayerDeathEvent recipients
++                event.getRecipients().forEach(player -> ((CraftPlayer) player).getHandle().sendMessage(ichatbasecomponent, SystemUtils.b));
++                // this.server.getPlayerList().sendMessage(ichatbasecomponent, ChatMessageType.SYSTEM, SystemUtils.b);
++                // Grid end - implement PlayerDeathEvent recipients
+             }
+         } else {
+             this.playerConnection.sendPacket(new PacketPlayOutCombatEvent(this.getCombatTracker(), PacketPlayOutCombatEvent.EnumCombatEventType.ENTITY_DIED));
